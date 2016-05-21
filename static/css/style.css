@@ -1,0 +1,88 @@
+/**
+ * Hide when Angular is not yet loaded and initialized
+ */
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+.md-errors-spacer {
+    min-height: 0px !important;
+}
+
+md-input-container {
+    margin-bottom: 0px !important;
+}
+
+body {
+    padding: 30px;
+}
+
+.bl-block {
+    background-color: #eeeeee;
+}
+
+.bl-block .bl-header {
+    border-bottom-style: solid;
+    background-color: #fafafa;
+}
+
+.bl-block .bl-header h1 {
+    color: black;
+    font-size: medium;
+    text-transform: uppercase;
+}
+
+.bl-content {
+    padding: 10px;
+}
+
+.bl-result {
+}
+
+.bl-result h1 {
+    font-size: small;
+    font-weight: normal;
+    color: rgba(0, 0, 0, 0.54);
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-style: normal;
+}
+
+@media screen and (min-width: 600px) {
+    .bl-section-placeholder {
+        min-height: 53px;
+    }
+}
+
+.bl-section h1 {
+    text-transform: uppercase;
+    font-size: medium;
+    color: #000;
+    font-weight: bold;
+}
+
+.bl-section img {
+    padding-right: 10px;
+    padding-bottom: 5px;
+}
+
+.bl-table th {
+    text-indent: 4px;
+    text-align: left;
+    font-size: small;
+    font-weight: normal;
+    color: rgba(0, 0, 0, 0.54);
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-style: normal;
+}
+
+.bl-table .bl-table-data {
+    text-indent: 4px;
+}
+
+.bl-table .bl-table-action {
+    text-align: right;
+}
+
+.bl-table md-input-container {
+    margin-top: 0px !important;
+}
