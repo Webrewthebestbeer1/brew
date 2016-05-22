@@ -7,10 +7,10 @@
   <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.css">
   <link rel="stylesheet" href="{% static "css/style.css" %}">
 </head>
-<body ng-controller="BrewLogController" ng-cloak="" ng-app="BrewLog">
+<body href="/log/" ng-controller="BrewLogController" ng-cloak="" ng-app="BrewLog">
 
     <div class="md-block">
-        <h3 class="md-display-3">Punk IPA</h3>
+        <h3 class="md-display-3"> {[{ entry.name }]}</h3>
     </div>
 
     <!-- Water calculations -->
@@ -29,42 +29,42 @@
                         <h1>Calculator</h1>
                     </div>
                     <div layout-gt-sm="row">
-                      <md-input-container flex-gt-sm="">
+                      <md-input-container flex-gt-sm="" class="md-block">
                         <label>Batch size (liters)</label>
                         <input ng-model="entry.batch_size" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
-                      <md-input-container flex-gt-sm="">
+                      <md-input-container flex-gt-sm="" class="md-block">
                         <label>Grain bill (kilogram)</label>
                         <input ng-model="entry.grain_bill" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
-                      <md-input-container flex-gt-sm="">
+                      <md-input-container flex-gt-sm="" class="md-block">
                         <label>Boil time (minutes)</label>
                         <input ng-model="entry.boil_time" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
-                      <md-input-container flex-gt-sm="">
+                      <md-input-container flex-gt-sm="" class="md-block">
                         <label>Target mash temperature (degrees Celsius)</label>
                         <input ng-model="entry.mash_temperature" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
-                      <md-input-container flex-gt-sm="">
+                      <md-input-container flex-gt-sm="" class="md-block">
                         <label>Trub loss (liters)</label>
                         <input ng-model="entry.trub_loss" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
-                      <md-input-container flex-gt-sm="">
+                      <md-input-container flex-gt-sm="" class="md-block">
                         <label>Equipment loss (liters)</label>
                         <input ng-model="entry.equipment_loss" type="number" ng-blur="updateWater()">
                       </md-input-container>
@@ -76,42 +76,42 @@
                     <div class="bl-section-placeholder" layout="row">
                     </div>
                     <div layout-gt-sm="row">
-                      <md-input-container flex-gt-sm="">
+                      <md-input-container flex-gt-sm="" class="md-block">
                         <label>Mash thickness (liter/kilogram)</label>
                         <input ng-model="entry.mash_thickness" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
-                      <md-input-container flex-gt-sm="">
+                      <md-input-container flex-gt-sm="" class="md-block">
                         <label>Grain temperature (degrees Celsius)</label>
                         <input ng-model="entry.grain_temperature" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
-                      <md-input-container flex-gt-sm="">
+                      <md-input-container flex-gt-sm="" class="md-block">
                         <label>Wort shrinkage (percent)</label>
                         <input ng-model="entry.wort_shrinkage" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
-                      <md-input-container flex-gt-sm="">
+                      <md-input-container flex-gt-sm="" class="md-block">
                         <label>Grain absorption (liter/kilogram)</label>
                         <input ng-model="entry.grain_absorption" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
-                      <md-input-container flex-gt-sm="">
+                      <md-input-container flex-gt-sm="" class="md-block">
                         <label>Percent boiloff (percent/hour)</label>
                         <input ng-model="entry.percent_boiloff" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
-                      <md-input-container flex-gt-sm="">
+                      <md-input-container flex-gt-sm="" class="md-block">
                         <label>Evaporation factor</label>
                         <input ng-model="entry.evaporation_factor" type="number" ng-blur="updateWater()">
                       </md-input-container>
@@ -119,34 +119,34 @@
                 </div>
 
                 <!-- Third column (results) -->
-                <div flex class="bl-result">
+                <div flex>
                     <div class="bl-section" layout="row">
                         <img src="{% static "img/water.png" %}">
                         <h1>Results</h1>
                     </div>
-                    <div layout="column">
-                        <h1>Total water needed (liters)</h1>
-                        <b><output id="totalWater"></b>
+                    <div layout="column" class="bl-result">
+                        <label for="totalWater">Total water needed</label>
+                        <p><output id="totalWater" class="fade"></output> liters</p>
                     </div>
-                    <div layout="column">
-                        <h1>Mash water needed (liters)</h1>
-                        <b><output id="mashWater"></b>
+                    <div layout="column" class="bl-result">
+                        <label for="mashWater">Mash water needed</label>
+                        <p><output id="mashWater" class="fade"></output> liters</p>
                     </div>
-                    <div layout="column">
-                        <h1>Sparge water needed (liters)</h1>
-                        <b><output id="spargeWater"></b>
+                    <div layout="column" class="bl-result">
+                        <label for="spargeWater">Sparge water needed</label>
+                        <p><output id="spargeWater" class="fade"></output> liters</p>
                     </div>
-                    <div layout="column">
-                        <h1>Pre-boil wort produced (liters)</h1>
-                        <b><output id="preBoilWort"></b>
+                    <div layout="column" class="bl-result">
+                        <label for="preBoilWort">Pre-boil wort produced</label>
+                        <p><output id="preBoilWort" class="fade"></output> liters</p>
                     </div>
-                    <div layout="column">
-                        <h1>Approximate mash volume (liters)</h1>
-                        <b><output id="approximateMashVolume"></b>
+                    <div layout="column" class="bl-result">
+                        <label for="approximateMashVolume">Approximate mash volume</label>
+                        <p><output id="approximateMashVolume" class="fade"></output> liters</p>
                     </div>
-                    <div layout="column">
-                        <h1>Strike temperature (degrees Celsius)</h1>
-                        <b><output id="strikeTemperature"></b>
+                    <div layout="column" class="bl-result">
+                        <label for="strikeTemperature">Strike temperature</label>
+                        <p><output id="strikeTemperature" class="fade"></output>&deg;C</p>
                     </div>
                 </div>
             </div>
@@ -175,23 +175,23 @@
                         <th>Amount (kg)</th>
                         <th></th>
                     </tr>
-                    <tr ng-repeat="malt in entry.malts">
+                    <tr ng-repeat="malt in entry.malts" class="fade">
                         <td class="bl-table-data">{[{ malt.name }]}</td>
                         <td class="bl-table-data">{[{ malt.amount }]}</td>
                         <td class="bl-table-action">
-                            <md-button class="md-icon-button md-accent" aria-label="-" ng-click="removeMalt(malt)">
+                            <md-button class="md-icon-button md-accent" aria-label="-" ng-click="removeMalt($event, malt)">
                                 <md-icon md-svg-icon="{% static "img/remove.svg" %}"></md-icon>
                             </md-button>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <md-input-container md-no-float flex-gt-sm="">
+                            <md-input-container md-no-float flex-gt-sm="" class="md-block">
                               <input ng-model="maltName" placeholder="Name" type="text">
                             </md-input-container>
                         </td>
                         <td>
-                            <md-input-container md-no-float flex-gt-sm="">
+                            <md-input-container md-no-float flex-gt-sm="" class="md-block">
                               <input ng-model="maltAmount" placeholder="Amount" type="number">
                             </md-input-container>
                         </td>
@@ -215,7 +215,7 @@
                         <th>Add (minutes)</th>
                         <th></th>
                     </tr>
-                    <tr ng-repeat="hop in entry.hops">
+                    <tr ng-repeat="hop in entry.hops" class="fade">
                         <td class="bl-table-data">{[{ hop.name }]}</td>
                         <td class="bl-table-data">{[{ hop.amount }]}</td>
                         <td class="bl-table-data">{[{ hop.add }]}</td>
@@ -227,17 +227,17 @@
                     </tr>
                     <tr>
                         <td>
-                            <md-input-container md-no-float flex-gt-sm="">
+                            <md-input-container md-no-float flex-gt-sm="" class="md-block">
                               <input ng-model="hopName" placeholder="Name" type="text">
                             </md-input-container>
                         </td>
                         <td>
-                            <md-input-container md-no-float flex-gt-sm="">
+                            <md-input-container md-no-float flex-gt-sm="" class="md-block">
                               <input ng-model="hopAmount" placeholder="Amount" type="number">
                             </md-input-container>
                         </td>
                         <td>
-                            <md-input-container md-no-float flex-gt-sm="">
+                            <md-input-container md-no-float flex-gt-sm="" class="md-block">
                               <input ng-model="hopAdd" placeholder="Add" type="number">
                             </md-input-container>
                         </td>
@@ -254,7 +254,7 @@
                     <h1>Yeast</h1>
                 </div>
                 <div layout-gt-sm="row">
-                  <md-input-container flex-gt-sm="">
+                  <md-input-container flex-gt-sm="" class="md-block">
                     <label>Name</label>
                     <input ng-model="entry.yeast" type="text" ng-blur="updateYeast()">
                   </md-input-container>
@@ -319,8 +319,12 @@
                   </md-input-container>
                 </div>
                 <div layout="column" class="bl-result">
-                    <h1>ABV (percent)</h1>
-                    <b><output id="abv"></b>
+                    <label for="attenuation">Attenuation</label>
+                    <p><output id="attenuation" class="fade"></output>%</p>
+                </div>
+                <div layout="column" class="bl-result">
+                    <label for="abv">ABV</label>
+                    <p><output id="abv" class="fade"></output>%</p>
                 </div>
             </div>
             <!-- end items -->
@@ -345,7 +349,7 @@
                         <th>Description</th>
                         <th></th>
                     </tr>
-                    <tr ng-repeat="log in entry.logs">
+                    <tr ng-repeat="log in entry.logs" class="fade">
                         <td class="bl-table-data">{[{ log.start }]}</td>
                         <td class="bl-table-data">{[{ log.end }]}</td>
                         <td class="bl-table-data">{[{ log.description }]}</td>
@@ -357,17 +361,17 @@
                     </tr>
                     <tr>
                         <td>
-                            <md-input-container md-no-float flex-gt-sm="">
+                            <md-input-container md-no-float flex-gt-sm="" class="md-block">
                               <input ng-model="logEntryStart" placeholder="Start" type="time">
                             </md-input-container>
                         </td>
                         <td>
-                            <md-input-container md-no-float flex-gt-sm="">
+                            <md-input-container md-no-float flex-gt-sm="" class="md-block">
                               <input ng-model="logEntryEnd" placeholder="End" type="time">
                             </md-input-container>
                         </td>
                         <td>
-                            <md-input-container md-no-float flex-gt-sm="">
+                            <md-input-container md-no-float flex-gt-sm="" class="md-block">
                               <input ng-model="logEntryDescription" placeholder="Description" type="text">
                             </md-input-container>
                         </td>
@@ -388,12 +392,12 @@
                 <h1>Comments</h1>
             </div>
             <div layout="column" class="bl-ingredients">
-                <div ng-repeat="comment in entry.comments" layout="column">
+                <div ng-repeat="comment in entry.comments" layout="column" class="fade">
                     <!-- Comment -->
                     <div ng-hide="editedComments[comment.date]" layout="row">
                         <div style="width:100%;" layout="column">
                             <div style="padding-bottom:5px;"><em>Written: {[{ comment.date }]}</em></div>
-                            <div style="word-wrap:break-word;">{[{ comment.comment }]}</div>
+                            <div style="word-wrap:break-word; vertical-align:bottom;">{[{ comment.comment }]}</div>
                         </div>
                         <div style="float:right; width:110px;" layout="column">
                             <md-button class="md-primary" ng-click="editComment(comment)">Edit</md-button>
@@ -441,6 +445,7 @@
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.min.js"></script>
 
   <!-- Angular Material Library -->
   <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.js"></script>

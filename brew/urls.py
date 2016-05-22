@@ -21,5 +21,6 @@ from apps.brewlog.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include('apps.brewlog.urls')),
-    url(r'^$', index, name='index')
+    url(r'^log$', log, name='log'),
+    url(r'^$', logs, name='logs'),
 ]
