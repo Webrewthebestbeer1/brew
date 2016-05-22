@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en" >
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+  <!-- Angular Material style sheet -->
+  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.css">
+  <link rel="stylesheet" href="{% static "css/style.css" %}">
+</head>
+<body ng-controller="BrewLogsController" ng-cloak="" ng-app="BrewLogs">
+
+    <div class="md-block">
+        <h3 class="md-display-3">History</h3>
+    </div>
+
+    <!-- Log entries -->
+    <div flex class="bl-block" layout="column">
+        <div class="bl-header" layout="row">
+            <h1>Logs</h1>
+        </div>
+        <div layout="column" class="bl-logs">
+            <table style="width:100%;" class="bl-table">
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Volume</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="entry in entries">
+                    <td class="bl-table-data"><a href="log?id={[{ entry.id }]}">{[{ entry.name }]}</a></td>
+                    <td class="bl-table-data">{[{ entry.date }]}</td>
+                    <td class="bl-table-data">{[{ entry.batch_size }]}</td>
+                    <td class="bl-table-action">
+                        <md-button class="md-icon-button md-accent" aria-label="-" ng-click="removeHop(hop)">
+                            <md-icon md-svg-icon="{% static "img/remove.svg" %}"></md-icon>
+                        </md-button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <md-input-container md-no-float  class="md-block">
+                          <input ng-model="entryName" placeholder="Name" type="text">
+                        </md-input-container>
+                    </td>
+                    <td class="bl-table-action">
+                        <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addEntry()">
+                            <md-icon md-svg-icon="{% static "img/add.svg" %}"></md-icon>
+                        </md-button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!-- end ingredients -->
+
+    <div style="padding:100px"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+  <!-- Angular Material requires Angular.js Libraries -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.js"></script>
+
+  <script src="{% static "js/brewlogs.js" %}"></script>
+
+</body>
+</html>

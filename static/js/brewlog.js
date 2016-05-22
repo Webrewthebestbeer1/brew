@@ -1,6 +1,9 @@
-angular.module('BrewLog', ['ngMaterial']).controller('BrewLogController', ['$scope', '$http', function($scope, $http) {
+angular.module('BrewLog', ['ngMaterial', 'ngAnimate'])
+.controller(
+    'BrewLogController',
+    ['$scope', '$http', '$location', '$mdDialog', function($scope, $http, $location, $mdDialog) {
 
-    var entryId = '1';
+    var entryId = $location.search().id;
     var baseUrl = 'api/entries/' + entryId
 
     $scope.addMalt = function() {
@@ -18,16 +21,25 @@ angular.module('BrewLog', ['ngMaterial']).controller('BrewLogController', ['$sco
         });
     }
 
-    $scope.removeMalt = function(item) {
-        var maltId = item['id'];
-        $http.delete('api/malts/delete/' + maltId)
-        .success(function(response) {
-            console.log(response);
-            var index = $scope.entry.malts.indexOf(item);
-            $scope.entry.malts.splice(index, 1);
-        })
-        .error(function(response) {
-            console.log(response);
+    $scope.removeMalt = function(ev, item) {
+        var confirm = $mdDialog.confirm()
+        .title('Confirm action')
+        .textContent('Delete malt entry?')
+        .ariaLabel('Delete malt entry?')
+        .targetEvent(ev)
+        .ok('Yes')
+        .cancel('No');
+        $mdDialog.show(confirm).then(function() {
+            var maltId = item['id'];
+            $http.delete('api/malts/delete/' + maltId)
+            .success(function(response) {
+                console.log(response);
+                var index = $scope.entry.malts.indexOf(item);
+                $scope.entry.malts.splice(index, 1);
+            })
+            .error(function(response) {
+                console.log(response);
+            });
         });
     }
 
@@ -197,28 +209,31 @@ angular.module('BrewLog', ['ngMaterial']).controller('BrewLogController', ['$sco
         return -616.868+(1111.14*density)-(630.272*Math.pow(density, 2))+(135.997*Math.pow(density, 3));
     }
 
-    $scope.updateGravity = function() {
+    $scope.updateGravity = function(initial) {
         var og = $scope.entry.og;
         var fg = $scope.entry.fg;
-        var gravity = {og: og, fg: fg}
-        $scope.updateEntry(gravity);
-        var attenuation = 1 - (fg/og);
+        if(!initial) {
+            var gravity = {og: og, fg: fg}
+            $scope.updateEntry(gravity);
+        }
+        var attenuation = 1 - (densityToPlato(fg)/densityToPlato(og));
         var realExtract = (0.1808*densityToPlato(og)) + (0.8192*densityToPlato(fg));
         var abv = (((Math.abs(densityToPlato(og)-realExtract))/Math.abs(2.0666-(0.010665*densityToPlato(og)))/100)*fg)/0.79;
         abv *= 100;
         $(" #abv ").val(abv.toFixed(2));
+        $(" #attenuation ").val((attenuation * 100).toFixed(2));
     }
 
 
 
-    $http.get("api/entries/1").success(function(response) {
+    $http.get('api/entries/' + entryId).success(function(response) {
         $scope.entry = response;
         $scope.$watch('entry.i', function() {
             $scope.entry.i = parseFloat($scope.entry.i);
         });
         console.log(response);
-        $scope.updateGravity();
-        $scope.updateWater();
+        $scope.updateGravity(true);
+        $scope.updateWater(true);
 
     });
 
@@ -240,8 +255,17 @@ Set the Angular tags to {[{ code }]}
 Inject CSRF-token into the HTTP requests
 */
 .config(['$httpProvider', function($httpProvider) {
-        $httpProvider.defaults.xsrfCookieName = 'csrftoken';
-        $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+    $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+    $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+}])
+/*
+Need $location to get URL parameteres
+*/
+.config(['$locationProvider', function($locationProvider) {
+    $locationProvider.html5Mode({
+        enabled: true,
+        requireBase: false
+    });
 }])
 /*
 Django's DecimalField are serialized to Strings.

@@ -86,7 +86,7 @@ class EntrySerializer(serializers.ModelSerializer):
             'fermentation_time',
             'og',
             'fg',
-            #'date',
+            'date',
             'batch_size',
             'grain_bill',
             'boil_time',
