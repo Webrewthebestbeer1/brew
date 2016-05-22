@@ -92,7 +92,7 @@ angular.module('BrewLog', ['ngMaterial']).controller('BrewLogController', ['$sco
     $scope.editComment = function(comment) {
         $scope.editedComments[comment.date] = !$scope.editedComments[comment.date];
     }
-    $scope.saveComment = function(comment) {
+    $scope.updateComment = function(comment) {
         var index = $scope.entry.comments.indexOf(comment);
         var text = $("#comment" + comment.id).val();
         var field = {comment: text}
@@ -228,14 +228,25 @@ angular.module('BrewLog', ['ngMaterial']).controller('BrewLogController', ['$sco
     .primaryPalette('blue-grey')
     .accentPalette('grey');
 })
+/*
+Django and Angular share the same template tags.
+Set the Angular tags to {[{ code }]}
+*/
 .config(function($interpolateProvider) {
   $interpolateProvider.startSymbol('{[{');
   $interpolateProvider.endSymbol('}]}');
 })
+/*
+Inject CSRF-token into the HTTP requests
+*/
 .config(['$httpProvider', function($httpProvider) {
         $httpProvider.defaults.xsrfCookieName = 'csrftoken';
         $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
 }])
+/*
+Django's DecimalField are serialized to Strings.
+Try to convert them to Number.
+*/
 .directive('input', [function() {
     return {
         restrict: 'E',
