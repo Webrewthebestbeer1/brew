@@ -342,15 +342,15 @@
                     <tr>
                         <th>Start</th>
                         <th>End</th>
-                        <th>Entry</th>
+                        <th>Description</th>
                         <th></th>
                     </tr>
-                    <tr ng-repeat="logEntry in entry.logs">
-                        <td class="bl-table-data">{[{ logEntry.start }]}</td>
-                        <td class="bl-table-data">{[{ logEntry.end }]}</td>
-                        <td class="bl-table-data">{[{ logEntry.entry }]}</td>
+                    <tr ng-repeat="log in entry.logs">
+                        <td class="bl-table-data">{[{ log.start }]}</td>
+                        <td class="bl-table-data">{[{ log.end }]}</td>
+                        <td class="bl-table-data">{[{ log.description }]}</td>
                         <td class="bl-table-action">
-                            <md-button class="md-icon-button md-accent" aria-label="-" ng-click="removeLogEntry(logEntry)">
+                            <md-button class="md-icon-button md-accent" aria-label="-" ng-click="deleteLog(log)">
                                 <md-icon md-svg-icon="{% static "img/remove.svg" %}"></md-icon>
                             </md-button>
                         </td>
@@ -368,11 +368,11 @@
                         </td>
                         <td>
                             <md-input-container md-no-float flex-gt-sm="">
-                              <input ng-model="logEntryEntry" placeholder="Entry" type="text">
+                              <input ng-model="logEntryDescription" placeholder="Description" type="text">
                             </md-input-container>
                         </td>
                         <td class="bl-table-action">
-                            <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addLogEntry()">
+                            <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addLog()">
                                 <md-icon md-svg-icon="{% static "img/add.svg" %}"></md-icon>
                             </md-button>
                         </td>
@@ -404,7 +404,7 @@
                     <div ng-if="editedComments[comment.date]" layout="row">
                         <div style="width:100%;" layout="column">
                             <md-input-container class="md-block" md-no-float>
-                                <textarea rows="5" id="{[{ comment.date }]}" aria-label="Comment">{[{ comment.comment }]}</textarea>
+                                <textarea rows="5" id="{[{ 'comment' + comment.id }]}" aria-label="Comment">{[{ comment.comment }]}</textarea>
                             </md-input-container>
                         </div>
                         <div style="float:right; width:100px;" layout="column">

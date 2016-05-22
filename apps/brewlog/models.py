@@ -11,7 +11,7 @@ class Entry(models.Model):
     fermentation_time = models.IntegerField(null=True)
     og = models.DecimalField(max_digits=4, decimal_places=3, null=True)
     fg = models.DecimalField(max_digits=4, decimal_places=3, null=True)
-    date = models.DateField(default=timezone.now())
+    date = models.DateTimeField(default=timezone.now())
     batch_size = models.IntegerField(default=19, null=True)
     grain_bill = models.IntegerField(default=6, null=True)
     boil_time = models.IntegerField(default=60, null=True)
@@ -46,12 +46,12 @@ class Hop(models.Model):
         return self.entry + ", " + self.name + ", " + self.amount
 
 class Log(models.Model):
-    start = models.DateField()
-    end = models.DateField()
+    start = models.TimeField()
+    end = models.TimeField()
     description = models.CharField(max_length=200)
     entry = models.ForeignKey(Entry, related_name='logs')
 
 class Comment(models.Model):
-    date = models.DateField()
+    date = models.DateTimeField()
     comment = models.CharField(max_length=1000)
     entry = models.ForeignKey(Entry, related_name='comments')

@@ -1,73 +1,91 @@
 angular.module('BrewLog', ['ngMaterial']).controller('BrewLogController', ['$scope', '$http', function($scope, $http) {
-//angular.module('BrewLog', ['ngMaterial']).controller('BrewLogController', ['$scope', function($scope) {
 
-    /*
-    $scope.batchSize = 19;
-    $scope.grainBill = 6;
-    $scope.boilTime = 60;
-    $scope.trubLoss = 1.9;
-    $scope.equipmentLoss = 0.4;
-    $scope.mashThickness = 2.61;
-    $scope.grainTemperature =  20;
-    $scope.targetMashTemperature = 67;
-    $scope.wortShrinkage = 4;
-    $scope.grainAbsorption = 1.08;
-    $scope.percentBoiloff = 7;
-    $scope.evaporationFactor = 0.95;
-    */
+    var entryId = '1';
+    var baseUrl = 'api/entries/' + entryId
 
-    /*
-    $scope.malts = [
-        {name: "Extra Pale", amount: 7},
-    ]
-    */
+    $scope.addMalt = function() {
+        var malt = {name: $scope.maltName, amount: $scope.maltAmount};
+        $http.post(baseUrl + '/malts', malt)
+        .success(function(response) {
+            console.log(response)
+            $scope.entry.malts.push(response);
+            $scope.maltName = "";
+            $scope.maltAmount = "";
+        })
+        .error(function(response) {
+            console.log(response);
+            return;
+        });
+    }
 
+    $scope.removeMalt = function(item) {
+        var maltId = item['id'];
+        $http.delete('api/malts/delete/' + maltId)
+        .success(function(response) {
+            console.log(response);
+            var index = $scope.entry.malts.indexOf(item);
+            $scope.entry.malts.splice(index, 1);
+        })
+        .error(function(response) {
+            console.log(response);
+        });
+    }
 
-    $scope.hops  = [
-        {name: "Ahtanum", amount: 17.5, add: 60},
-        {name: "Chinook", amount: 15, add: 60},
-        {name: "Crystal", amount: 17.5, add: 30},
-        {name: "Chinook", amount: 17.5, add: 30},
-        {name: "Ahtanum", amount: 17.5, add: 1},
-        {name: "Chinook", amount: 27.5, add: 1},
-        {name: "Crystal", amount: 17.5, add: 1},
-        {name: "Motueka", amount: 17.5, add: 1},
-    ]
+    $scope.addHop = function() {
+        var hop = {name: $scope.hopName, amount: $scope.hopAmount, add: $scope.hopAdd};
+        $http.post(baseUrl + '/hops', hop)
+        .success(function(response) {
+            console.log(response)
+            $scope.entry.hops.push(response);
+            $scope.hopName = "";
+            $scope.hopAmount = "";
+            $scope.hopAdd =  "";
+        })
+        .error(function(response) {
+            console.log(response);
+            return;
+        });
+    }
 
+    $scope.removeHop = function(item) {
+        var hopId = item['id'];
+        $http.delete('api/hops/delete/' + hopId)
+        .success(function(response) {
+            console.log(response);
+            var index = $scope.entry.hops.indexOf(item);
+            $scope.entry.hops.splice(index, 1);
+        })
+        .error(function(response) {
+            console.log(response);
+        });
+    }
 
-    /*
-    $scope.fermentationTime = 10;
-    $scope.fermentationTemperature = 19;
-    $scope.yeast = "WLP001 - California Ale";
-    $scope.og = 1.070;
-    $scope.fg = 1.012;
-    $scope.mashTime = 60;
-    $scope.spargeTime = 30;
-    */
+    $scope.addComment = function() {
+        var date = new Date().toISOString();
+        var comment = {date: date, comment: $scope.newComment};
+        $http.post(baseUrl + '/comments', comment)
+        .success(function(response) {
+            console.log(response)
+            $scope.entry.comments.push(response);
+            $scope.newComment = "";
+        })
+        .error(function(response) {
+            console.log(response);
+            return;
+        });
+    }
 
-    /*
-    $scope.logEntries = [
-        {start: "14:52", end: "15:50", entry: "Varmet opp meskevann"},
-        {start: "16:30", end: "17:10", entry: "Varmet opp skyllevann"},
-        {start: "18:40", end: "19:15", entry: "Kokte opp vørter"},
-    ]
-    */
-
-    /*
-    $scope.comments = [
-        {date: new Date(), comment: "Verandaen tok fyr når vi kværnet malt. Måtte ta en prat med brannvesenet."},
-        {date: new Date(), comment: "Beef biltong turducken shankle turkey tongue landjaeger jerky ground round filet mignon. Corned beef doner strip steak shankle capicola. Fatback sirloin frankfurter, pork t-bone ribeye shankle swine meatball strip steak short loin. Sirloin tri-tip sausage swine andouille landjaeger corned beef."},
-    ]
-    */
-
-    $scope.addLogEntry = function(entry) {
-        var start = $scope.logEntryStart.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: false});
-        var end = $scope.logEntryEnd.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: false});
-        var entry = {start: start, end: end, entry: $scope.logEntryEntry};
-        $scope.logEntries.push(entry);
-        $scope.logEntryStart = "";
-        $scope.logEntryEnd = "";
-        $scope.logEntryEntry = "";
+    $scope.deleteComment = function(item) {
+        var commentId = item['id'];
+        $http.delete('api/comments/delete/' + commentId)
+        .success(function(response) {
+            console.log(response);
+            var index = $scope.entry.comments.indexOf(item);
+            $scope.entry.comments.splice(index, 1);
+        })
+        .error(function(response) {
+            console.log(response);
+        });
     }
 
     $scope.editedComments = {};
@@ -75,76 +93,98 @@ angular.module('BrewLog', ['ngMaterial']).controller('BrewLogController', ['$sco
         $scope.editedComments[comment.date] = !$scope.editedComments[comment.date];
     }
     $scope.saveComment = function(comment) {
-        var index = $scope.comments.indexOf(comment);
-        var text = $("#" + comment.date).val();
-        comment.comment = text;
-        $scope.editComment(comment);
+        var index = $scope.entry.comments.indexOf(comment);
+        var text = $("#comment" + comment.id).val();
+        var field = {comment: text}
+        $http.put('api/comments/update/' + comment['id'], field)
+        .success(function(response) {
+            console.log(response);
+            comment.comment = text;
+            $scope.editComment(comment);
+        })
+        .error(function(response) {
+            console.log(response);
+        });
     }
 
-    $scope.addMalt = function() {
-        console.log("adding malt");
-        $scope.malts.push({name: $scope.maltName, amount: $scope.maltAmount});
-        $scope.maltName = "";
-        $scope.maltAmount = "";
+    $scope.addLog = function(entry) {
+        var start = $scope.logEntryStart.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: false});
+        var end = $scope.logEntryEnd.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: false});
+        var entry = {start: start, end: end, description: $scope.logEntryDescription};
+        $http.post(baseUrl + '/logs', entry)
+        .success(function(response) {
+            console.log(response)
+            $scope.entry.logs.push(response);
+            $scope.logEntryStart = "";
+            $scope.logEntryEnd = "";
+            $scope.logEntryDescription = "";
+        })
+        .error(function(response) {
+            console.log(response);
+        });
     }
 
-    $scope.removeMalt = function(item) {
-        console.log("removing malt");
-        var index = $scope.malts.indexOf(item);
-        $scope.malts.splice(index, 1);
+    $scope.deleteLog = function(item) {
+        var logId = item['id'];
+        $http.delete('api/logs/delete/' + logId)
+        .success(function(response) {
+            console.log(response);
+            var index = $scope.entry.logs.indexOf(item);
+            $scope.entry.logs.splice(index, 1);
+        })
+        .error(function(response) {
+            console.log(response);
+        });
     }
 
-    $scope.addHop = function() {
-        console.log("adding hop");
-        $scope.hops.push({name: $scope.hopName, amount: $scope.hopAmount, add: $scope.hopAdd});
-        $scope.hopName = "";
-        $scope.hopAmount = "";
-        $scope.hopAdd =  "";
-    }
-
-    $scope.removeHop = function(item) {
-        console.log("removing hop");
-        var index = $scope.hops.indexOf(item);
-        $scope.hops.splice(index, 1);
+    $scope.updateEntry = function(field) {
+        field['name'] = $scope.entry.name;
+        $http.put('api/entries/update/' + entryId, field)
+        .success(function(response) {
+            console.log(response);
+        })
+        .error(function(response) {
+            console.log(response);
+        });
     }
 
     $scope.updateYeast = function() {
-        console.log("updating yeast");
+        var yeast = {yeast: $scope.entry.yeast};
+        $scope.updateEntry(yeast);
     }
 
     $scope.updateFermentation = function() {
-        console.log("updating fermentation");
+        var fermentation = {fermentation_time: $scope.entry.fermentation_time, fermentation_temperature: $scope.entry.fermentation_temperature}
+        $scope.updateEntry(fermentation);
     }
 
     $scope.updateMash = function() {
-        console.log("updating mash");
-    }
-
-    $scope.deleteComment = function(comment) {
-        console.log("deleting comment");
-        var index = $scope.comments.indexOf(comment);
-        $scope.comments.splice(index, 1);
-    }
-
-    $scope.addComment = function() {
-        console.log("adding comment");
-        $scope.comments.push({date: 2323, comment: $scope.newComment});
-        $scope.newComment = "";
+        var mash = {mash_time: $scope.entry.mash_time, sparge_time: $scope.entry.sparge_time};
+        $scope.updateEntry(mash);
     }
 
     $scope.updateWater = function() {
-        console.log("updating water");
+        var water = {
+            batch_size: $scope.entry.batch_size,
+            grain_bill: $scope.entry.grain_bill,
+            boil_time: $scope.entry.boil_time,
+            mash_temperature: $scope.entry.mash_temperature,
+            trub_loss: $scope.entry.trub_loss,
+            equipment_loss: $scope.entry.equipment_loss,
+            mash_thickness: $scope.entry.mash_thickness,
+            grain_temperature: $scope.entry.grain_temperature,
+            wort_shrinkage: $scope.entry.wort_shrinkage,
+            grain_absorption: $scope.entry.grain_absorption,
+            percent_boiloff: $scope.entry.percent_boiloff,
+            evaporation_factor: $scope.entry.evaporation_factor,
+        };
+        $scope.updateEntry(water);
         var preBoilWort = (($scope.entry.batch_size + $scope.entry.trub_loss)/0.96)/$scope.entry.evaporation_factor;
         var totalWater = preBoilWort + (Number($scope.entry.equipment_loss) + 1.2522 * $scope.entry.grain_bill);
-        console.log(totalWater);
         var mashWater = 0.9475 * $scope.entry.mash_thickness * $scope.entry.grain_bill;
-        console.log(mashWater);
         var spargeWater = totalWater - mashWater;
-        console.log(spargeWater);
         var strikeTemperature = ((((($scope.entry.grain_bill/0.454)*0.05)+(mashWater/3.79))*$scope.entry.mash_temperature)-((($scope.entry.grain_bill/0.454)*0.05)*$scope.entry.grain_temperature))/(mashWater/3.79);
-        console.log(strikeTemperature);
         var approximateMashVolume = $scope.entry.grain_bill * (0.67 + $scope.entry.mash_thickness);
-        console.log(approximateMashVolume);
         $(" #preBoilWort ").val(preBoilWort.toFixed(2));
         $(" #totalWater ").val(totalWater.toFixed(2));
         $(" #mashWater ").val(mashWater.toFixed(2));
@@ -160,6 +200,8 @@ angular.module('BrewLog', ['ngMaterial']).controller('BrewLogController', ['$sco
     $scope.updateGravity = function() {
         var og = $scope.entry.og;
         var fg = $scope.entry.fg;
+        var gravity = {og: og, fg: fg}
+        $scope.updateEntry(gravity);
         var attenuation = 1 - (fg/og);
         var realExtract = (0.1808*densityToPlato(og)) + (0.8192*densityToPlato(fg));
         var abv = (((Math.abs(densityToPlato(og)-realExtract))/Math.abs(2.0666-(0.010665*densityToPlato(og)))/100)*fg)/0.79;
@@ -190,6 +232,10 @@ angular.module('BrewLog', ['ngMaterial']).controller('BrewLogController', ['$sco
   $interpolateProvider.startSymbol('{[{');
   $interpolateProvider.endSymbol('}]}');
 })
+.config(['$httpProvider', function($httpProvider) {
+        $httpProvider.defaults.xsrfCookieName = 'csrftoken';
+        $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+}])
 .directive('input', [function() {
     return {
         restrict: 'E',

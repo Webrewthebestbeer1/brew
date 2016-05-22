@@ -111,6 +111,9 @@ class EntrySerializer(serializers.ModelSerializer):
         logs_data = validated_data.pop('logs')
         comments_data = validated_data.pop('comments')
         entry = Entry.objects.create(**validated_data)
-        for malt_data in malts_data:
-            Malt.objects.create(entry=entry, **malt_data)
         return entry
+
+class EntryUpdateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Entry
