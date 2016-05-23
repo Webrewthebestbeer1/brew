@@ -5,12 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
   <!-- Angular Material style sheet -->
   <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="{% static "css/style.css" %}">
 </head>
 <body href="/log/" ng-controller="BrewLogController" ng-cloak="" ng-app="BrewLog">
 
-    <div class="md-block">
-        <h3 class="md-display-3"> {[{ entry.name }]}</h3>
+    <div layout="row">
+        <div ng-hide="titleEdit">
+            <h3 class="md-display-3" style="border:none;margin:8px;"> {[{ entry.name }]}</h3>
+        </div>
+        <div ng-if="titleEdit">
+            <input ng-model="title" id="title" type="text" style="font-size:56px;" ng-blur="editTitle()">
+        </div>
+        <md-button class="md-icon-button md-accent" style="margin:8px;" aria-label="Edit" ng-click="editTitle()" ng-hide="titleEdit">
+            <md-icon>mode_edit</md-icon>
+        </md-button>
+
     </div>
 
     <!-- Water calculations -->
@@ -220,7 +230,7 @@
                         <td class="bl-table-data">{[{ hop.amount }]}</td>
                         <td class="bl-table-data">{[{ hop.add }]}</td>
                         <td class="bl-table-action">
-                            <md-button class="md-icon-button md-accent" aria-label="-" ng-click="removeHop(hop)">
+                            <md-button class="md-icon-button md-accent" aria-label="-" ng-click="removeHop($event, hop)">
                                 <md-icon md-svg-icon="{% static "img/remove.svg" %}"></md-icon>
                             </md-button>
                         </td>
@@ -354,7 +364,7 @@
                         <td class="bl-table-data">{[{ log.end }]}</td>
                         <td class="bl-table-data">{[{ log.description }]}</td>
                         <td class="bl-table-action">
-                            <md-button class="md-icon-button md-accent" aria-label="-" ng-click="deleteLog(log)">
+                            <md-button class="md-icon-button md-accent" aria-label="-" ng-click="deleteLog($event, log)">
                                 <md-icon md-svg-icon="{% static "img/remove.svg" %}"></md-icon>
                             </md-button>
                         </td>
@@ -396,12 +406,12 @@
                     <!-- Comment -->
                     <div ng-hide="editedComments[comment.date]" layout="row">
                         <div style="width:100%;" layout="column">
-                            <div style="padding-bottom:5px;"><em>Written: {[{ comment.date }]}</em></div>
+                            <div style="padding-bottom:5px;"><em>Written: {[{ comment.date | date:'dd-MM-yyyy HH:mm' }]}</em></div>
                             <div style="word-wrap:break-word; vertical-align:bottom;">{[{ comment.comment }]}</div>
                         </div>
                         <div style="float:right; width:110px;" layout="column">
                             <md-button class="md-primary" ng-click="editComment(comment)">Edit</md-button>
-                            <md-button class="md-warn" ng-click="deleteComment(comment)">Delete</md-button>
+                            <md-button class="md-warn" ng-click="deleteComment($event, comment)">Delete</md-button>
                         </div>
                     </div>
                     <!-- Comment when editing -->

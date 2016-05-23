@@ -6,6 +6,19 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate'])
     var entryId = $location.search().id;
     var baseUrl = 'api/entries/' + entryId
 
+    var showWarning = function(ev, text, callback) {
+        var confirm = $mdDialog.confirm()
+        .title('Confirm action')
+        .textContent(text)
+        .ariaLabel(text)
+        .targetEvent(ev)
+        .ok('Yes')
+        .cancel('No');
+        $mdDialog.show(confirm).then(function() {
+            callback();
+        });
+    }
+
     $scope.addMalt = function() {
         var malt = {name: $scope.maltName, amount: $scope.maltAmount};
         $http.post(baseUrl + '/malts', malt)
@@ -22,14 +35,7 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate'])
     }
 
     $scope.removeMalt = function(ev, item) {
-        var confirm = $mdDialog.confirm()
-        .title('Confirm action')
-        .textContent('Delete malt entry?')
-        .ariaLabel('Delete malt entry?')
-        .targetEvent(ev)
-        .ok('Yes')
-        .cancel('No');
-        $mdDialog.show(confirm).then(function() {
+        var callback = function() {
             var maltId = item['id'];
             $http.delete('api/malts/delete/' + maltId)
             .success(function(response) {
@@ -40,7 +46,8 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate'])
             .error(function(response) {
                 console.log(response);
             });
-        });
+        }
+        showWarning(ev, 'Remove malt?', callback);
     }
 
     $scope.addHop = function() {
@@ -59,17 +66,20 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate'])
         });
     }
 
-    $scope.removeHop = function(item) {
-        var hopId = item['id'];
-        $http.delete('api/hops/delete/' + hopId)
-        .success(function(response) {
-            console.log(response);
-            var index = $scope.entry.hops.indexOf(item);
-            $scope.entry.hops.splice(index, 1);
-        })
-        .error(function(response) {
-            console.log(response);
-        });
+    $scope.removeHop = function(ev, item) {
+        var callback = function() {
+            var hopId = item['id'];
+            $http.delete('api/hops/delete/' + hopId)
+            .success(function(response) {
+                console.log(response);
+                var index = $scope.entry.hops.indexOf(item);
+                $scope.entry.hops.splice(index, 1);
+            })
+            .error(function(response) {
+                console.log(response);
+            });
+        }
+        showWarning(ev, 'Remove hop?', callback);
     }
 
     $scope.addComment = function() {
@@ -87,17 +97,30 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate'])
         });
     }
 
-    $scope.deleteComment = function(item) {
-        var commentId = item['id'];
-        $http.delete('api/comments/delete/' + commentId)
-        .success(function(response) {
-            console.log(response);
-            var index = $scope.entry.comments.indexOf(item);
-            $scope.entry.comments.splice(index, 1);
-        })
-        .error(function(response) {
-            console.log(response);
-        });
+    $scope.deleteComment = function(ev, item) {
+        var callback = function() {
+            var commentId = item['id'];
+            $http.delete('api/comments/delete/' + commentId)
+            .success(function(response) {
+                console.log(response);
+                var index = $scope.entry.comments.indexOf(item);
+                $scope.entry.comments.splice(index, 1);
+            })
+            .error(function(response) {
+                console.log(response);
+            });
+        }
+        showWarning(ev, 'Remove comment?', callback);
+    }
+
+    $scope.titleEdit = false;
+    $scope.editTitle = function() {
+        $scope.titleEdit = !$scope.titleEdit;
+        $scope.title = $scope.entry.name;
+        if (!$scope.titleEdit) {
+            $scope.entry.name = $(' #title ').val();
+            $scope.updateEntry({});
+        }
     }
 
     $scope.editedComments = {};
@@ -136,17 +159,20 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate'])
         });
     }
 
-    $scope.deleteLog = function(item) {
-        var logId = item['id'];
-        $http.delete('api/logs/delete/' + logId)
-        .success(function(response) {
-            console.log(response);
-            var index = $scope.entry.logs.indexOf(item);
-            $scope.entry.logs.splice(index, 1);
-        })
-        .error(function(response) {
-            console.log(response);
-        });
+    $scope.deleteLog = function(ev, item) {
+        var callback = function() {
+            var logId = item['id'];
+            $http.delete('api/logs/delete/' + logId)
+            .success(function(response) {
+                console.log(response);
+                var index = $scope.entry.logs.indexOf(item);
+                $scope.entry.logs.splice(index, 1);
+            })
+            .error(function(response) {
+                console.log(response);
+            });
+        }
+        showWarning(ev, 'Remove log entry?', callback);
     }
 
     $scope.updateEntry = function(field) {
@@ -227,10 +253,17 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate'])
 
 
     $http.get('api/entries/' + entryId).success(function(response) {
+        /*
+        Django's DecimalField are serialized to Strings.
+        Convert them to Number.
+        */
+        response.trub_loss = Number(response.trub_loss);
+        response.equipment_loss = Number(response.equipment_loss);
+        response.mash_thickness = Number(response.mash_thickness);
+        response.grain_absorption = Number(response.grain_absorption);
+        response.evaporation_factor = Number(response.evaporation_factor);
         $scope.entry = response;
-        $scope.$watch('entry.i', function() {
-            $scope.entry.i = parseFloat($scope.entry.i);
-        });
+
         console.log(response);
         $scope.updateGravity(true);
         $scope.updateWater(true);
