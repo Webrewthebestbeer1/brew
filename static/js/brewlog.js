@@ -1,4 +1,4 @@
-angular.module('BrewLog', ['ngMaterial', 'ngAnimate'])
+angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
 .controller(
     'BrewLogController',
     ['$scope', '$http', '$location', '$mdDialog', function($scope, $http, $location, $mdDialog) {
@@ -294,7 +294,6 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate'])
         var realExtract = (0.1808*densityToPlato(og)) + (0.8192*densityToPlato(fg));
         var abv = (((Math.abs(densityToPlato(og)-realExtract))/Math.abs(2.0666-(0.010665*densityToPlato(og)))/100)*fg)/0.79;
         abv *= 100;
-        console.log($("#abv" + brew.id).val());
         brew.abv = abv.toFixed(2);
         brew.attenuation = (attenuation * 100).toFixed(2);
     }
@@ -376,4 +375,19 @@ Try to convert them to Number.
             }
         }
     }
-}]);
+}])
+.config(function ($routeProvider, $httpProvider) {
+    $httpProvider.interceptors.push('responseObserver');
+})
+.factory('responseObserver', function responseObserver($q, $window) {
+    return {
+        'responseError': function(errorResponse) {
+            switch (errorResponse.status) {
+            case 403:
+                $window.location = './admin';
+                break;
+            }
+            return $q.reject(errorResponse);
+        }
+    };
+});

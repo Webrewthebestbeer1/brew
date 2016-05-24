@@ -8,9 +8,6 @@ class RecipeList(generics.ListCreateAPIView):
     model = Recipe
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
-    permission_classes = [
-        permissions.AllowAny
-    ]
 
 class RecipeDetail(generics.RetrieveAPIView):
     model = Recipe
@@ -27,14 +24,10 @@ class RecipeMaltList(generics.ListCreateAPIView):
         queryset = super(RecipeMaltList, self).get_queryset()
         return queryset.filter(recipe__id=self.kwargs.get('id'))
 
-
 class RecipeHopList(generics.ListCreateAPIView):
     model = Hop
     serializer_class = HopSerializer
     queryset = Hop.objects.all()
-    permission_classes = [
-        permissions.AllowAny
-    ]
 
     def get_queryset(self):
         queryset = super(RecipeHopList, self).get_queryset()
@@ -44,9 +37,6 @@ class RecipeBrewList(generics.ListCreateAPIView):
     model = Brew
     serializer_class = BrewSerializer
     queryset = Brew.objects.all()
-    permission_classes = [
-        permissions.AllowAny
-    ]
 
     def get_queryset(self):
         queryset = super(RecipeBrewList, self).get_queryset()
