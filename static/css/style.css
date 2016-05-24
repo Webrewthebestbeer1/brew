@@ -126,6 +126,28 @@ body {
     box-sizing: border-box;
 }
 
+.bl-brew-list-header {
+    background-color: rgba(0, 167, 203, 0.30);
+    border: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    margin-top: 10px;
+    padding: 5px;
+}
+
+.bl-brew-list-header-collapsed {
+    border-bottom-width: 0px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.bl-brew-list-content {
+    border: solid;
+    border-width: 1px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
 .fade {
   transition: 0.5s linear all;
   -webkit-transition: 0.5s linear all;

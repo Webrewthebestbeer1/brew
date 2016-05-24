@@ -2,14 +2,13 @@ from django.conf.urls import patterns, url, include
 
 from .api import *
 
-entry_urls = patterns('',
-    url(r'^/(?P<id>[0-9]+)/comments$', EntryCommentList.as_view(), name='entrycomment-list'),
-    url(r'^/(?P<id>[0-9]+)/logs$', EntryLogList.as_view(), name='entrylog-list'),
-    url(r'^/(?P<id>[0-9]+)/hops$', EntryHopList.as_view(), name='entryhop-list'),
-    url(r'^/(?P<id>[0-9]+)/malts$', EntryMaltList.as_view(), name='entrymalt-list'),
-    url(r'^/update/(?P<pk>[0-9]+)$', EntryUpdate.as_view(), name='entry-update'),
-    url(r'^/(?P<id>[0-9]+)$', EntryDetail.as_view(), name='entry-detail'),
-    url(r'^$', EntryList.as_view(), name='entry-list')
+recipe_urls = patterns('',
+    url(r'^/(?P<id>[0-9]+)/hops$', RecipeHopList.as_view(), name='recipehop-list'),
+    url(r'^/(?P<id>[0-9]+)/malts$', RecipeMaltList.as_view(), name='recipemalt-list'),
+    url(r'^/(?P<id>[0-9]+)/brews$', RecipeBrewList.as_view(), name='recipebrew-list'),
+    url(r'^/update/(?P<pk>[0-9]+)$', RecipeUpdate.as_view(), name='recipe-update'),
+    url(r'^/(?P<id>[0-9]+)$', RecipeDetail.as_view(), name='recipe-detail'),
+    url(r'^$', RecipeList.as_view(), name='recipe-list')
 )
 
 hop_urls = patterns('',
@@ -18,6 +17,13 @@ hop_urls = patterns('',
 
 malt_urls = patterns('',
     url(r'^/delete/(?P<pk>[0-9]+)$', MaltDestroy.as_view(), name='malt-destroy'),
+)
+
+brew_urls = patterns('',
+    url(r'^/update/(?P<pk>[0-9]+)$', BrewUpdate.as_view(), name='brew-update'),
+    url(r'^/delete/(?P<pk>[0-9]+)$', BrewDestroy.as_view(), name='brew-destroy'),
+    url(r'^/(?P<id>[0-9]+)/logs$', BrewLogList.as_view(), name='brewlog-list'),
+    url(r'^/(?P<id>[0-9]+)/comments$', BrewCommentList.as_view(), name='brewcomment-list'),
 )
 
 log_urls = patterns('',
@@ -30,9 +36,10 @@ comment_urls = patterns('',
 )
 
 urlpatterns = patterns('',
-    url(r'^entries', include(entry_urls)),
+    url(r'^recipes', include(recipe_urls)),
     url(r'^hops', include(hop_urls)),
     url(r'^malts', include(malt_urls)),
+    url(r'^brews', include(brew_urls)),
     url(r'^logs', include(log_urls)),
     url(r'^comments', include(comment_urls)),
 )

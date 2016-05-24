@@ -1,15 +1,14 @@
 angular.module('BrewLogs', ['ngMaterial']).controller('BrewLogsController', ['$scope', '$http', function($scope, $http) {
 
-    $scope.addEntry = function() {
-        var entry = {
-            name: $scope.entryName,
+    $scope.addRecipe = function() {
+        var recipe = {
+            name: $scope.recipeName,
             date: new Date().toISOString(),
             malts: [],
             hops: [],
-            logs: [],
-            comments: [],
+            brews: [],
         };
-        $http.post('api/entries', entry)
+        $http.post('api/recipes', recipe)
         .success(function(response) {
             console.log(response)
             window.location.replace('log?id=' + response.id);
@@ -20,7 +19,7 @@ angular.module('BrewLogs', ['ngMaterial']).controller('BrewLogsController', ['$s
         });
     }
 
-    $scope.removeEntry = function(item) {
+    $scope.removeRecipe = function(item) {
         var maltId = item['id'];
         $http.delete('api/malts/delete/' + maltId)
         .success(function(response) {
@@ -33,8 +32,8 @@ angular.module('BrewLogs', ['ngMaterial']).controller('BrewLogsController', ['$s
         });
     }
 
-    $http.get("api/entries").success(function(response) {
-        $scope.entries = response;
+    $http.get("api/recipes").success(function(response) {
+        $scope.recipes = response;
         console.log(response);
     });
 

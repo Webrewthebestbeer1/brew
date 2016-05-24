@@ -12,7 +12,7 @@
 
     <div layout="row">
         <div ng-hide="titleEdit">
-            <h3 class="md-display-3" style="border:none;margin:8px;"> {[{ entry.name }]}</h3>
+            <h3 class="md-display-3" style="border:none;margin:8px;"> {[{ recipe.name }]}</h3>
         </div>
         <div ng-if="titleEdit">
             <input ng-model="title" id="title" type="text" style="font-size:56px;" ng-blur="editTitle()">
@@ -41,42 +41,42 @@
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Batch size (liters)</label>
-                        <input ng-model="entry.batch_size" type="number" ng-blur="updateWater()">
+                        <input ng-model="recipe.batch_size" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Grain bill (kilogram)</label>
-                        <input ng-model="entry.grain_bill" type="number" ng-blur="updateWater()">
+                        <input ng-model="recipe.grain_bill" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Boil time (minutes)</label>
-                        <input ng-model="entry.boil_time" type="number" ng-blur="updateWater()">
+                        <input ng-model="recipe.boil_time" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Target mash temperature (degrees Celsius)</label>
-                        <input ng-model="entry.mash_temperature" type="number" ng-blur="updateWater()">
+                        <input ng-model="recipe.mash_temperature" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Trub loss (liters)</label>
-                        <input ng-model="entry.trub_loss" type="number" ng-blur="updateWater()">
+                        <input ng-model="recipe.trub_loss" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Equipment loss (liters)</label>
-                        <input ng-model="entry.equipment_loss" type="number" ng-blur="updateWater()">
+                        <input ng-model="recipe.equipment_loss" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
                 </div>
@@ -88,42 +88,42 @@
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Mash thickness (liter/kilogram)</label>
-                        <input ng-model="entry.mash_thickness" type="number" ng-blur="updateWater()">
+                        <input ng-model="recipe.mash_thickness" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Grain temperature (degrees Celsius)</label>
-                        <input ng-model="entry.grain_temperature" type="number" ng-blur="updateWater()">
+                        <input ng-model="recipe.grain_temperature" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Wort shrinkage (percent)</label>
-                        <input ng-model="entry.wort_shrinkage" type="number" ng-blur="updateWater()">
+                        <input ng-model="recipe.wort_shrinkage" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Grain absorption (liter/kilogram)</label>
-                        <input ng-model="entry.grain_absorption" type="number" ng-blur="updateWater()">
+                        <input ng-model="recipe.grain_absorption" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Percent boiloff (percent/hour)</label>
-                        <input ng-model="entry.percent_boiloff" type="number" ng-blur="updateWater()">
+                        <input ng-model="recipe.percent_boiloff" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Evaporation factor</label>
-                        <input ng-model="entry.evaporation_factor" type="number" ng-blur="updateWater()">
+                        <input ng-model="recipe.evaporation_factor" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
                 </div>
@@ -185,7 +185,7 @@
                         <th>Amount (kg)</th>
                         <th></th>
                     </tr>
-                    <tr ng-repeat="malt in entry.malts" class="fade">
+                    <tr ng-repeat="malt in recipe.malts" class="fade">
                         <td class="bl-table-data">{[{ malt.name }]}</td>
                         <td class="bl-table-data">{[{ malt.amount }]}</td>
                         <td class="bl-table-action">
@@ -225,7 +225,7 @@
                         <th>Add (minutes)</th>
                         <th></th>
                     </tr>
-                    <tr ng-repeat="hop in entry.hops" class="fade">
+                    <tr ng-repeat="hop in recipe.hops" class="fade">
                         <td class="bl-table-data">{[{ hop.name }]}</td>
                         <td class="bl-table-data">{[{ hop.amount }]}</td>
                         <td class="bl-table-data">{[{ hop.add }]}</td>
@@ -258,17 +258,6 @@
                         </td>
                     </tr>
                 </table>
-
-                <div class="bl-section" layout="row">
-                    <img src="{% static "img/yeast.png" %}">
-                    <h1>Yeast</h1>
-                </div>
-                <div layout-gt-sm="row">
-                  <md-input-container flex-gt-sm="" class="md-block">
-                    <label>Name</label>
-                    <input ng-model="entry.yeast" type="text" ng-blur="updateYeast()">
-                  </md-input-container>
-                </div>
             </div>
         </div>
         <!-- end ingredients -->
@@ -287,54 +276,24 @@
                 <div layout-gt-sm="row">
                   <md-input-container class="md-block" flex-gt-sm="">
                     <label>Mash time (minutes)</label>
-                    <input ng-model="entry.mash_time" type="number" ng-blur="updateMash()">
+                    <input ng-model="recipe.mash_time" type="number" ng-blur="updateMash()">
                   </md-input-container>
                 </div>
                 <div layout-gt-sm="row">
                   <md-input-container class="md-block" flex-gt-sm="">
                     <label>Sparge time (minutes)</label>
-                    <input ng-model="entry.sparge_time" type="number" ng-blur="updateMash()">
+                    <input ng-model="recipe.sparge_time" type="number" ng-blur="updateMash()">
                   </md-input-container>
                 </div>
                 <div class="bl-section" layout="row">
-                    <img src="{% static "img/fermentation.png" %}">
-                    <h1>Fermentation</h1>
+                    <img src="{% static "img/yeast.png" %}">
+                    <h1>Yeast</h1>
                 </div>
                 <div layout-gt-sm="row">
-                  <md-input-container class="md-block" flex-gt-sm="">
-                    <label>Fermentation temperature (degrees Celsius)</label>
-                    <input ng-model="entry.fermentation_temperature" type="number" ng-blur="updateFermentation()">
+                  <md-input-container flex-gt-sm="" class="md-block">
+                    <label>Name</label>
+                    <input ng-model="recipe.yeast" type="text" ng-blur="updateYeast()">
                   </md-input-container>
-                </div>
-                <div layout-gt-sm="row">
-                  <md-input-container class="md-block" flex-gt-sm="">
-                    <label>Fermentation time (days)</label>
-                    <input ng-model="entry.fermentation_time" type="number" ng-blur="updateFermentation()">
-                  </md-input-container>
-                </div>
-                <div class="bl-section" layout="row">
-                    <img src="{% static "img/gravity.png" %}">
-                    <h1>Gravity</h1>
-                </div>
-                <div layout-gt-sm="row">
-                  <md-input-container class="md-block" flex-gt-sm="">
-                    <label>O.G</label>
-                    <input ng-model="entry.og" type="number" step="0.001" ng-blur="updateGravity()">
-                  </md-input-container>
-                </div>
-                <div layout-gt-sm="row">
-                  <md-input-container class="md-block" flex-gt-sm="">
-                    <label>F.G</label>
-                    <input ng-model="entry.fg" type="number" step="0.001" ng-blur="updateGravity()">
-                  </md-input-container>
-                </div>
-                <div layout="column" class="bl-result">
-                    <label for="attenuation">Attenuation</label>
-                    <p><output id="attenuation" class="fade"></output>%</p>
-                </div>
-                <div layout="column" class="bl-result">
-                    <label for="abv">ABV</label>
-                    <p><output id="abv" class="fade"></output>%</p>
                 </div>
             </div>
             <!-- end items -->
@@ -343,108 +302,183 @@
     </div>
     <!-- end ingredients and method -->
 
-    <!-- Log and comments -->
-    <div layout="row" layout-xs="column" class="bl-content">
+    <!-- Notes and results -->
+    <div layout="column" class="bl-content">
 
-        <!-- Log -->
-        <div flex class="bl-block" layout="column">
-            <div class="bl-header" layout="row">
-                <h1>Log</h1>
-            </div>
-            <div layout="column" class="bl-column">
-                <table style="width:100%;" class="bl-table">
-                    <tr>
-                        <th>Start</th>
-                        <th>End</th>
-                        <th>Description</th>
-                        <th></th>
-                    </tr>
-                    <tr ng-repeat="log in entry.logs" class="fade">
-                        <td class="bl-table-data">{[{ log.start }]}</td>
-                        <td class="bl-table-data">{[{ log.end }]}</td>
-                        <td class="bl-table-data">{[{ log.description }]}</td>
-                        <td class="bl-table-action">
-                            <md-button class="md-icon-button md-accent" aria-label="-" ng-click="deleteLog($event, log)">
-                                <md-icon md-svg-icon="{% static "img/remove.svg" %}"></md-icon>
-                            </md-button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <md-input-container md-no-float flex-gt-sm="" class="md-block">
-                              <input ng-model="logEntryStart" placeholder="Start" type="time">
-                            </md-input-container>
-                        </td>
-                        <td>
-                            <md-input-container md-no-float flex-gt-sm="" class="md-block">
-                              <input ng-model="logEntryEnd" placeholder="End" type="time">
-                            </md-input-container>
-                        </td>
-                        <td>
-                            <md-input-container md-no-float flex-gt-sm="" class="md-block">
-                              <input ng-model="logEntryDescription" placeholder="Description" type="text">
-                            </md-input-container>
-                        </td>
-                        <td class="bl-table-action">
-                            <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addLog()">
-                                <md-icon md-svg-icon="{% static "img/add.svg" %}"></md-icon>
-                            </md-button>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <!-- end log -->
-
-        <!-- Comments -->
-        <div flex class="bl-block" layout="column">
-            <div class="bl-header" layout="row">
-                <h1>Comments</h1>
-            </div>
-            <div layout="column" class="bl-column">
-                <div ng-repeat="comment in entry.comments" layout="column" class="fade">
-                    <!-- Comment -->
-                    <div ng-hide="editedComments[comment.date]" layout="row">
-                        <div style="width:100%; position:relative;" layout="column">
-                            <div style="padding-bottom:5px;"><em>Written: {[{ comment.date | date:'dd-MM-yyyy HH:mm' }]}</em></div>
-                            <div style="word-wrap:break-word; position:absolute; bottom:0;">{[{ comment.comment }]}</div>
-                        </div>
-                        <div style="float:right; width:110px;" layout="column">
-                            <md-button class="md-primary" ng-click="editComment(comment)">Edit</md-button>
-                            <md-button class="md-warn" ng-click="deleteComment($event, comment)">Delete</md-button>
-                        </div>
-                    </div>
-                    <!-- Comment when editing -->
-                    <div ng-if="editedComments[comment.date]" layout="row">
-                        <div style="width:100%;" layout="column">
-                            <md-input-container class="md-block" md-no-float>
-                                <textarea class="comment-textarea" rows="5" id="{[{ 'comment' + comment.id }]}" aria-label="Comment">{[{ comment.comment }]}</textarea>
-                            </md-input-container>
-                        </div>
-                        <div style="float:right; width:100px;" layout="column">
-                            <md-button class="md-primary" ng-click="updateComment(comment)">Save</md-button>
-                            <md-button class="md-warn" ng-click="editComment(comment)">Undo</md-button>
-                        </div>
-                    </div>
-                    <span layout="row"><hr flex/></span>
+        <div ng-repeat="brew in recipe.brews" class="md-block">
+            <div layout="row" class="bl-brew-list-header" ng-class="{'bl-brew-list-header-collapsed': brewCollapse[$index]}">
+                <div style="width:100%;" ng-click="brewCollapse[$index] = !brewCollapse[$index]">
+                    <table style="width:100%;">
+                        <td style="width:25%;">Added {[{ brew.date | date:'dd-MM-yyyy' }]}</td>
+                        <td style="width:25%;">O.G. {[{ brew.og }]}</td>
+                        <td style="width:25%;">F.G. {[{ brew.fg }]}</td>
+                    </table>
+                </div>
+                <div style="float:right;">
+                    <md-button style="margin:0;" class="md-warn" ng-click="removeBrew($event, brew)">Delete</md-button>
                 </div>
 
-                <div layout="row">
-                    <div style="width:100%;" layout="column">
-                        <md-input-container class="md-block" md-no-float>
-                            <textarea ng-model="newComment" rows="5" placeholder="Add comment"></textarea>
-                        </md-input-container>
+            </div>
+            <div ng-if="brewCollapse[$index]" layout="row" layout-xs="column" class="bl-brew-list-content">
+                <!-- Notes -->
+                <div flex class="bl-block" layout="column">
+                    <div class="bl-header" layout="row">
+                        <h1>Notes</h1>
                     </div>
-                    <div style="float:right; width:110px;" layout="column">
-                        <md-button class="md-primary" ng-click="addComment()">Add</md-button>
-                    </div>
+                    <div layout="column" class="bl-column">
+                        <div class="bl-section" layout="row">
+                            <img src="{% static "img/fermentation.png" %}">
+                            <h1>Log</h1>
+                        </div>
+                        <table style="width:100%;" class="bl-table">
+                            <tr>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Description</th>
+                                <th></th>
+                            </tr>
+                            <tr ng-repeat="log in brew.logs" class="fade">
+                                <td class="bl-table-data">{[{ log.start }]}</td>
+                                <td class="bl-table-data">{[{ log.end }]}</td>
+                                <td class="bl-table-data">{[{ log.description }]}</td>
+                                <td class="bl-table-action">
+                                    <md-button class="md-icon-button md-accent" aria-label="-" ng-click="deleteLog($event, brew, log)">
+                                        <md-icon md-svg-icon="{% static "img/remove.svg" %}"></md-icon>
+                                    </md-button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <md-input-container md-no-float flex-gt-sm="" class="md-block">
+                                      <input ng-model="logStart[brew]" placeholder="Start" type="time">
+                                    </md-input-container>
+                                </td>
+                                <td>
+                                    <md-input-container md-no-float flex-gt-sm="" class="md-block">
+                                      <input ng-model="logEnd[brew]" placeholder="End" type="time">
+                                    </md-input-container>
+                                </td>
+                                <td>
+                                    <md-input-container md-no-float flex-gt-sm="" class="md-block">
+                                      <input ng-model="logDescription[brew]" placeholder="Description" type="text">
+                                    </md-input-container>
+                                </td>
+                                <td class="bl-table-action">
+                                    <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addLog(brew)">
+                                        <md-icon md-svg-icon="{% static "img/add.svg" %}"></md-icon>
+                                    </md-button>
+                                </td>
+                            </tr>
+                        </table>
 
+                        <div class="bl-section" layout="row">
+                            <img src="{% static "img/fermentation.png" %}">
+                            <h1>Comments</h1>
+                        </div>
+                        <div layout="column" class="bl-column">
+                            <div ng-repeat="comment in brew.comments" layout="column" class="fade">
+                                <!-- Comment -->
+                                <div ng-hide="editedComments[comment.date]" layout="row">
+                                    <div style="width:100%; position:relative;" layout="column">
+                                        <div style="padding-bottom:5px;"><em>Written: {[{ comment.date | date:'dd-MM-yyyy HH:mm' }]}</em></div>
+                                        <div style="word-wrap:break-word; position:absolute; bottom:0;">{[{ comment.comment }]}</div>
+                                    </div>
+                                    <div style="float:right; width:110px;" layout="column">
+                                        <md-button class="md-primary" ng-click="editComment(comment)">Edit</md-button>
+                                        <md-button class="md-warn" ng-click="deleteComment($event, brew, comment)">Delete</md-button>
+                                    </div>
+                                </div>
+                                <!-- Comment when editing -->
+                                <div ng-if="editedComments[comment.date]" layout="row">
+                                    <div style="width:100%;" layout="column">
+                                        <md-input-container class="md-block" md-no-float>
+                                            <textarea class="comment-textarea" rows="5" id="{[{ 'comment' + comment.id }]}" aria-label="Comment">
+                                                {[{ comment.comment }]}
+                                            </textarea>
+                                        </md-input-container>
+                                    </div>
+                                    <div style="float:right; width:100px;" layout="column">
+                                        <md-button class="md-primary" ng-click="updateComment(brew, comment)">Save</md-button>
+                                        <md-button class="md-warn" ng-click="editComment(comment)">Undo</md-button>
+                                    </div>
+                                </div>
+                                <span layout="row"><hr flex/></span>
+                            </div>
+
+                            <div layout="row">
+                                <div style="width:100%;" layout="column">
+                                    <md-input-container class="md-block" md-no-float>
+                                        <textarea ng-model="comments[brew]" rows="5" placeholder="Add comment"></textarea>
+                                    </md-input-container>
+                                </div>
+                                <div style="float:right; width:110px;" layout="column">
+                                    <md-button class="md-primary" ng-click="addComment(brew)">Add</md-button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <!-- end notes -->
+
+                <!-- Results -->
+                <div flex class="bl-block" layout="column">
+                    <div class="bl-header" layout="row">
+                        <h1>Results</h1>
+                    </div>
+                    <div layout="column" class="bl-column">
+                        <div class="bl-section" layout="row">
+                            <img src="{% static "img/fermentation.png" %}">
+                            <h1>Fermentation</h1>
+                        </div>
+                        <div layout-gt-sm="row">
+                          <md-input-container class="md-block" flex-gt-sm="">
+                            <label>Fermentation temperature (degrees Celsius)</label>
+                            <input ng-model="brew.fermentation_temperature" type="number" ng-blur="updateFermentation(brew)">
+                          </md-input-container>
+                        </div>
+                        <div layout-gt-sm="row">
+                          <md-input-container class="md-block" flex-gt-sm="">
+                            <label>Fermentation time (days)</label>
+                            <input ng-model="brew.fermentation_time" type="number" ng-blur="updateFermentation(brew)">
+                          </md-input-container>
+                        </div>
+                        <div class="bl-section" layout="row">
+                            <img src="{% static "img/gravity.png" %}">
+                            <h1>Gravity</h1>
+                        </div>
+                        <div layout-gt-sm="row">
+                          <md-input-container class="md-block" flex-gt-sm="">
+                            <label>O.G</label>
+                            <input ng-model="brew.og" type="number" step="0.001" ng-blur="updateGravity(brew)">
+                          </md-input-container>
+                        </div>
+                        <div layout-gt-sm="row">
+                          <md-input-container class="md-block" flex-gt-sm="">
+                            <label>F.G</label>
+                            <input ng-model="brew.fg" type="number" step="0.001" ng-blur="updateGravity(brew)">
+                          </md-input-container>
+                        </div>
+                        <div layout="column" class="bl-result">
+                            <label for="attenuation">Attenuation</label>
+                            <p>{[{ brew.attenuation }]}%</p>
+                        </div>
+                        <div layout="column" class="bl-result">
+                            <label for="abv">ABV</label>
+                            <p>{[{ brew.abv }]}%</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- end results -->
             </div>
         </div>
-        <!-- end log -->
+
     </div>
     <!-- end log and comments -->
+
+    <div style="float:right;" layout="column" class="md-block">
+        <md-button class="md-primary" ng-click="addBrew()">Add new brew</md-button>
+    </div>
 
     <div style="padding:100px"></div>
 
