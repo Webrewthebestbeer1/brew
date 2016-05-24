@@ -33,7 +33,7 @@
             <div layout="row" layout-xs="column">
 
                 <!-- First column (variables) -->
-                <div flex layout="column">
+                <div flex layout="column" class="bl-column">
                     <div class="bl-section" layout="row">
                         <img src="{% static "img/calc.png" %}">
                         <h1>Calculator</h1>
@@ -82,7 +82,7 @@
                 </div>
 
                 <!-- Second column (mostly static) -->
-                <div flex>
+                <div flex class="bl-column">
                     <div class="bl-section-placeholder" layout="row">
                     </div>
                     <div layout-gt-sm="row">
@@ -129,7 +129,7 @@
                 </div>
 
                 <!-- Third column (results) -->
-                <div flex>
+                <div flex class="bl-column">
                     <div class="bl-section" layout="row">
                         <img src="{% static "img/water.png" %}">
                         <h1>Results</h1>
@@ -173,7 +173,7 @@
             <div class="bl-header" layout="row">
                 <h1>Ingredients</h1>
             </div>
-            <div layout="column" class="bl-ingredients">
+            <div layout="column" class="bl-column">
                 <div class="bl-section" layout="row">
                     <img src="{% static "img/malt.png" %}">
                     <h1>Malt</h1>
@@ -279,7 +279,7 @@
                 <h1>Method</h1>
             </div>
             <!-- Items -->
-            <div layout="column" class="bl-method">
+            <div layout="column" class="bl-method bl-column">
                 <div class="bl-section" layout="row">
                     <img src="{% static "img/mash.png" %}">
                     <h1>Mash</h1>
@@ -351,7 +351,7 @@
             <div class="bl-header" layout="row">
                 <h1>Log</h1>
             </div>
-            <div layout="column" class="bl-ingredients">
+            <div layout="column" class="bl-column">
                 <table style="width:100%;" class="bl-table">
                     <tr>
                         <th>Start</th>
@@ -401,13 +401,13 @@
             <div class="bl-header" layout="row">
                 <h1>Comments</h1>
             </div>
-            <div layout="column" class="bl-ingredients">
+            <div layout="column" class="bl-column">
                 <div ng-repeat="comment in entry.comments" layout="column" class="fade">
                     <!-- Comment -->
                     <div ng-hide="editedComments[comment.date]" layout="row">
-                        <div style="width:100%;" layout="column">
+                        <div style="width:100%; position:relative;" layout="column">
                             <div style="padding-bottom:5px;"><em>Written: {[{ comment.date | date:'dd-MM-yyyy HH:mm' }]}</em></div>
-                            <div style="word-wrap:break-word; vertical-align:bottom;">{[{ comment.comment }]}</div>
+                            <div style="word-wrap:break-word; position:absolute; bottom:0;">{[{ comment.comment }]}</div>
                         </div>
                         <div style="float:right; width:110px;" layout="column">
                             <md-button class="md-primary" ng-click="editComment(comment)">Edit</md-button>
@@ -418,7 +418,7 @@
                     <div ng-if="editedComments[comment.date]" layout="row">
                         <div style="width:100%;" layout="column">
                             <md-input-container class="md-block" md-no-float>
-                                <textarea rows="5" id="{[{ 'comment' + comment.id }]}" aria-label="Comment">{[{ comment.comment }]}</textarea>
+                                <textarea class="comment-textarea" rows="5" id="{[{ 'comment' + comment.id }]}" aria-label="Comment">{[{ comment.comment }]}</textarea>
                             </md-input-container>
                         </div>
                         <div style="float:right; width:100px;" layout="column">
