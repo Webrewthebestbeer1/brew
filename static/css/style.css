@@ -97,6 +97,10 @@ body {
     padding-bottom: 5px;
 }
 
+.bl-table a {
+    color: rgba(0, 0, 0, 0.54);
+}
+
 .bl-table th {
     text-indent: 4px;
     text-align: left;

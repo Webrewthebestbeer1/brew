@@ -48,6 +48,7 @@ class Brew(models.Model):
     fermentation_time = models.IntegerField(null=True)
     og = models.DecimalField(max_digits=4, decimal_places=3, null=True)
     fg = models.DecimalField(max_digits=4, decimal_places=3, null=True)
+    rating = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.recipe)

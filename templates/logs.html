@@ -1,12 +1,6 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
+{% block content %}
 {% load staticfiles %}
-<html lang="en" >
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
-  <!-- Angular Material style sheet -->
-  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.css">
-  <link rel="stylesheet" href="{% static "css/style.css" %}">
-</head>
 <body ng-controller="BrewLogsController" ng-cloak="" ng-app="BrewLogs">
 
     <div class="md-block">
@@ -21,15 +15,15 @@
         <div layout="column" class="bl-logs">
             <table style="width:100%;" class="bl-table">
                 <tr>
-                    <th>Name</th>
-                    <th>Created</th>
-                    <th>Volume</th>
-                    <th>Grain bill</th>
-                    <th># brewed</th>
-                    <th>Last brewed</th>
+                    <th><a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">Name</a></th>
+                    <th><a href="#" ng-click="sortType = 'date'; sortReverse = !sortReverse">Created</th>
+                    <th><a href="#" ng-click="sortType = 'bath_size'; sortReverse = !sortReverse">Volume</th>
+                    <th><a href="#" ng-click="sortType = 'grain_bill'; sortReverse = !sortReverse">Grain bill</th>
+                    <th><a href="#" ng-click="sortType = 'brews.length'; sortReverse = !sortReverse"># brewed</th>
+                    <th><a href="#" ng-click="sortType = 'brews[brews.length - 1].date'; sortReverse = !sortReverse">Last brewed</th>
                     <th></th>
                 </tr>
-                <tr ng-repeat="recipe in recipes">
+                <tr ng-repeat="recipe in recipes | orderBy:sortType:sortReverse">
                     <td class="bl-table-data"><a href="log?id={[{ recipe.id }]}">{[{ recipe.name }]}</a></td>
                     <td class="bl-table-data">{[{ recipe.date | date:'dd-MM-yyyy' }]}</td>
                     <td class="bl-table-data">{[{ recipe.batch_size }]}</td>
@@ -60,19 +54,8 @@
     <!-- end ingredients -->
 
     <div style="padding:100px"></div>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-
-  <!-- Angular Material requires Angular.js Libraries -->
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
-
-  <!-- Angular Material Library -->
-  <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.js"></script>
-
-  <script src="{% static "js/brewlogs.js" %}"></script>
-
 </body>
-</html>
+{% endblock content %}
+{% block scripts %}
+<script src="{% static "js/brewlogs.js" %}"></script>
+{% endblock scripts %}

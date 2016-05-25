@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import serializers, pagination
 
 from .models import Recipe, Malt, Hop, Brew, Log, Comment
 
@@ -75,6 +75,7 @@ class BrewSerializer(serializers.ModelSerializer):
             'fermentation_time',
             'og',
             'fg',
+            'rating',
             'logs',
             'comments',
         )
@@ -87,6 +88,18 @@ class BrewSerializer(serializers.ModelSerializer):
         recipe = Recipe.objects.filter(id=recipe_id).first()
         brew = Brew.objects.create(**validated_data, recipe=recipe)
         return brew
+
+    """
+    def get_paginated_response(self, data):
+        print(obj)
+        brews = Brew.objects.all()[:2]
+        serializer = BrewSerializer(
+            brews,
+            many=True,
+            context={'request': self.context['request']}
+        )
+        return serializer.data
+    """
 
 class BrewUpdateSerializer(serializers.ModelSerializer):
 
@@ -103,9 +116,13 @@ class RecipeSerializer(serializers.ModelSerializer):
         many=True,
     )
 
+    """
     brews = BrewSerializer(
         many=True,
     )
+    """
+
+    brews = serializers.SerializerMethodField('paginated_brews')
 
     class Meta:
         model = Recipe
@@ -132,6 +149,13 @@ class RecipeSerializer(serializers.ModelSerializer):
             'hops',
             'brews',
         )
+
+    def paginated_brews(self, data):
+        brews = Brew.objects.filter(recipe=data)
+        paginator = pagination.PageNumberPagination()
+        page = paginator.paginate_queryset(brews, self.context['request'])
+        serializer = BrewSerializer(page, many=True, context={'request': self.context['request']})
+        return serializer.data
 
     def create(self, validated_data):
         malts_data = validated_data.pop('malts')
