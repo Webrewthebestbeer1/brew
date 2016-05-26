@@ -218,7 +218,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         });
     }
 
-    var calculateWater = function() {
+    $scope.calculateWater = function() {
         var grain_bill = 0;
         for (var i = 0; i < $scope.recipe.malts.length; i++) {
             grain_bill += Number($scope.recipe.malts[i].amount);
@@ -269,7 +269,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         $scope.recipe = response;
         $scope.grain_temperature = 20;
         $scope.updateAverageRating();
-        if (typeof($scope.equip) != 'undefined') calculateWater();
+        if (typeof($scope.equip) != 'undefined') $scope.calculateWater();
 
         console.log(response);
         for (var i = 0; i < $scope.recipe.brews.length; i++) {
@@ -279,7 +279,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         $scope.$watch('equip', $scope.updateWater);
         $scope.$watch('equip', function(oldValue, newValue) {
             var diff = findDiff(oldValue, newValue);
-            calculateWater();
+            $scope.calculateWater();
             if (!$.isEmptyObject(diff)) {
                 $http.put('api/equipment/update/' + $scope.equip.id, diff)
                 .success(function(response) {
@@ -293,7 +293,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
 
         $scope.$watchCollection('recipe', function(oldValue, newValue) {
             var diff = findDiff(oldValue, newValue);
-            calculateWater();
+            $scope.calculateWater();
             if (!$.isEmptyObject(diff)) {
                 $http.put('api/recipes/update/' + recipeId, diff)
                 .success(function(response) {
@@ -320,7 +320,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         $scope.equipment = response.results;
         if ($scope.equipment.length > 0) $scope.equip = $scope.equipment[0];
         console.log($scope.equipment);
-        if (typeof($scope.recipe) != 'undefined') calculateWater();
+        if (typeof($scope.recipe) != 'undefined') $scope.calculateWater();
     })
 
 }])

@@ -95,7 +95,7 @@
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Grain temperature (degrees Celsius)</label>
-                        <input ng-model="grain_temperature" type="number">
+                        <input ng-model="grain_temperature" type="number" ng-blur="calculateWater()">
                       </md-input-container>
                     </div>
 
