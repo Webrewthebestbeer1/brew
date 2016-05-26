@@ -4,8 +4,8 @@
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
   <!-- Angular Material style sheet -->
-  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="{% static "libs/angular_material/1.1.0-rc4/angular-material.min.css" %}">
+  <link href="{% static "fonts/material_icons.css" %}" rel="stylesheet">
   <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
   <link rel="stylesheet" href="{% static "css/style.css" %}">
 </head>
@@ -13,17 +13,17 @@
     {% block content %}
     {% endblock content %}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="{% static "libs/jquery/2.2.0/jquery.min.js" %}"></script>
 
     <!-- Angular Material requires Angular.js Libraries -->
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-route.min.js"></script>
+    <script src="{% static "libs/angularjs/1.5.5/angular.min.js" %}"></script>
+    <script src="{% static "libs/angularjs/1.5.5/angular-animate.min.js" %}"></script>
+    <script src="{% static "libs/angularjs/1.5.5/angular-aria.min.js" %}"></script>
+    <script src="{% static "libs/angularjs/1.5.5/angular-messages.min.js" %}"></script>
+    <script src="{% static "libs/angularjs/1.5.5/angular-route.min.js" %}"></script>
 
     <!-- Angular Material Library -->
-    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc4/angular-material.min.js"></script>
+    <script src="{% static "libs/angular_material/1.1.0-rc4/angular-material.min.js" %}"></script>
     {% block scripts %}
     {% endblock scripts %}
 </body>

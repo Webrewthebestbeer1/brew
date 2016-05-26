@@ -11,7 +11,6 @@ class Recipe(models.Model):
     batch_size = models.IntegerField(default=19, null=True)
     boil_time = models.IntegerField(default=60, null=True)
     mash_temperature = models.IntegerField(default=67, null=True)
-    grain_temperature = models.IntegerField(default=20, null=True)
 
     def __str__(self):
         return self.name + " #" + str(self.id)

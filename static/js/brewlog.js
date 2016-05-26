@@ -1,6 +1,6 @@
-angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
+angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
 .controller(
-    'BrewLogController',
+    'RecipeController',
     ['$scope', '$http', '$location', '$mdDialog', function($scope, $http, $location, $mdDialog) {
 
     var recipeId = $location.search().id;
@@ -150,16 +150,6 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         showWarning(ev, 'Remove comment?', callback);
     }
 
-    $scope.titleEdit = false;
-    $scope.editTitle = function() {
-        $scope.titleEdit = !$scope.titleEdit;
-        $scope.title = $scope.recipe.name;
-        if (!$scope.titleEdit) {
-            $scope.recipe.name = $(' #title ').val();
-            $scope.updateRecipe({});
-        }
-    }
-
     $scope.editedComments = {};
     $scope.editComment = function(comment) {
         $scope.editedComments[comment.date] = !$scope.editedComments[comment.date];
@@ -227,12 +217,7 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         });
     }
 
-    $scope.updateFermentation = function(brew) {
-        var fermentation = {fermentation_time: brew.fermentation_time, fermentation_temperature: brew.fermentation_temperature}
-        $scope.updateBrew(brew, fermentation);
-    }
-
-    $scope.updateWater = function() {
+    var calculateWater = function() {
         var grain_bill = 0;
         for (var i = 0; i < $scope.recipe.malts.length; i++) {
             grain_bill += Number($scope.recipe.malts[i].amount);
@@ -241,7 +226,7 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         var totalWater = preBoilWort + (Number($scope.equip.equipment_loss) + 1.2522 * grain_bill);
         var mashWater = 0.9475 * $scope.equip.mash_thickness * grain_bill;
         var spargeWater = totalWater - mashWater;
-        var strikeTemperature = (((((grain_bill/0.454)*0.05)+(mashWater/3.79))*$scope.recipe.mash_temperature)-(((grain_bill/0.454)*0.05)*$scope.recipe.grain_temperature))/(mashWater/3.79);
+        var strikeTemperature = (((((grain_bill/0.454)*0.05)+(mashWater/3.79))*$scope.recipe.mash_temperature)-(((grain_bill/0.454)*0.05)*$scope.grain_temperature))/(mashWater/3.79);
         var approximateMashVolume = grain_bill * (0.67 + Number($scope.equip.mash_thickness));
         $(" #preBoilWort ").val(preBoilWort.toFixed(2));
         $(" #totalWater ").val(totalWater.toFixed(2));
@@ -255,13 +240,22 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         return -616.868+(1111.14*density)-(630.272*Math.pow(density, 2))+(135.997*Math.pow(density, 3));
     }
 
+    $scope.updateAverageRating = function() {
+        var sum = 0;
+        var validRatings = 0;
+        for (var i = 0; i < $scope.recipe.brews.length; i++) {
+            if ($scope.recipe.brews[i].rating > 0) {
+                sum += $scope.recipe.brews[i].rating;
+                validRatings++;
+            }
+        }
+        console.log(sum/validRatings);
+        $scope.averageRating = sum/validRatings;
+    }
+
     $scope.updateGravity = function(brew, initial) {
         var og = brew.og;
         var fg = brew.fg;
-        if(!initial) {
-            var gravity = {og: og, fg: fg}
-            $scope.updateBrew(brew, gravity);
-        }
         var attenuation = 1 - (densityToPlato(fg)/densityToPlato(og));
         var realExtract = (0.1808*densityToPlato(og)) + (0.8192*densityToPlato(fg));
         var abv = (((Math.abs(densityToPlato(og)-realExtract))/Math.abs(2.0666-(0.010665*densityToPlato(og)))/100)*fg)/0.79;
@@ -272,6 +266,9 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
 
     $http.get(baseUrl).success(function(response) {
         $scope.recipe = response;
+        $scope.grain_temperature = 20;
+        $scope.updateAverageRating();
+        if (typeof($scope.equip) != 'undefined') calculateWater();
 
         console.log(response);
         for (var i = 0; i < $scope.recipe.brews.length; i++) {
@@ -282,6 +279,7 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         $scope.$watch('equip', function(oldValue, newValue) {
             var diff = findDiff(oldValue, newValue);
             if (!$.isEmptyObject(diff)) {
+                calculateWater();
                 $http.put('api/equipment/update/' + $scope.equip.id, diff)
                 .success(function(response) {
                     console.log(response);
@@ -294,13 +292,16 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
 
         $scope.$watchCollection('recipe', function(oldValue, newValue) {
             var diff = findDiff(oldValue, newValue);
-            $http.put('api/recipes/update/' + recipeId, diff)
-            .success(function(response) {
-                console.log(response);
-            })
-            .error(function(response) {
-                console.log(response);
-            });
+            if (!$.isEmptyObject(diff)) {
+                calculateWater();
+                $http.put('api/recipes/update/' + recipeId, diff)
+                .success(function(response) {
+                    console.log(response);
+                })
+                .error(function(response) {
+                    console.log(response);
+                });
+            }
         });
     });
 
@@ -318,19 +319,23 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         $scope.equipment = response.results;
         if ($scope.equipment.length > 0) $scope.equip = $scope.equipment[0];
         console.log($scope.equipment);
+        if (typeof($scope.recipe) != 'undefined') calculateWater();
     })
 
 }])
 .controller('BrewController', function($scope, $http) {
     $scope.$watchCollection('brew', function(oldValue, newValue) {
         var diff = findDiff(oldValue, newValue);
-        $http.put('api/brews/update/' + oldValue.id, diff)
-        .success(function(response) {
-            console.log(response);
-        })
-        .error(function(response) {
-            console.log(response);
-        });
+        if (!$.isEmptyObject(diff)) {
+            $scope.updateGravity($scope.brew, false);
+            $http.put('api/brews/update/' + oldValue.id, diff)
+            .success(function(response) {
+                console.log(response);
+            })
+            .error(function(response) {
+                console.log(response);
+            });
+        }
     });
 
     var findDiff = function(edited, original){
@@ -408,7 +413,7 @@ http://jsfiddle.net/manishpatil/2fahpk7s/
 .directive('starRating', function () {
     return {
         scope: {
-            rating: '=',
+            rating: '=ngModel',
             maxRating: '@',
             readOnly: '=?',
             click: "&",
@@ -419,16 +424,11 @@ http://jsfiddle.net/manishpatil/2fahpk7s/
         template:
             '<ul class="star-rating" ng-class="{readonly: readOnly}">' +
             '   <li ng-repeat="idx in maxRatings track by $index" class="star" ' +
-            'ng-class="{filled: !((hoverValue + _rating) <= $index)}" ' +
+            'ng-class="{filled: !((hoverValue + rating) <= $index)}" ' +
             'ng-click="isolatedClick($index + 1)" ' +
             'ng-mouseenter="isolatedMouseHover($index + 1)" ' +
             'ng-mouseleave="isolatedMouseLeave($index + 1)"> ' +
             '<i class="fa fa-star"></i></li></ul>',
-        link: function($scope) {
-            $scope.$watch('name', function() {
-                console.log("star changed?");
-            });
-        },
         compile: function (element, attrs) {
             if (!attrs.maxRating || (Number(attrs.maxRating) <= 0)) {
                 attrs.maxRating = '5';
@@ -446,7 +446,6 @@ http://jsfiddle.net/manishpatil/2fahpk7s/
 
 			$scope.isolatedClick = function (param) {
 				if ($scope.readOnly) return;
-
 				$scope.rating = $scope._rating = param;
 				$scope.hoverValue = 0;
 				$scope.click({
@@ -458,7 +457,7 @@ http://jsfiddle.net/manishpatil/2fahpk7s/
 				if ($scope.readOnly) return;
 
 				$scope._rating = 0;
-				$scope.hoverValue = param;
+				$scope.hoverValue = param - $scope.rating;
 				$scope.mouseHover({
 					param: param
 				});

@@ -151,7 +151,6 @@ class RecipeSerializer(serializers.ModelSerializer):
             'batch_size',
             'boil_time',
             'mash_temperature',
-            'grain_temperature',
             'malts',
             'hops',
             'brews',
