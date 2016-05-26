@@ -41,10 +41,14 @@ angular.module('BrewLogs', ['ngMaterial']).controller('BrewLogsController', ['$s
     $scope.averageRating = function(recipe) {
         if (recipe.brews.length == 0) return 0;
         var sum = 0;
+        var validRatings = 0;
         for (var i = 0; i < recipe.brews.length; i++) {
+            if (recipe.brews[i].rating == 0) continue;
             sum += recipe.brews[i].rating;
+            validRatings++;
         }
-        return sum/recipe.brews.length;
+        if (validRatings == 0) return 0;
+        return sum/validRatings;
     }
 
 }])

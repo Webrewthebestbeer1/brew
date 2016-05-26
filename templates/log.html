@@ -304,7 +304,7 @@
                     <table style="width:100%;">
                         <td style="width:25%;">Added {[{ brew.date | date:'dd-MM-yyyy' }]}</td>
                         <td style="width:25%;">
-                            <div star-rating ng-model="brew.rating" readonly="true" max="10"></div>
+                            <div star-rating rating="brew.rating" read-only="true" max-rating="10"></div>
                         </td>
                     </table>
                 </div>
@@ -465,7 +465,7 @@
                             <img src="{% static "img/rating.png" %}">
                             <h1>Rating</h1>
                         </div>
-                        <div star-rating ng-model="brew.rating" max="10" on-rating-select="updateRating(brew, rating)"></div>
+                        <div star-rating rating="brew.rating" read-only="false" max-rating="10" click="updateRating(brew, param)"´></div>
                     </div>
                 </div>
                 <!-- end results -->
