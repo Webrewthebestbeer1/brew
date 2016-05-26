@@ -327,11 +327,6 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         Django's DecimalField are serialized to Strings.
         Convert them to Number.
         */
-        response.trub_loss = Number(response.trub_loss);
-        response.equipment_loss = Number(response.equipment_loss);
-        response.mash_thickness = Number(response.mash_thickness);
-        response.grain_absorption = Number(response.grain_absorption);
-        response.evaporation_factor = Number(response.evaporation_factor);
         $scope.recipe = response;
 
         console.log(response);
@@ -477,6 +472,9 @@ http://jsfiddle.net/manishpatil/2fahpk7s/
         }
     };
 })
+/*
+Redirect to login when not authenticated
+*/
 .factory('responseObserver', function responseObserver($q, $window) {
     return {
         'responseError': function(errorResponse) {
