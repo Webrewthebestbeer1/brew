@@ -384,7 +384,7 @@ Try to convert them to Number.
     }
 }])
 /*
-Star rating. Based on these two examples
+Star rating. Based on these two examples:
 https://codepen.io/TepigMC/pen/FIdHb
 http://jsfiddle.net/manishpatil/2fahpk7s/
 */

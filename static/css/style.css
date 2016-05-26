@@ -191,4 +191,5 @@ body {
 }
 .star-rating.readonly .star.filled {
   color: #666;
+  cursor: default;
 }
