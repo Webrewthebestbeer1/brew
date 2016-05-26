@@ -10,6 +10,7 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
     $scope.logEnd = [];
     $scope.logDescription = [];
     $scope.comments = [];
+    $scope.equip = {};
 
     var showWarning = function(ev, text, callback) {
         var confirm = $mdDialog.confirm()
@@ -213,6 +214,20 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         showWarning(ev, 'Remove log entry?', callback);
     }
 
+    $scope.addEquipment = function() {
+        var equipment = {name: $scope.equipmentName};
+        $scope.equipmentName = "";
+        $http.post('api/equipment', equipment)
+        .success(function(response) {
+            console.log(response);
+            $scope.equipment.push(response);
+            $scope.equip = response;
+        })
+        .error(function(response) {
+            console.log(response);
+        });
+    }
+
     $scope.updateRecipe = function(field) {
         field['name'] = $scope.recipe.name;
         $http.put('api/recipes/update/' + recipeId, field)
@@ -252,7 +267,6 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
     $scope.updateWater = function() {
         var water = {
             batch_size: $scope.recipe.batch_size,
-            grain_bill: $scope.recipe.grain_bill,
             boil_time: $scope.recipe.boil_time,
             mash_temperature: $scope.recipe.mash_temperature,
             trub_loss: $scope.recipe.trub_loss,
@@ -265,12 +279,16 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
             evaporation_factor: $scope.recipe.evaporation_factor,
         };
         $scope.updateRecipe(water);
-        var preBoilWort = (($scope.recipe.batch_size + $scope.recipe.trub_loss)/0.96)/$scope.recipe.evaporation_factor;
-        var totalWater = preBoilWort + (Number($scope.recipe.equipment_loss) + 1.2522 * $scope.recipe.grain_bill);
-        var mashWater = 0.9475 * $scope.recipe.mash_thickness * $scope.recipe.grain_bill;
+        var grain_bill = 0;
+        for (var i = 0; i < $scope.recipe.malts.length; i++) {
+            grain_bill += Number($scope.recipe.malts[i].amount);
+        }
+        var preBoilWort = (($scope.recipe.batch_size + Number($scope.equip.trub_loss))/0.96)/$scope.equip.evaporation_factor;
+        var totalWater = preBoilWort + (Number($scope.equip.equipment_loss) + 1.2522 * grain_bill);
+        var mashWater = 0.9475 * $scope.equip.mash_thickness * grain_bill;
         var spargeWater = totalWater - mashWater;
-        var strikeTemperature = ((((($scope.recipe.grain_bill/0.454)*0.05)+(mashWater/3.79))*$scope.recipe.mash_temperature)-((($scope.recipe.grain_bill/0.454)*0.05)*$scope.recipe.grain_temperature))/(mashWater/3.79);
-        var approximateMashVolume = $scope.recipe.grain_bill * (0.67 + $scope.recipe.mash_thickness);
+        var strikeTemperature = (((((grain_bill/0.454)*0.05)+(mashWater/3.79))*$scope.recipe.mash_temperature)-(((grain_bill/0.454)*0.05)*$scope.recipe.grain_temperature))/(mashWater/3.79);
+        var approximateMashVolume = grain_bill * (0.67 + Number($scope.equip.mash_thickness));
         $(" #preBoilWort ").val(preBoilWort.toFixed(2));
         $(" #totalWater ").val(totalWater.toFixed(2));
         $(" #mashWater ").val(mashWater.toFixed(2));
@@ -321,9 +339,15 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
             console.log($scope.recipe.brews[i]);
             $scope.updateGravity($scope.recipe.brews[i], true);
         }
-        $scope.updateWater(true);
+        $scope.$watch('equip', $scope.updateWater);
 
     });
+
+    $http.get('api/equipment').success(function(response) {
+        $scope.equipment = response.results;
+        if ($scope.equipment.length > 0) $scope.equip = $scope.equipment[0];
+        console.log($scope.equipment);
+    })
 
 }])
 .config(function($mdThemingProvider) {

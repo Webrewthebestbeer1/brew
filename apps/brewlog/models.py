@@ -9,20 +9,25 @@ class Recipe(models.Model):
     sparge_time = models.IntegerField(null=True)
     date = models.DateTimeField(default=timezone.now())
     batch_size = models.IntegerField(default=19, null=True)
-    grain_bill = models.IntegerField(default=6, null=True)
     boil_time = models.IntegerField(default=60, null=True)
     mash_temperature = models.IntegerField(default=67, null=True)
+    grain_temperature = models.IntegerField(default=20, null=True)
+
+    def __str__(self):
+        return self.name + " #" + str(self.id)
+
+class Equipment(models.Model):
+    name = models.CharField(max_length=100)
     trub_loss = models.DecimalField(default=1.9, max_digits=3, decimal_places=1, null=True)
     equipment_loss = models.DecimalField(default=0.4, max_digits=3, decimal_places=1, null=True)
     mash_thickness = models.DecimalField(default=2.61, max_digits=3, decimal_places=2, null=True)
-    grain_temperature = models.IntegerField(default=20, null=True)
     wort_shrinkage = models.IntegerField(default=4, null=True)
     grain_absorption = models.DecimalField(default=1.08, max_digits=3, decimal_places=2, null=True)
     percent_boiloff = models.IntegerField(default=7, null=True)
     evaporation_factor = models.DecimalField(default=0.95, max_digits=3, decimal_places=2, null=True)
 
     def __str__(self):
-        return self.name + " #" + str(self.id)
+        return self.name
 
 class Malt(models.Model):
     name = models.CharField(max_length=100)

@@ -40,13 +40,6 @@
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
-                        <label>Grain bill (kilogram)</label>
-                        <input ng-model="recipe.grain_bill" type="number" ng-blur="updateWater()">
-                      </md-input-container>
-                    </div>
-
-                    <div layout-gt-sm="row">
-                      <md-input-container flex-gt-sm="" class="md-block">
                         <label>Boil time (minutes)</label>
                         <input ng-model="recipe.boil_time" type="number" ng-blur="updateWater()">
                       </md-input-container>
@@ -59,32 +52,30 @@
                       </md-input-container>
                     </div>
 
-                    <div layout-gt-sm="row">
-                      <md-input-container flex-gt-sm="" class="md-block">
-                        <label>Trub loss (liters)</label>
-                        <input ng-model="recipe.trub_loss" type="number" ng-blur="updateWater()">
-                      </md-input-container>
+                    <div layout="column">
+                        <div>
+                            <h1 class="md-title">Equipment</h1>
+                        </div>
+                        <div>
+                            <md-input-container flex-gt-sm="" class="md-block">
+                                <md-select ng-model="equip" aria-label="Select equipment">
+                                    <md-option ng-repeat="equip in equipment" ng-value="equip">{[{ equip.name }]}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
                     </div>
-
-                    <div layout-gt-sm="row">
-                      <md-input-container flex-gt-sm="" class="md-block">
-                        <label>Equipment loss (liters)</label>
-                        <input ng-model="recipe.equipment_loss" type="number" ng-blur="updateWater()">
-                      </md-input-container>
-                    </div>
-                </div>
-
-                <!-- Second column (mostly static) -->
-                <div flex class="bl-column">
-                    <div class="bl-section-placeholder" layout="row">
-                    </div>
-                    <div layout-gt-sm="row">
-                      <md-input-container flex-gt-sm="" class="md-block">
-                        <label>Mash thickness (liter/kilogram)</label>
-                        <input ng-model="recipe.mash_thickness" type="number" ng-blur="updateWater()">
-                      </md-input-container>
-                    </div>
-
+                    <table style="width:100%;" class="bl-table">
+                        <td>
+                            <md-input-container md-no-float flex-gt-sm="" class="md-block">
+                              <input ng-model="equipmentName" placeholder="New equipment" type="text">
+                            </md-input-container>
+                        </td>
+                        <td class="bl-table-action">
+                            <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addEquipment()">
+                                <md-icon md-svg-icon="{% static "img/add.svg" %}"></md-icon>
+                            </md-button>
+                        </td>
+                    </table>
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Grain temperature (degrees Celsius)</label>
@@ -92,31 +83,59 @@
                       </md-input-container>
                     </div>
 
+                </div>
+
+                <!-- Second column (mostly static) -->
+                <div flex class="bl-column">
+                    <div class="bl-section-placeholder" layout="row">
+                    </div>
+
+                    <div layout-gt-sm="row">
+                      <md-input-container flex-gt-sm="" class="md-block">
+                        <label>Trub loss (liters)</label>
+                        <input ng-model="equip.trub_loss" type="number" ng-blur="updateWater()">
+                      </md-input-container>
+                    </div>
+
+                    <div layout-gt-sm="row">
+                      <md-input-container flex-gt-sm="" class="md-block">
+                        <label>Equipment loss (liters)</label>
+                        <input ng-model="equip.equipment_loss" type="number" ng-blur="updateWater()">
+                      </md-input-container>
+                    </div>
+
+                    <div layout-gt-sm="row">
+                      <md-input-container flex-gt-sm="" class="md-block">
+                        <label>Mash thickness (liter/kilogram)</label>
+                        <input ng-model="equip.mash_thickness" type="number" ng-blur="updateWater()">
+                      </md-input-container>
+                    </div>
+
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Wort shrinkage (percent)</label>
-                        <input ng-model="recipe.wort_shrinkage" type="number" ng-blur="updateWater()">
+                        <input ng-model="equip.wort_shrinkage" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Grain absorption (liter/kilogram)</label>
-                        <input ng-model="recipe.grain_absorption" type="number" ng-blur="updateWater()">
+                        <input ng-model="equip.grain_absorption" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Percent boiloff (percent/hour)</label>
-                        <input ng-model="recipe.percent_boiloff" type="number" ng-blur="updateWater()">
+                        <input ng-model="equip.percent_boiloff" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Evaporation factor</label>
-                        <input ng-model="recipe.evaporation_factor" type="number" ng-blur="updateWater()">
+                        <input ng-model="equip.evaporation_factor" type="number" ng-blur="updateWater()">
                       </md-input-container>
                     </div>
                 </div>

@@ -35,6 +35,10 @@ comment_urls = patterns('',
     url(r'^/update/(?P<pk>[0-9]+)$', CommentUpdate.as_view(), name='comment-update'),
 )
 
+equipment_urls = patterns('',
+    url(r'^$', EquipmentList.as_view(), name='equipment-list'),
+)
+
 urlpatterns = patterns('',
     url(r'^recipes', include(recipe_urls)),
     url(r'^hops', include(hop_urls)),
@@ -42,4 +46,5 @@ urlpatterns = patterns('',
     url(r'^brews', include(brew_urls)),
     url(r'^logs', include(log_urls)),
     url(r'^comments', include(comment_urls)),
+    url(r'^equipment', include(equipment_urls)),
 )

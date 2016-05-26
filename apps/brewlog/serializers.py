@@ -1,6 +1,6 @@
 from rest_framework import serializers, pagination
 
-from .models import Recipe, Malt, Hop, Brew, Log, Comment
+from .models import Recipe, Malt, Hop, Brew, Log, Comment, Equipment
 
 from pprint import pprint
 
@@ -55,6 +55,21 @@ class CommentSerializer(serializers.ModelSerializer):
         brew = Brew.objects.filter(id=brew_id).first()
         comment = Comment.objects.create(**validated_data, brew=brew)
         return comment
+
+class EquipmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Equipment
+        field = (
+            'id',
+            'name',
+            'trub_loss',
+            'equipment_loss',
+            'mash_thickness',
+            'wort_shrinkage',
+            'grain_absorption',
+            'percent_boiloff',
+            'evaporation_factor',
+        )
 
 class BrewSerializer(serializers.ModelSerializer):
 
@@ -134,17 +149,9 @@ class RecipeSerializer(serializers.ModelSerializer):
             'sparge_time',
             'date',
             'batch_size',
-            'grain_bill',
             'boil_time',
             'mash_temperature',
-            'trub_loss',
-            'equipment_loss',
-            'mash_thickness',
             'grain_temperature',
-            'wort_shrinkage',
-            'grain_absorption',
-            'percent_boiloff',
-            'evaporation_factor',
             'malts',
             'hops',
             'brews',

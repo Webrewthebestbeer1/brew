@@ -1,8 +1,8 @@
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 
-from .serializers import RecipeSerializer, RecipeUpdateSerializer, MaltSerializer, HopSerializer, BrewSerializer, BrewUpdateSerializer, LogSerializer, CommentSerializer
-from .models import Recipe, Malt, Hop, Brew, Log, Comment
+from .serializers import RecipeSerializer, RecipeUpdateSerializer, MaltSerializer, HopSerializer, BrewSerializer, BrewUpdateSerializer, LogSerializer, CommentSerializer, EquipmentSerializer
+from .models import Recipe, Malt, Hop, Brew, Log, Comment, Equipment
 
 class RecipeList(generics.ListCreateAPIView):
     model = Recipe
@@ -132,3 +132,8 @@ class CommentDestroy(generics.DestroyAPIView):
     model = Comment
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
+
+class EquipmentList(generics.ListCreateAPIView):
+    model = Equipment
+    queryset = Equipment.objects.all()
+    serializer_class = EquipmentSerializer
