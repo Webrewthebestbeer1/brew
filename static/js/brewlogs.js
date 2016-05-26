@@ -33,12 +33,18 @@ angular.module('BrewLogs', ['ngMaterial']).controller('BrewLogsController', ['$s
     }
 
     $http.get("api/recipes").success(function(response) {
-        $scope.recipes = response;
+        $scope.recipes = response.results;
         console.log(response);
     });
 
-    $scope.openEntry = function(entry) {
-        console.log(entry);
+    // TODO: find out why this gets called n^2 times when loading page
+    $scope.averageRating = function(recipe) {
+        if (recipe.brews.length == 0) return 0;
+        var sum = 0;
+        for (var i = 0; i < recipe.brews.length; i++) {
+            sum += recipe.brews[i].rating;
+        }
+        return sum/recipe.brews.length;
     }
 
 }])

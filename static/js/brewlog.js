@@ -156,7 +156,7 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         $scope.title = $scope.recipe.name;
         if (!$scope.titleEdit) {
             $scope.recipe.name = $(' #title ').val();
-            $scope.updateEntry({});
+            $scope.updateRecipe({});
         }
     }
 
@@ -213,7 +213,7 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         showWarning(ev, 'Remove log entry?', callback);
     }
 
-    $scope.updateEntry = function(field) {
+    $scope.updateRecipe = function(field) {
         field['name'] = $scope.recipe.name;
         $http.put('api/recipes/update/' + recipeId, field)
         .success(function(response) {
@@ -236,7 +236,7 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
 
     $scope.updateYeast = function() {
         var yeast = {yeast: $scope.recipe.yeast};
-        $scope.updateEntry(yeast);
+        $scope.updateRecipe(yeast);
     }
 
     $scope.updateFermentation = function(brew) {
@@ -246,7 +246,7 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
 
     $scope.updateMash = function() {
         var mash = {mash_time: $scope.entry.mash_time, sparge_time: $scope.entry.sparge_time};
-        $scope.updateEntry(mash);
+        $scope.updateRecipe(mash);
     }
 
     $scope.updateWater = function() {
@@ -264,7 +264,7 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
             percent_boiloff: $scope.recipe.percent_boiloff,
             evaporation_factor: $scope.recipe.evaporation_factor,
         };
-        $scope.updateEntry(water);
+        $scope.updateRecipe(water);
         var preBoilWort = (($scope.recipe.batch_size + $scope.recipe.trub_loss)/0.96)/$scope.recipe.evaporation_factor;
         var totalWater = preBoilWort + (Number($scope.recipe.equipment_loss) + 1.2522 * $scope.recipe.grain_bill);
         var mashWater = 0.9475 * $scope.recipe.mash_thickness * $scope.recipe.grain_bill;
@@ -298,7 +298,11 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         brew.attenuation = (attenuation * 100).toFixed(2);
     }
 
-
+    $scope.updateRating = function(brew, param) {
+        brew.rating = param;
+        var rating = {rating: brew.rating};
+        $scope.updateBrew(brew, rating);
+    }
 
     $http.get(baseUrl).success(function(response) {
         /*
@@ -351,6 +355,9 @@ Need $location to get URL parameteres
         requireBase: false
     });
 }])
+.config(function ($routeProvider, $httpProvider) {
+    $httpProvider.interceptors.push('responseObserver');
+})
 /*
 Django's DecimalField are serialized to Strings.
 Try to convert them to Number.
@@ -376,8 +383,48 @@ Try to convert them to Number.
         }
     }
 }])
-.config(function ($routeProvider, $httpProvider) {
-    $httpProvider.interceptors.push('responseObserver');
+.directive('starRating', function() {
+    return {
+      restrict: 'EA',
+      template:
+        '<ul class="star-rating" ng-class="{readonly: readonly}">' +
+        '  <li ng-repeat="star in stars" class="star" ng-class="{filled: star.filled}" ng-click="toggle($index)">' +
+        '    <i class="fa fa-star"></i>' + // or &#9733
+        '  </li>' +
+        '</ul>',
+      scope: {
+        ratingValue: '=ngModel',
+        max: '=?', // optional (default is 5)
+        onRatingSelect: '&?',
+        readonly: '=?'
+      },
+      link: function(scope, element, attributes) {
+        if (scope.max == undefined) {
+          scope.max = 5;
+        }
+        function updateStars() {
+          scope.stars = [];
+          for (var i = 0; i < scope.max; i++) {
+            scope.stars.push({
+              filled: i < scope.ratingValue
+            });
+          }
+        };
+        scope.toggle = function(index) {
+          if (scope.readonly == undefined || scope.readonly === false){
+            scope.ratingValue = index + 1;
+            scope.onRatingSelect({
+              rating: index + 1
+            });
+          }
+        };
+        scope.$watch('ratingValue', function(oldValue, newValue) {
+          if (newValue) {
+            updateStars();
+          }
+        });
+      }
+    };
 })
 .factory('responseObserver', function responseObserver($q, $window) {
     return {
