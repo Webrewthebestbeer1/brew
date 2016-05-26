@@ -227,57 +227,12 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         });
     }
 
-    $scope.updateRecipe = function(field) {
-        field['name'] = $scope.recipe.name;
-        $http.put('api/recipes/update/' + recipeId, field)
-        .success(function(response) {
-            console.log(response);
-        })
-        .error(function(response) {
-            console.log(response);
-        });
-    }
-
-    $scope.updateBrew = function(brew, field) {
-        $http.put('api/brews/update/' + brew.id, field)
-        .success(function(response) {
-            console.log(response);
-        })
-        .error(function(response) {
-            console.log(response);
-        });
-    }
-
-    $scope.updateYeast = function() {
-        var yeast = {yeast: $scope.recipe.yeast};
-        $scope.updateRecipe(yeast);
-    }
-
     $scope.updateFermentation = function(brew) {
         var fermentation = {fermentation_time: brew.fermentation_time, fermentation_temperature: brew.fermentation_temperature}
         $scope.updateBrew(brew, fermentation);
     }
 
-    $scope.updateMash = function() {
-        var mash = {mash_time: $scope.entry.mash_time, sparge_time: $scope.entry.sparge_time};
-        $scope.updateRecipe(mash);
-    }
-
     $scope.updateWater = function() {
-        var water = {
-            batch_size: $scope.recipe.batch_size,
-            boil_time: $scope.recipe.boil_time,
-            mash_temperature: $scope.recipe.mash_temperature,
-            trub_loss: $scope.recipe.trub_loss,
-            equipment_loss: $scope.recipe.equipment_loss,
-            mash_thickness: $scope.recipe.mash_thickness,
-            grain_temperature: $scope.recipe.grain_temperature,
-            wort_shrinkage: $scope.recipe.wort_shrinkage,
-            grain_absorption: $scope.recipe.grain_absorption,
-            percent_boiloff: $scope.recipe.percent_boiloff,
-            evaporation_factor: $scope.recipe.evaporation_factor,
-        };
-        $scope.updateRecipe(water);
         var grain_bill = 0;
         for (var i = 0; i < $scope.recipe.malts.length; i++) {
             grain_bill += Number($scope.recipe.malts[i].amount);
@@ -315,17 +270,7 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         brew.attenuation = (attenuation * 100).toFixed(2);
     }
 
-    $scope.updateRating = function(brew, param) {
-        brew.rating = param;
-        var rating = {rating: brew.rating};
-        $scope.updateBrew(brew, rating);
-    }
-
     $http.get(baseUrl).success(function(response) {
-        /*
-        Django's DecimalField are serialized to Strings.
-        Convert them to Number.
-        */
         $scope.recipe = response;
 
         console.log(response);
@@ -334,8 +279,40 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
             $scope.updateGravity($scope.recipe.brews[i], true);
         }
         $scope.$watch('equip', $scope.updateWater);
+        $scope.$watch('equip', function(oldValue, newValue) {
+            var diff = findDiff(oldValue, newValue);
+            if (!$.isEmptyObject(diff)) {
+                $http.put('api/equipment/update/' + $scope.equip.id, diff)
+                .success(function(response) {
+                    console.log(response);
+                })
+                .error(function(response) {
+                    console.log(response);
+                });
+            }
+        }, true);
 
+        $scope.$watchCollection('recipe', function(oldValue, newValue) {
+            var diff = findDiff(oldValue, newValue);
+            $http.put('api/recipes/update/' + recipeId, diff)
+            .success(function(response) {
+                console.log(response);
+            })
+            .error(function(response) {
+                console.log(response);
+            });
+        });
     });
+
+    var findDiff = function(edited, original){
+        if (typeof(original) == 'undefined' || original.id != edited.id) return {};
+        var diff = {}
+        for(var key in original){
+            if(original[key] !== edited[key])
+                diff[key] = edited[key];
+        }
+        return diff;
+    }
 
     $http.get('api/equipment').success(function(response) {
         $scope.equipment = response.results;
@@ -344,6 +321,28 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
     })
 
 }])
+.controller('BrewController', function($scope, $http) {
+    $scope.$watchCollection('brew', function(oldValue, newValue) {
+        var diff = findDiff(oldValue, newValue);
+        $http.put('api/brews/update/' + oldValue.id, diff)
+        .success(function(response) {
+            console.log(response);
+        })
+        .error(function(response) {
+            console.log(response);
+        });
+    });
+
+    var findDiff = function(edited, original){
+        if (typeof(original) == 'undefined' || original.id != edited.id) return {};
+        var diff = {}
+        for(var key in original){
+            if(original[key] !== edited[key])
+                diff[key] = edited[key];
+        }
+        return diff;
+    }
+})
 .config(function($mdThemingProvider) {
     $mdThemingProvider.theme('default')
     .primaryPalette('blue-grey')
@@ -414,7 +413,7 @@ http://jsfiddle.net/manishpatil/2fahpk7s/
             readOnly: '=?',
             click: "&",
             mouseHover: "&",
-            mouseLeave: "&"
+            mouseLeave: "&",
         },
         restrict: 'EA',
         template:
@@ -425,10 +424,16 @@ http://jsfiddle.net/manishpatil/2fahpk7s/
             'ng-mouseenter="isolatedMouseHover($index + 1)" ' +
             'ng-mouseleave="isolatedMouseLeave($index + 1)"> ' +
             '<i class="fa fa-star"></i></li></ul>',
+        link: function($scope) {
+            $scope.$watch('name', function() {
+                console.log("star changed?");
+            });
+        },
         compile: function (element, attrs) {
             if (!attrs.maxRating || (Number(attrs.maxRating) <= 0)) {
                 attrs.maxRating = '5';
             };
+
         },
         controller: function ($scope, $element, $attrs) {
             $scope.maxRatings = [];

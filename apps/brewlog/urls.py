@@ -37,6 +37,7 @@ comment_urls = patterns('',
 
 equipment_urls = patterns('',
     url(r'^$', EquipmentList.as_view(), name='equipment-list'),
+    url(r'^/update/(?P<pk>[0-9]+)$', EquipmentUpdate.as_view(), name='equipment-update'),
 )
 
 urlpatterns = patterns('',

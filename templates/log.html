@@ -34,21 +34,21 @@
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Batch size (liters)</label>
-                        <input ng-model="recipe.batch_size" type="number" ng-blur="updateWater()">
+                        <input ng-model="recipe.batch_size" ng-model-options="{updateOn: 'blur'}" type="number">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Boil time (minutes)</label>
-                        <input ng-model="recipe.boil_time" type="number" ng-blur="updateWater()">
+                        <input ng-model="recipe.boil_time" ng-model-options="{updateOn: 'blur'}" type="number">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Target mash temperature (degrees Celsius)</label>
-                        <input ng-model="recipe.mash_temperature" type="number" ng-blur="updateWater()">
+                        <input ng-model="recipe.mash_temperature" ng-model-options="{updateOn: 'blur'}" type="number">
                       </md-input-container>
                     </div>
 
@@ -59,19 +59,28 @@
                         <div>
                             <md-input-container flex-gt-sm="" class="md-block">
                                 <md-select ng-model="equip" aria-label="Select equipment">
-                                    <md-option ng-repeat="equip in equipment" ng-value="equip">{[{ equip.name }]}</md-option>
+                                    <md-option ng-repeat="equip in equipment" ng-value="equip">
+                                        <table style="width:100%;" class="bl-table">
+                                        <td ng-if="equipOpen">
+                                        <md-button class="md-icon-button md-accent" aria-label="-" ng-click="removeMalt($event, malt)">
+                                            <md-icon md-svg-icon="{% static "img/remove.svg" %}"></md-icon>
+                                        </md-button>
+                                        </td>
+                                        <td>{[{ equip.name }]}</td>
+                                        </table>
+                                    </md-option>
                                 </md-select>
                             </md-input-container>
                         </div>
                     </div>
                     <table style="width:100%;" class="bl-table">
-                        <td>
+                        <td style="width:100%;">
                             <md-input-container md-no-float flex-gt-sm="" class="md-block">
                               <input ng-model="equipmentName" placeholder="New equipment" type="text">
                             </md-input-container>
                         </td>
                         <td class="bl-table-action">
-                            <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addEquipment()">
+                            <md-button style="padding:0;margin:0;text-align:right;" class="md-icon-button md-accent" aria-label="+" ng-click="addEquipment()">
                                 <md-icon md-svg-icon="{% static "img/add.svg" %}"></md-icon>
                             </md-button>
                         </td>
@@ -93,49 +102,49 @@
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Trub loss (liters)</label>
-                        <input ng-model="equip.trub_loss" type="number" ng-blur="updateWater()">
+                        <input ng-model="equip.trub_loss" ng-model-options="{updateOn: 'blur'}" type="number">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Equipment loss (liters)</label>
-                        <input ng-model="equip.equipment_loss" type="number" ng-blur="updateWater()">
+                        <input ng-model="equip.equipment_loss" ng-model-options="{updateOn: 'blur'}" type="number">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Mash thickness (liter/kilogram)</label>
-                        <input ng-model="equip.mash_thickness" type="number" ng-blur="updateWater()">
+                        <input ng-model="equip.mash_thickness" ng-model-options="{updateOn: 'blur'}" type="number">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Wort shrinkage (percent)</label>
-                        <input ng-model="equip.wort_shrinkage" type="number" ng-blur="updateWater()">
+                        <input ng-model="equip.wort_shrinkage" ng-model-options="{updateOn: 'blur'}" type="number">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Grain absorption (liter/kilogram)</label>
-                        <input ng-model="equip.grain_absorption" type="number" ng-blur="updateWater()">
+                        <input ng-model="equip.grain_absorption" ng-model-options="{updateOn: 'blur'}" type="number">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Percent boiloff (percent/hour)</label>
-                        <input ng-model="equip.percent_boiloff" type="number" ng-blur="updateWater()">
+                        <input ng-model="equip.percent_boiloff" ng-model-options="{updateOn: 'blur'}" type="number">
                       </md-input-container>
                     </div>
 
                     <div layout-gt-sm="row">
                       <md-input-container flex-gt-sm="" class="md-block">
                         <label>Evaporation factor</label>
-                        <input ng-model="equip.evaporation_factor" type="number" ng-blur="updateWater()">
+                        <input ng-model="equip.evaporation_factor" ng-model-options="{updateOn: 'blur'}" type="number">
                       </md-input-container>
                     </div>
                 </div>
@@ -288,13 +297,13 @@
                 <div layout-gt-sm="row">
                   <md-input-container class="md-block" flex-gt-sm="">
                     <label>Mash time (minutes)</label>
-                    <input ng-model="recipe.mash_time" type="number" ng-blur="updateMash()">
+                    <input ng-model="recipe.mash_time" ng-model-options="{updateOn: 'blur'}" type="number">
                   </md-input-container>
                 </div>
                 <div layout-gt-sm="row">
                   <md-input-container class="md-block" flex-gt-sm="">
                     <label>Sparge time (minutes)</label>
-                    <input ng-model="recipe.sparge_time" type="number" ng-blur="updateMash()">
+                    <input ng-model="recipe.sparge_time" ng-model-options="{updateOn: 'blur'}" type="number">
                   </md-input-container>
                 </div>
                 <div class="bl-section" layout="row">
@@ -304,7 +313,7 @@
                 <div layout-gt-sm="row">
                   <md-input-container flex-gt-sm="" class="md-block">
                     <label>Name</label>
-                    <input ng-model="recipe.yeast" type="text" ng-blur="updateYeast()">
+                    <input ng-model="recipe.yeast" ng-model-options="{updateOn: 'blur'}" type="text">
                   </md-input-container>
                 </div>
             </div>
@@ -317,7 +326,7 @@
     <!-- Notes and results -->
     <div layout="column" class="bl-content">
 
-        <div ng-repeat="brew in recipe.brews" class="md-block">
+        <div ng-repeat="brew in recipe.brews" class="md-block" ng-controller="BrewController">
             <div layout="row" class="bl-brew-list-header" ng-class="{'bl-brew-list-header-collapsed': brewCollapse[$index]}">
                 <div style="width:100%;" ng-click="brewCollapse[$index] = !brewCollapse[$index]">
                     <table style="width:100%;">
@@ -447,13 +456,13 @@
                         <div layout-gt-sm="row">
                           <md-input-container class="md-block" flex-gt-sm="">
                             <label>Fermentation temperature (degrees Celsius)</label>
-                            <input ng-model="brew.fermentation_temperature" type="number" ng-blur="updateFermentation(brew)">
+                            <input ng-model="brew.fermentation_temperature" ng-model-options="{updateOn: 'blur'}" type="number">
                           </md-input-container>
                         </div>
                         <div layout-gt-sm="row">
                           <md-input-container class="md-block" flex-gt-sm="">
                             <label>Fermentation time (days)</label>
-                            <input ng-model="brew.fermentation_time" type="number" ng-blur="updateFermentation(brew)">
+                            <input ng-model="brew.fermentation_time" ng-model-options="{updateOn: 'blur'}" type="number">
                           </md-input-container>
                         </div>
                         <div class="bl-section" layout="row">
@@ -463,13 +472,13 @@
                         <div layout-gt-sm="row">
                           <md-input-container class="md-block" flex-gt-sm="">
                             <label>O.G</label>
-                            <input ng-model="brew.og" type="number" step="0.001" ng-blur="updateGravity(brew)">
+                            <input ng-model="brew.og" type="number" ng-model-options="{updateOn: 'blur'}" step="0.001">
                           </md-input-container>
                         </div>
                         <div layout-gt-sm="row">
                           <md-input-container class="md-block" flex-gt-sm="">
                             <label>F.G</label>
-                            <input ng-model="brew.fg" type="number" step="0.001" ng-blur="updateGravity(brew)">
+                            <input ng-model="brew.fg" type="number" ng-model-options="{updateOn: 'blur'}" step="0.001">
                           </md-input-container>
                         </div>
                         <div layout="column" class="bl-result">
@@ -484,7 +493,7 @@
                             <img src="{% static "img/rating.png" %}">
                             <h1>Rating</h1>
                         </div>
-                        <div star-rating rating="brew.rating" read-only="false" max-rating="10" click="updateRating(brew, param)"´></div>
+                        <div star-rating rating="brew.rating" read-only="false" max-rating="10"></div>
                     </div>
                 </div>
                 <!-- end results -->

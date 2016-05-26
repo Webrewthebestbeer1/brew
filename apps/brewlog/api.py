@@ -108,6 +108,22 @@ class CommentUpdate(generics.UpdateAPIView):
         self.perform_update(serializer)
         return Response(serializer.data)
 
+class EquipmentUpdate(generics.UpdateAPIView):
+    model = Equipment
+    serializer_class = EquipmentSerializer
+    queryset = Equipment.objects.all()
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = EquipmentSerializer(
+            instance,
+            data=request.data,
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
 class HopDestroy(generics.DestroyAPIView):
     model = Hop
     serializer_class = HopSerializer
