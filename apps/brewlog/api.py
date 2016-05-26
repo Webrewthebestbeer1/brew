@@ -1,71 +1,89 @@
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 
-from .serializers import EntrySerializer, EntryUpdateSerializer, MaltSerializer, HopSerializer, LogSerializer, CommentSerializer
-from .models import Entry, Malt, Hop, Log, Comment
+from .serializers import RecipeSerializer, RecipeUpdateSerializer, MaltSerializer, HopSerializer, BrewSerializer, BrewUpdateSerializer, LogSerializer, CommentSerializer
+from .models import Recipe, Malt, Hop, Brew, Log, Comment
 
-class EntryList(generics.ListCreateAPIView):
-    model = Entry
-    queryset = Entry.objects.all()
-    serializer_class = EntrySerializer
-    permission_classes = [
-        permissions.AllowAny
-    ]
+class RecipeList(generics.ListCreateAPIView):
+    model = Recipe
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
 
-class EntryDetail(generics.RetrieveAPIView):
-    model = Entry
-    queryset = Entry.objects.all()
-    serializer_class = EntrySerializer
+class RecipeDetail(generics.RetrieveAPIView):
+    model = Recipe
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
     lookup_field = 'id'
 
-class EntryMaltList(generics.ListCreateAPIView):
+class RecipeMaltList(generics.ListCreateAPIView):
     model = Malt
     serializer_class = MaltSerializer
     queryset = Malt.objects.all()
 
     def get_queryset(self):
-        queryset = super(EntryMaltList, self).get_queryset()
-        return queryset.filter(entry__id=self.kwargs.get('id'))
+        queryset = super(RecipeMaltList, self).get_queryset()
+        return queryset.filter(recipe__id=self.kwargs.get('id'))
 
-
-class EntryHopList(generics.ListCreateAPIView):
+class RecipeHopList(generics.ListCreateAPIView):
     model = Hop
     serializer_class = HopSerializer
     queryset = Hop.objects.all()
-    permission_classes = [
-        permissions.AllowAny
-    ]
 
     def get_queryset(self):
-        queryset = super(EntryHopList, self).get_queryset()
-        return queryset.filter(entry__id=self.kwargs.get('id'))
+        queryset = super(RecipeHopList, self).get_queryset()
+        return queryset.filter(recipe__id=self.kwargs.get('id'))
 
-class EntryLogList(generics.ListCreateAPIView):
+class RecipeBrewList(generics.ListCreateAPIView):
+    model = Brew
+    serializer_class = BrewSerializer
+    queryset = Brew.objects.all()
+
+    def get_queryset(self):
+        queryset = super(RecipeBrewList, self).get_queryset()
+        return queryset.filter(recipe__id=self.kwargs.get('id'))
+
+class BrewLogList(generics.ListCreateAPIView):
     model = Log
     serializer_class = LogSerializer
     queryset = Log.objects.all()
 
     def get_queryset(self):
-        queryset = super(EntryLogList, self).get_queryset()
-        return queryset.filter(entry__id=self.kwargs.get('id'))
+        queryset = super(BrewLogList, self).get_queryset()
+        return queryset.filter(brew__id=self.kwargs.get('id'))
 
-class EntryCommentList(generics.ListCreateAPIView):
+class BrewCommentList(generics.ListCreateAPIView):
     model = Comment
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
 
     def get_queryset(self):
-        queryset = super(EntryCommentList, self).get_queryset()
-        return queryset.filter(entry__id=self.kwargs.get('id'))
+        queryset = super(BrewCommentList, self).get_queryset()
+        return queryset.filter(brew__id=self.kwargs.get('id'))
 
-class EntryUpdate(generics.UpdateAPIView):
-    model = Entry
-    serializer_class = EntryUpdateSerializer
-    queryset = Entry.objects.all()
+class RecipeUpdate(generics.UpdateAPIView):
+    model = Recipe
+    serializer_class = RecipeUpdateSerializer
+    queryset = Recipe.objects.all()
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = EntryUpdateSerializer(
+        serializer = RecipeUpdateSerializer(
+            instance,
+            data=request.data,
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
+class BrewUpdate(generics.UpdateAPIView):
+    model = Brew
+    serializer_class = BrewUpdateSerializer
+    queryset = Brew.objects.all()
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = BrewUpdateSerializer(
             instance,
             data=request.data,
             partial=True
@@ -99,6 +117,11 @@ class MaltDestroy(generics.DestroyAPIView):
     model = Malt
     serializer_class = MaltSerializer
     queryset = Malt.objects.all()
+
+class BrewDestroy(generics.DestroyAPIView):
+    model = Brew
+    serializer_class = BrewSerializer
+    queryset = Brew.objects.all()
 
 class LogDestroy(generics.DestroyAPIView):
     model = Log
