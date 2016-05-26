@@ -110,6 +110,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
                 console.log(response);
                 var index = $scope.recipe.brews.indexOf(brew);
                 $scope.recipe.brews.splice(index, 1);
+                $scope.updateAverageRating();
             })
             .error(function(response) {
                 console.log(response);
@@ -278,8 +279,8 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         $scope.$watch('equip', $scope.updateWater);
         $scope.$watch('equip', function(oldValue, newValue) {
             var diff = findDiff(oldValue, newValue);
+            calculateWater();
             if (!$.isEmptyObject(diff)) {
-                calculateWater();
                 $http.put('api/equipment/update/' + $scope.equip.id, diff)
                 .success(function(response) {
                     console.log(response);
@@ -292,8 +293,8 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
 
         $scope.$watchCollection('recipe', function(oldValue, newValue) {
             var diff = findDiff(oldValue, newValue);
+            calculateWater();
             if (!$.isEmptyObject(diff)) {
-                calculateWater();
                 $http.put('api/recipes/update/' + recipeId, diff)
                 .success(function(response) {
                     console.log(response);
