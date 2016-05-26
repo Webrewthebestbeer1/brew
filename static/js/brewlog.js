@@ -95,7 +95,6 @@ angular.module('BrewLog', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         $http.post(baseUrl + '/brews', brew)
         .success(function(response) {
             console.log(response);
-            console.log($scope.brewCollapse)
             $scope.recipe.brews.push(response);
             $scope.brewCollapse[$scope.recipe.brews.length - 1] = true;
         })

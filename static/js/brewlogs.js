@@ -6,7 +6,7 @@ angular.module('BrewLogs', ['ngMaterial']).controller('BrewLogsController', ['$s
             date: new Date().toISOString(),
             malts: [],
             hops: [],
-            brews: [],
+            //brews: [],
         };
         $http.post('api/recipes', recipe)
         .success(function(response) {

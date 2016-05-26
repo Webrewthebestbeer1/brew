@@ -167,7 +167,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         malts_data = validated_data.pop('malts')
         hops_data = validated_data.pop('hops')
-        brews_data = validated_data.pop('brews')
+        #brews_data = validated_data.pop('brews')
         recipe = Recipe.objects.create(**validated_data)
         return recipe
 
