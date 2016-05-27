@@ -1,13 +1,13 @@
 from django.db import models
 
-from django.utils import timezone
+import django
 
 class Recipe(models.Model):
     name = models.CharField(max_length=100)
     yeast = models.CharField(max_length=100, null=True)
     mash_time = models.IntegerField(null=True)
     sparge_time = models.IntegerField(null=True)
-    date = models.DateTimeField(default=timezone.now())
+    date = models.DateTimeField(default=django.utils.timezone.now)
     batch_size = models.IntegerField(default=19, null=True)
     boil_time = models.IntegerField(default=60, null=True)
     mash_temperature = models.IntegerField(default=67, null=True)
@@ -46,7 +46,7 @@ class Hop(models.Model):
         return self.entry + ", " + self.name + ", " + self.amount
 
 class Brew(models.Model):
-    date = models.DateTimeField(default=timezone.now())
+    date = models.DateTimeField(default=django.utils.timezone.now)
     recipe = models.ForeignKey(Recipe, related_name='brews')
     fermentation_temperature = models.IntegerField(null=True)
     fermentation_time = models.IntegerField(null=True)
