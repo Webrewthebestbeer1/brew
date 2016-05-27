@@ -23,5 +23,7 @@ urlpatterns = [
     url(r'^api/', include('apps.brewlog.urls')),
     url(r'^log$', log, name='log'),
     url(r'^logs$', logs, name='logs'),
+    url(r'^logs$', logs, name='inventory'),
+    url(r'^logs$', logs, name='ferment'),
     url(r'^$', index, name='index'),
 ]
