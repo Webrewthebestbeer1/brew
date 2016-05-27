@@ -250,7 +250,6 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
                 validRatings++;
             }
         }
-        console.log(sum/validRatings);
         $scope.averageRating = sum/validRatings;
     }
 
@@ -277,8 +276,8 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
             $scope.updateGravity($scope.recipe.brews[i], true);
         }
         $scope.$watch('equip', $scope.updateWater);
-        $scope.$watch('equip', function(oldValue, newValue) {
-            var diff = findDiff(oldValue, newValue);
+        $scope.$watch('equip', function(newValue, oldValue) {
+            var diff = findDiff(newValue, oldValue);
             $scope.calculateWater();
             if (!$.isEmptyObject(diff)) {
                 $http.put('api/equipment/update/' + $scope.equip.id, diff)
@@ -291,8 +290,8 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
             }
         }, true);
 
-        $scope.$watchCollection('recipe', function(oldValue, newValue) {
-            var diff = findDiff(oldValue, newValue);
+        $scope.$watchCollection('recipe', function(newValue, oldValue) {
+            var diff = findDiff(newValue, oldValue);
             $scope.calculateWater();
             if (!$.isEmptyObject(diff)) {
                 $http.put('api/recipes/update/' + recipeId, diff)
@@ -325,8 +324,8 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
 
 }])
 .controller('BrewController', function($scope, $http) {
-    $scope.$watchCollection('brew', function(oldValue, newValue) {
-        var diff = findDiff(oldValue, newValue);
+    $scope.$watchCollection('brew', function(newValue, oldValue) {
+        var diff = findDiff(newValue, oldValue);
         if (!$.isEmptyObject(diff)) {
             $scope.updateGravity($scope.brew, false);
             $http.put('api/brews/update/' + oldValue.id, diff)

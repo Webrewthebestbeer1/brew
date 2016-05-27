@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include('apps.brewlog.urls')),
     url(r'^log$', log, name='log'),
-    url(r'^$', logs, name='logs'),
+    url(r'^logs$', logs, name='logs'),
+    url(r'^$', index, name='index'),
 ]

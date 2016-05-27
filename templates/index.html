@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<body ng-controller="IndexController" ng-cloak="" ng-app="Index">
+    here be stuff
+</body>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static "js/index.js" %}"></script>
+{% endblock scripts %}

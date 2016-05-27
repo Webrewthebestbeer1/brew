@@ -10,9 +10,36 @@
   <link rel="stylesheet" href="{% static "css/style.css" %}">
 </head>
 <body>
+
+    <div layout="column">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <span>
+                    <md-button class="md-icon-button md-accent" aria-label="Home" href="/">
+                        <md-icon md-svg-icon="{% static "img/logo.svg" %}"></md-icon>
+                    </md-button>
+                    <md-button href="/logs">
+                        Logs
+                    </md-button>
+                    <md-button href="/">
+                        Inventory
+                    </md-button>
+                </span>
+
+                <!-- fill up the space between left and right area -->
+                <span flex></span>
+                <md-button href="/admin/logout">
+                    Log out
+                </md-button>
+            </div>
+        </md-toolbar>
+        <!-- be careful: nothing between md-toolbar and md-content -->
+        <md-content>
+
     {% block content %}
     {% endblock content %}
-
+    </md-content>
+    </div>
     <script src="{% static "libs/jquery/2.2.0/jquery.min.js" %}"></script>
 
     <!-- Angular Material requires Angular.js Libraries -->
