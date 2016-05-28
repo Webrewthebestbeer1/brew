@@ -6,9 +6,9 @@ angular.module('BrewLogs', ['ngMaterial']).controller('BrewLogsController', ['$s
             date: new Date().toISOString(),
             malts: [],
             hops: [],
-            brews: [],
+            //brews: [],
         };
-        $http.post('api/recipes', recipe)
+        $http.post('/api/recipe/recipes/', recipe)
         .success(function(response) {
             console.log(response)
             window.location.replace('log?id=' + response.id);
@@ -21,7 +21,7 @@ angular.module('BrewLogs', ['ngMaterial']).controller('BrewLogsController', ['$s
 
     $scope.removeRecipe = function(item) {
         var maltId = item['id'];
-        $http.delete('api/malts/delete/' + maltId)
+        $http.delete('/api/recipe/malts/delete/' + maltId)
         .success(function(response) {
             console.log(response);
             var index = $scope.entry.malts.indexOf(item);
@@ -32,7 +32,7 @@ angular.module('BrewLogs', ['ngMaterial']).controller('BrewLogsController', ['$s
         });
     }
 
-    $http.get("api/recipes").success(function(response) {
+    $http.get('/api/recipe/recipes/').success(function(response) {
         $scope.recipes = response.results;
         console.log(response);
     });

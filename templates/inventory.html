@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<body ng-controller="InventoryController" ng-cloak="" ng-app="Inventory">
+
+
+        <!-- Malts and hops -->
+        <div layout="row" layout-xs="column" class="bl-content">
+
+            <!-- Malts -->
+            <div flex class="bl-block" layout="column">
+                <div class="bl-header" layout="row">
+                    <h1>Malts</h1>
+                </div>
+                <div layout="column" class="bl-column">
+                    <table style="width:100%;" class="bl-table">
+                        <tr>
+                            <th>Name</th>
+                            <th>Amount (kg)</th>
+                            <th></th>
+                        </tr>
+                        <tr ng-repeat="malt in malts | orderBy: 'name'" ng-if="malt.amount > 0" class="fade">
+                            <td class="bl-table-data">{[{ malt.name }]}</td>
+                            <td class="bl-table-data">{[{ malt.amount }]}</td>
+                            <td class="bl-table-action">
+                                <md-button class="md-icon-button md-accent" aria-label="-" ng-click="updateMalt($event, malt)">
+                                    <md-tooltip>Adjust</md-tooltip>
+                                    <md-icon md-svg-icon="{% static "img/adjust.svg" %}"></md-icon>
+                                </md-button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <md-input-container md-no-float flex-gt-sm="" class="md-block">
+                                  <input ng-model="maltName" placeholder="Name" type="text">
+                                </md-input-container>
+                            </td>
+                            <td>
+                                <md-input-container md-no-float flex-gt-sm="" class="md-block">
+                                  <input ng-model="maltAmount" placeholder="Amount" type="number">
+                                </md-input-container>
+                            </td>
+                            <td class="bl-table-action">
+                                <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addMalt()">
+                                    <md-tooltip>Add</md-tooltip>
+                                    <md-icon md-svg-icon="{% static "img/add.svg" %}"></md-icon>
+                                </md-button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <!-- end malts -->
+
+            <!-- Hops -->
+            <div flex class="bl-block" layout="column">
+                <div class="bl-header" layout="row">
+                    <h1>Hops</h1>
+                </div>
+
+                <table style="width:100%;" class="bl-table">
+                    <tr>
+                        <th>Name</th>
+                        <th>Amount (g)</th>
+                        <th></th>
+                    </tr>
+                    <tr ng-repeat="hop in hops | orderBy: 'name'" class="fade">
+                        <td class="bl-table-data">{[{ hop.name }]}</td>
+                        <td class="bl-table-data">{[{ hop.amount }]}</td>
+                        <td class="bl-table-action">
+                            <md-button class="md-icon-button md-accent" aria-label="-" ng-click="updateHop($event, hop)">
+                                <md-tooltip>Adjust</md-tooltip>
+                                <md-icon md-svg-icon="{% static "img/adjust.svg" %}"></md-icon>
+                            </md-button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <md-input-container md-no-float flex-gt-sm="" class="md-block">
+                              <input ng-model="hopName" placeholder="Name" type="text">
+                            </md-input-container>
+                        </td>
+                        <td>
+                            <md-input-container md-no-float flex-gt-sm="" class="md-block">
+                              <input ng-model="hopAmount" placeholder="Amount" type="number">
+                            </md-input-container>
+                        </td>
+                        <td class="bl-table-action">
+                            <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addHop()">
+                                <md-icon md-svg-icon="{% static "img/add.svg" %}"></md-icon>
+                            </md-button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <!-- end hops -->
+        </div>
+        <!-- end malts and hops -->
+
+</body>
+
+{% endblock content %}
+{% block scripts %}
+<script src="{% static "js/inventory.js" %}"></script>
+{% endblock scripts %}
