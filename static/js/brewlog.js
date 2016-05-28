@@ -26,17 +26,20 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
     }
 
     $scope.addMalt = function() {
-        var malt = {name: $scope.maltName, amount: $scope.maltAmount};
-        $http.post(baseUrl + '/malts', malt)
-        .success(function(response) {
-            console.log(response)
-            $scope.recipe.malts.push(response);
-            $scope.maltName = "";
-            $scope.maltAmount = "";
-        })
-        .error(function(response) {
-            console.log(response);
-        });
+        if ($scope.selectedMaltItem != null) {
+            console.log($scope.selectedMaltItem);
+            var malt = {inventory: $scope.selectedMaltItem, amount: $scope.maltAmount};
+            $http.post(baseUrl + '/malts', malt)
+            .success(function(response) {
+                console.log(response)
+                $scope.recipe.malts.push(response);
+                $scope.maltAmount = "";
+            })
+            .error(function(response) {
+                console.log(response);
+            });
+        }
+
     }
 
     $scope.removeMalt = function(ev, item) {
@@ -267,6 +270,20 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         brew.abv = abv.toFixed(2);
         brew.attenuation = (attenuation * 100).toFixed(2);
     }
+
+    $scope.queryMaltSearch = function(query) {
+        return $scope.malts;
+    }
+
+    $http.get('/api/inventory/malts')
+    .success(function(response) {
+        console.log(response.results);
+        $scope.malts = response.results;
+    })
+    .error(function(response) {
+        console.log(response);
+        $scope.malts = [];
+    });
 
     $http.get(baseUrl).success(function(response) {
         $scope.recipe = response;

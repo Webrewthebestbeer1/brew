@@ -1,27 +1,49 @@
 from rest_framework import serializers, pagination
 
 from .models import Recipe, Malt, Hop, Brew, Log, Comment, Equipment
+from apps.inventory.models import Malt as InventoryMalt
+from apps.inventory.models import Hop as InventoryHop
 
 from pprint import pprint
 
+class InventoryMaltSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = InventoryMalt
+        fields = ('id', 'name')
+
+class InventoryHopSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = InventoryHop
+
 class MaltSerializer(serializers.ModelSerializer):
+
+    inventory = InventoryMaltSerializer(
+        many=False
+    )
 
     class Meta:
         model = Malt
-        fields = ('id', 'name', 'amount')
+        fields = ('id', 'inventory', 'amount')
 
     def create(self, validated_data):
         # there must be a better way to set the foreign key...
         recipe_id = self.context['request'].parser_context['kwargs'].get('id')
         recipe = Recipe.objects.filter(id=recipe_id).first()
+        print(validated_data)
+        inventory = validated_data.pop('inventory')
+        pprint(self.context['request'])
         malt = Malt.objects.create(**validated_data, recipe=recipe)
         return malt
 
 class HopSerializer(serializers.ModelSerializer):
 
+    inventory = InventoryHopSerializer(
+        many=False
+    )
+
     class Meta:
         model = Hop
-        fields = ('id', 'name', 'amount', 'add')
+        fields = ('id', 'inventory', 'amount', 'add')
 
     def create(self, validated_data):
         # there must be a better way to set the foreign key...

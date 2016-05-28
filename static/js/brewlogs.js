@@ -8,7 +8,7 @@ angular.module('BrewLogs', ['ngMaterial']).controller('BrewLogsController', ['$s
             hops: [],
             //brews: [],
         };
-        $http.post('/api/recipe/recipes', recipe)
+        $http.post('/api/recipe/recipes/', recipe)
         .success(function(response) {
             console.log(response)
             window.location.replace('log?id=' + response.id);
@@ -32,7 +32,7 @@ angular.module('BrewLogs', ['ngMaterial']).controller('BrewLogsController', ['$s
         });
     }
 
-    $http.get('/api/recipe/recipes').success(function(response) {
+    $http.get('/api/recipe/recipes/').success(function(response) {
         $scope.recipes = response.results;
         console.log(response);
     });

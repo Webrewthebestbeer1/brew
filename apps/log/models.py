@@ -1,6 +1,6 @@
 from django.db import models
-
 import django.utils
+
 
 class Recipe(models.Model):
     name = models.CharField(max_length=100)
@@ -29,22 +29,23 @@ class Equipment(models.Model):
         return self.name
 
 class Malt(models.Model):
-    name = models.CharField(max_length=100)
+    #name = models.CharField(max_length=100)
     amount = models.DecimalField(max_digits=5, decimal_places=2)
     recipe = models.ForeignKey(Recipe, related_name='malts')
-    #inventory = models.ForeignKey(apps.inventory.models.Malt, related_name='uses')
+    inventory = models.ForeignKey('inventory.Malt', related_name='uses')
 
     def __str__(self):
-        return str(self.entry) + ", " + self.name
+        return str(self.inventory.name)
 
 class Hop(models.Model):
-    name = models.CharField(max_length=100)
+    #name = models.CharField(max_length=100)
     amount = models.DecimalField(max_digits=4, decimal_places=1)
     add = models.IntegerField()
     recipe = models.ForeignKey(Recipe, related_name='hops')
+    inventory = models.ForeignKey('inventory.Hop', related_name='uses')
 
     def __str__(self):
-        return self.entry + ", " + self.name + ", " + self.amount
+        return str(self.inventory.name)
 
 class Brew(models.Model):
     date = models.DateTimeField(default=django.utils.timezone.now)
