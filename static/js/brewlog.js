@@ -4,7 +4,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
     ['$scope', '$http', '$location', '$mdDialog', function($scope, $http, $location, $mdDialog) {
 
     var recipeId = $location.search().id;
-    var baseUrl = 'api/recipes/' + recipeId
+    var baseUrl = '/api/recipe/recipes/' + recipeId
     $scope.brewCollapse = [];
     $scope.logStart = [];
     $scope.logEnd = [];
@@ -42,7 +42,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
     $scope.removeMalt = function(ev, item) {
         var callback = function() {
             var maltId = item['id'];
-            $http.delete('api/malts/delete/' + maltId)
+            $http.delete('/api/recipe/malts/delete/' + maltId)
             .success(function(response) {
                 console.log(response);
                 var index = $scope.recipe.malts.indexOf(item);
@@ -74,7 +74,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
     $scope.removeHop = function(ev, item) {
         var callback = function() {
             var hopId = item['id'];
-            $http.delete('api/hops/delete/' + hopId)
+            $http.delete('/api/recipe/hops/delete/' + hopId)
             .success(function(response) {
                 console.log(response);
                 var index = $scope.recipe.hops.indexOf(item);
@@ -105,7 +105,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
 
     $scope.removeBrew = function(ev, brew) {
         var callback = function() {
-            $http.delete('api/brews/delete/' + brew.id)
+            $http.delete('/api/recipe/brews/delete/' + brew.id)
             .success(function(response) {
                 console.log(response);
                 var index = $scope.recipe.brews.indexOf(brew);
@@ -122,7 +122,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
     $scope.addComment = function(brew) {
         var date = new Date().toISOString();
         var comment = {date: date, comment: $scope.comments[brew]};
-        $http.post('api/brews/' + brew.id + '/comments', comment)
+        $http.post('/api/recipe/brews/' + brew.id + '/comments', comment)
         .success(function(response) {
             console.log(response)
             brew.comments.push(response);
@@ -137,7 +137,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
     $scope.deleteComment = function(ev, brew, item) {
         var callback = function() {
             var commentId = item['id'];
-            $http.delete('api/comments/delete/' + commentId)
+            $http.delete('/api/recipe/comments/delete/' + commentId)
             .success(function(response) {
                 console.log(response);
                 console.log(item);
@@ -159,7 +159,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         var index = brew.comments.indexOf(comment);
         var text = $("#comment" + comment.id).val();
         var field = {comment: text}
-        $http.put('api/comments/update/' + comment['id'], field)
+        $http.put('/api/recipe/comments/update/' + comment['id'], field)
         .success(function(response) {
             console.log(response);
             comment.comment = text;
@@ -174,7 +174,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         var start = $scope.logStart[brew].toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: false});
         var end = $scope.logEnd[brew].toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: false});
         var entry = {start: start, end: end, description: $scope.logDescription[brew]};
-        $http.post('api/brews/' + brew.id + '/logs', entry)
+        $http.post('/api/recipe/brews/' + brew.id + '/logs', entry)
         .success(function(response) {
             console.log(response)
             brew.logs.push(response);
@@ -191,7 +191,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
     $scope.deleteLog = function(ev, brew, item) {
         var callback = function() {
             var logId = item['id'];
-            $http.delete('api/logs/delete/' + logId)
+            $http.delete('/api/recipe/logs/delete/' + logId)
             .success(function(response) {
                 console.log(response);
                 var index = brew.logs.indexOf(item);
@@ -207,7 +207,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
     $scope.addEquipment = function() {
         var equipment = {name: $scope.equipmentName};
         $scope.equipmentName = "";
-        $http.post('api/equipment', equipment)
+        $http.post('/api/recipe/equipment', equipment)
         .success(function(response) {
             console.log(response);
             $scope.equipment.push(response);
@@ -250,6 +250,10 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
                 validRatings++;
             }
         }
+        if (validRatings == 0) {
+            $scope.averageRating = 0;
+            return;
+        }
         $scope.averageRating = sum/validRatings;
     }
 
@@ -280,7 +284,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
             var diff = findDiff(newValue, oldValue);
             $scope.calculateWater();
             if (!$.isEmptyObject(diff)) {
-                $http.put('api/equipment/update/' + $scope.equip.id, diff)
+                $http.put('/api/recipe/equipment/update/' + $scope.equip.id, diff)
                 .success(function(response) {
                     console.log(response);
                 })
@@ -294,7 +298,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
             var diff = findDiff(newValue, oldValue);
             $scope.calculateWater();
             if (!$.isEmptyObject(diff)) {
-                $http.put('api/recipes/update/' + recipeId, diff)
+                $http.put('/api/recipe/recipes/update/' + recipeId, diff)
                 .success(function(response) {
                     console.log(response);
                 })
@@ -315,7 +319,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         return diff;
     }
 
-    $http.get('api/equipment').success(function(response) {
+    $http.get('/api/recipe/equipment').success(function(response) {
         $scope.equipment = response.results;
         if ($scope.equipment.length > 0) $scope.equip = $scope.equipment[0];
         console.log($scope.equipment);
@@ -328,7 +332,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         var diff = findDiff(newValue, oldValue);
         if (!$.isEmptyObject(diff)) {
             $scope.updateGravity($scope.brew, false);
-            $http.put('api/brews/update/' + oldValue.id, diff)
+            $http.put('/api/recipe/brews/update/' + oldValue.id, diff)
             .success(function(response) {
                 console.log(response);
             })

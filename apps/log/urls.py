@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url, include
 
 from .api import *
+from .views import *
 
 recipe_urls = [
     url(r'^(?P<id>[0-9]+)/hops$', RecipeHopList.as_view(), name='recipehop-list'),
@@ -48,4 +49,6 @@ urlpatterns = [
     url(r'^logs/', include(log_urls)),
     url(r'^comments/', include(comment_urls)),
     url(r'^equipment/', include(equipment_urls)),
+    url(r'^log$', log, name='log'),
+    url(r'^$', logs, name='logs'),
 ]
