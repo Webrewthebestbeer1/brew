@@ -2,7 +2,7 @@
 
 This is our internal webpages for our brews.
 
-The backend is based on Django with Django REST Framework for serializing the models.
+The backend is based on Django for authentication, session management and template engine. Django REST Framework is used for serializing and exposing the models.
 The frontend is written in AngularJS.
 
 ### Development setup
