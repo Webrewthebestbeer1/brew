@@ -210,7 +210,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
     $scope.addEquipment = function() {
         var equipment = {name: $scope.equipmentName};
         $scope.equipmentName = "";
-        $http.post('/api/recipe/equipment', equipment)
+        $http.post('/api/recipe/equipment/', equipment)
         .success(function(response) {
             console.log(response);
             $scope.equipment.push(response);
