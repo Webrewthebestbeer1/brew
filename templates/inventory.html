@@ -20,7 +20,7 @@
                             <th>Amount (kg)</th>
                             <th></th>
                         </tr>
-                        <tr ng-repeat="malt in malts | orderBy: 'name'" ng-if="malt.amount > 0" class="fade">
+                        <tr ng-repeat="malt in malts | orderBy: 'name'" class="fade">
                             <td class="bl-table-data">{[{ malt.name }]}</td>
                             <td class="bl-table-data">{[{ malt.amount }]}</td>
                             <td class="bl-table-action">

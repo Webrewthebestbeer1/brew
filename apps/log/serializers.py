@@ -7,13 +7,20 @@ from apps.inventory.models import Hop as InventoryHop
 from pprint import pprint
 
 class InventoryMaltSerializer(serializers.ModelSerializer):
+
+    id = serializers.ModelField(model_field=InventoryMalt()._meta.get_field('id'))
+
     class Meta:
         model = InventoryMalt
         fields = ('id', 'name')
 
 class InventoryHopSerializer(serializers.ModelSerializer):
+
+    id = serializers.ModelField(model_field=InventoryHop()._meta.get_field('id'))
+
     class Meta:
         model = InventoryHop
+        fields = ('id', 'name')
 
 class MaltSerializer(serializers.ModelSerializer):
 
@@ -29,10 +36,9 @@ class MaltSerializer(serializers.ModelSerializer):
         # there must be a better way to set the foreign key...
         recipe_id = self.context['request'].parser_context['kwargs'].get('id')
         recipe = Recipe.objects.filter(id=recipe_id).first()
-        print(validated_data)
-        inventory = validated_data.pop('inventory')
-        pprint(self.context['request'])
-        malt = Malt.objects.create(**validated_data, recipe=recipe)
+        inventory_id = validated_data.pop('inventory')['id']
+        inventory = InventoryMalt.objects.filter(id=inventory_id).first()
+        malt = Malt.objects.create(**validated_data, recipe=recipe, inventory=inventory)
         return malt
 
 class HopSerializer(serializers.ModelSerializer):
@@ -49,7 +55,9 @@ class HopSerializer(serializers.ModelSerializer):
         # there must be a better way to set the foreign key...
         recipe_id = self.context['request'].parser_context['kwargs'].get('id')
         recipe = Recipe.objects.filter(id=recipe_id).first()
-        hop = Hop.objects.create(**validated_data, recipe=recipe)
+        inventory_id = validated_data.pop('inventory')['id']
+        inventory = InventoryHop.objects.filter(id=inventory_id).first()
+        hop = Hop.objects.create(**validated_data, recipe=recipe, inventory=inventory)
         return hop
 
 class LogSerializer(serializers.ModelSerializer):

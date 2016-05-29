@@ -1,7 +1,7 @@
 angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
 .controller(
     'RecipeController',
-    ['$scope', '$http', '$location', '$mdDialog', function($scope, $http, $location, $mdDialog) {
+    ['$scope', '$http', '$location', '$mdDialog', '$q', function($scope, $http, $location, $mdDialog, $q) {
 
     var recipeId = $location.search().id;
     var baseUrl = '/api/recipe/recipes/' + recipeId
@@ -25,21 +25,103 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         });
     }
 
-    $scope.addMalt = function() {
-        if ($scope.selectedMaltItem != null) {
-            console.log($scope.selectedMaltItem);
-            var malt = {inventory: $scope.selectedMaltItem, amount: $scope.maltAmount};
-            $http.post(baseUrl + '/malts', malt)
-            .success(function(response) {
-                console.log(response)
-                $scope.recipe.malts.push(response);
-                $scope.maltAmount = "";
-            })
-            .error(function(response) {
-                console.log(response);
-            });
+    $scope.addMalt = function(ev) {
+        if ($scope.selectedMaltItem == null) {
+            showWarning(
+                ev,
+                $scope.searchMaltText + ' not found in inventory. Should I create it?',
+                function() {
+                    malt = {
+                        name: $scope.searchMaltText,
+                        amount: 0,
+                    };
+                    $http.post('/api/inventory/malts/', malt)
+                    .success(function(response) {
+                        inventory = response;
+                        console.log("new inventory created");
+                        insertMalt(inventory, $scope.maltAmount);
+                    })
+                    .error(function(response) {
+                        console.log(response);
+                    })
+                }
+            )
+        } else {
+            insertMalt($scope.selectedMaltItem, $scope.maltAmount);
         }
+    }
 
+    var insertMalt = function(inventory, amount) {
+        var malt = {inventory: inventory, amount: amount};
+        $http.post(baseUrl + '/malts', malt)
+        .success(function(response) {
+            console.log(response)
+            $scope.recipe.malts.push(response);
+            $scope.maltAmount = "";
+            $scope.searchMaltText = "";
+        })
+        .error(function(response) {
+            console.log(response);
+        });
+    }
+
+    $scope.queryHopSearch = function(query) {
+        var deferred = $q.defer();
+        $http.get('/api/inventory/hops?name=' + query)
+        .then(function(result) {
+            deferred.resolve(result.data.results);
+        });
+        return deferred.promise;
+    }
+
+    $scope.queryMaltSearch = function(query) {
+        var deferred = $q.defer();
+        $http.get('/api/inventory/malts?name=' + query)
+        .then(function(result) {
+            deferred.resolve(result.data.results);
+        });
+        return deferred.promise;
+    }
+
+    $scope.addHop = function(ev) {
+        if ($scope.selectedHopItem == null) {
+            showWarning(
+                ev,
+                $scope.searchHopText + ' not found in inventory. Should I create it?',
+                function() {
+                    hop = {
+                        name: $scope.searchHopText,
+                        amount: 0,
+                    };
+                    $http.post('/api/inventory/hops/', hop)
+                    .success(function(response) {
+                        inventory = response;
+                        console.log("new inventory created");
+                        insertHop(inventory, $scope.hopAmount, $scope.hopAdd);
+                    })
+                    .error(function(response) {
+                        console.log(response);
+                    })
+                }
+            )
+        } else {
+            insertHop($scope.selectedHopItem, $scope.hopAmount, $scope.hopAdd);
+        }
+    }
+
+    var insertHop = function(inventory, amount, add) {
+        var hop = {inventory: inventory, amount: amount, add: add};
+        $http.post(baseUrl + '/hops', hop)
+        .success(function(response) {
+            console.log(response)
+            $scope.recipe.hops.push(response);
+            $scope.hopAmount = "";
+            $scope.hopAdd = "";
+            $scope.searchHopText = "";
+        })
+        .error(function(response) {
+            console.log(response);
+        });
     }
 
     $scope.removeMalt = function(ev, item) {
@@ -56,22 +138,6 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
             });
         }
         showWarning(ev, 'Remove malt?', callback);
-    }
-
-    $scope.addHop = function() {
-        var hop = {name: $scope.hopName, amount: $scope.hopAmount, add: $scope.hopAdd};
-        $http.post(baseUrl + '/hops', hop)
-        .success(function(response) {
-            console.log(response)
-            $scope.recipe.hops.push(response);
-            $scope.hopName = "";
-            $scope.hopAmount = "";
-            $scope.hopAdd =  "";
-        })
-        .error(function(response) {
-            console.log(response);
-            return;
-        });
     }
 
     $scope.removeHop = function(ev, item) {
@@ -270,20 +336,6 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         brew.abv = abv.toFixed(2);
         brew.attenuation = (attenuation * 100).toFixed(2);
     }
-
-    $scope.queryMaltSearch = function(query) {
-        return $scope.malts;
-    }
-
-    $http.get('/api/inventory/malts')
-    .success(function(response) {
-        console.log(response.results);
-        $scope.malts = response.results;
-    })
-    .error(function(response) {
-        console.log(response);
-        $scope.malts = [];
-    });
 
     $http.get(baseUrl).success(function(response) {
         $scope.recipe = response;

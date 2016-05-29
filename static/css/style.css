@@ -193,3 +193,17 @@ md-content {
   color: #666;
   cursor: default;
 }
+
+// Workaround lack of md-autocomplete: md-no-float support: https://github.com/angular/material/issues/3219.
+// Apply no-float class to md-autocomplete with md-floating-label.
+md-autocomplete.no-float > md-autocomplete-wrap > md-input-container {
+  margin-top: 0px;
+}
+md-autocomplete.no-float > md-autocomplete-wrap > md-input-container > label {
+  -webkit-transform: translate3d(1px, 28px, 0) scale(1) !important;
+  transform: translate3d(1px, 28px, 0) scale(1) !important;
+  color: #BDBDBD;
+}
+md-autocomplete.no-float > md-autocomplete-wrap > md-input-container.md-input-has-value > label {
+  display: none !important;
+}

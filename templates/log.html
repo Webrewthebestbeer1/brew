@@ -224,13 +224,7 @@
                     </tr>
                     <tr>
                         <td>
-
-                            <!--
-                            <md-input-container md-no-float flex-gt-sm="" class="md-block">
-                              <input ng-model="maltName" placeholder="Name" type="text">
-                            </md-input-container>
-                            -->
-                            <md-autocomplete flex required
+                            <md-autocomplete flex
                             md-input-name="autocompleteField"
                             md-input-minlength="2"
                             md-input-maxlength="60"
@@ -238,7 +232,8 @@
                             md-search-text="searchMaltText"
                             md-items="malt in queryMaltSearch(searchMaltText)"
                             md-item-text="malt.name"
-                            md-floating-label="Name">
+                            md-floating-label="Name"
+                            class="no-float">
                             <md-item-template>
                                 <span md-highlight-text="searchMaltText">{[{malt.name}]}</span>
                             </md-item-template>
@@ -250,7 +245,7 @@
                             </md-input-container>
                         </td>
                         <td class="bl-table-action">
-                            <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addMalt()">
+                            <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addMalt($event)">
                                 <md-icon md-svg-icon="{% static "img/add.svg" %}"></md-icon>
                             </md-button>
                         </td>
@@ -281,9 +276,20 @@
                     </tr>
                     <tr>
                         <td>
-                            <md-input-container md-no-float flex-gt-sm="" class="md-block">
-                              <input ng-model="hopName" placeholder="Name" type="text">
-                            </md-input-container>
+                            <md-autocomplete flex
+                            md-input-name="autocompleteField"
+                            md-input-minlength="2"
+                            md-input-maxlength="60"
+                            md-selected-item="selectedHopItem"
+                            md-search-text="searchHopText"
+                            md-items="hop in queryHopSearch(searchHopText)"
+                            md-item-text="hop.name"
+                            md-floating-label="Name"
+                            class="no-float">
+                            <md-item-template>
+                                <span md-highlight-text="searchHopText">{[{hop.name}]}</span>
+                            </md-item-template>
+                        </md-autocomplete>
                         </td>
                         <td>
                             <md-input-container md-no-float flex-gt-sm="" class="md-block">
@@ -296,7 +302,7 @@
                             </md-input-container>
                         </td>
                         <td class="bl-table-action">
-                            <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addHop()">
+                            <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addHop($event)">
                                 <md-icon md-svg-icon="{% static "img/add.svg" %}"></md-icon>
                             </md-button>
                         </td>

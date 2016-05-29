@@ -9,10 +9,24 @@ class MaltList(generics.ListCreateAPIView):
     queryset = Malt.objects.all()
     serializer_class = MaltSerializer
 
+    def get_queryset(self):
+        queryset = Malt.objects.all();
+        name = self.request.query_params.get('name', None);
+        if name is not None:
+            queryset = queryset.filter(name__contains=name)
+        return queryset
+
 class HopList(generics.ListCreateAPIView):
     model = Hop
     queryset = Hop.objects.all()
     serializer_class = HopSerializer
+
+    def get_queryset(self):
+        queryset = Hop.objects.all();
+        name = self.request.query_params.get('name', None);
+        if name is not None:
+            queryset = queryset.filter(name__contains=name)
+        return queryset
 
 class MaltUpdate(generics.UpdateAPIView):
     model = Malt
