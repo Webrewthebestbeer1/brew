@@ -12,7 +12,7 @@ class InventoryMaltSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = InventoryMalt
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'amount')
 
 class InventoryHopSerializer(serializers.ModelSerializer):
 
@@ -20,7 +20,7 @@ class InventoryHopSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = InventoryHop
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'amount')
 
 class MaltSerializer(serializers.ModelSerializer):
 

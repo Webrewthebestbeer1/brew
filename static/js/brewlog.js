@@ -156,20 +156,92 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         showWarning(ev, 'Remove hop?', callback);
     }
 
-    $scope.addBrew = function() {
-        var brew = {
-            logs: [],
-            comments: [],
-        };
-        $http.post(baseUrl + '/brews', brew)
-        .success(function(response) {
-            console.log(response);
-            $scope.recipe.brews.push(response);
-            $scope.brewCollapse[$scope.recipe.brews.length - 1] = true;
+    $scope.addBrew = function(ev) {
+        var sufficientInventory = true;
+        var missingMalts = [];
+        var missingHops = [];
+        var malts = {};
+        var hops = {};
+        for (var i = 0; i < $scope.recipe.malts.length; i++) {
+            if ($scope.recipe.malts[i].inventory.amount < $scope.recipe.malts[i].amount) {
+                sufficientInventory = false;
+                missingMalts.push($scope.recipe.malts[i].inventory.name);
+            } else {
+                malts[$scope.recipe.malts[i].inventory.id] = $scope.recipe.malts[i].amount;
+            }
+
+        }
+        for (var i = 0; i < $scope.recipe.hops.length; i++) {
+            if ($scope.recipe.hops[i].inventory.amount < $scope.recipe.hops[i].amount) {
+                sufficientInventory = false;
+                missingHops.push($scope.recipe.hops[i].inventory.name);
+            } else {
+                hops[$scope.recipe.hops[i].inventory.id] = $scope.recipe.hops[i].amount;
+            }
+
+        }
+        var warning = '';
+        if (!sufficientInventory) {
+            warning = 'You have insufficient inventory.\n'
+            if (missingMalts) {
+                warning += ' Missing malts: '
+                for (var i = 0; i < missingMalts.length; i++) {
+                    warning += missingMalts[i];
+                    if (i < missingMalts.length - 1) warning += ', ';
+                    else warning += '.\n';
+                }
+            }
+            if (missingHops) {
+                warning += ' Missing hops: '
+                for (var i = 0; i < missingHops.length; i++) {
+                    warning += missingHops[i];
+                    if (i < missingHops.length - 1) warning += ', ';
+                    else warning += '.\n';
+                }
+            }
+            warning += ' Start brew either way? Items missing from inventory will not be subtracted from inventory.';
+        } else {
+            warning = 'This will subtract all ingredients from the inventory. Continue?';
+        }
+        showWarning(ev, warning, function() {
+            var brew = {
+                logs: [],
+                comments: [],
+            };
+            $http.post(baseUrl + '/brews', brew)
+            .success(function(response) {
+                console.log(response);
+                $scope.recipe.brews.push(response);
+                $scope.brewCollapse[$scope.recipe.brews.length - 1] = true;
+                subtractInventory(malts, hops);
+            })
+            .error(function(response) {
+                console.log(response);
+            })
         })
-        .error(function(response) {
-            console.log(response);
-        })
+    }
+
+    var subtractInventory = function(malts, hops) {
+        for (var id in malts) {
+            console.log(malts[id]);
+            $http.put('/api/inventory/malts/update/' + id + '?adjust=' + ((malts[id] | 0) * -1))
+            .success(function(response) {
+                console.log(response);
+            })
+            .error(function(response) {
+                console.log(response);
+            });
+        }
+        for (var id in hops) {
+            console.log(hops[id]);
+            $http.put('/api/inventory/hops/update/' + id + '?adjust=' + (hops[id]  *-1))
+            .success(function(response) {
+                console.log(response);
+            })
+            .error(function(response) {
+                console.log(response);
+            });
+        }
     }
 
     $scope.removeBrew = function(ev, brew) {

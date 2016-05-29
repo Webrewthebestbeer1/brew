@@ -53,8 +53,7 @@ angular.module('Inventory', ['ngMaterial'])
 
     $scope.updateMalt = function(ev, item) {
         adjustDialog(ev, item.name, function(value) {
-            var field = {amount: item.amount + Number(value)};
-            $http.put('/api/inventory/malts/update/' + item['id'], field)
+            $http.put('/api/inventory/malts/update/' + item['id'] + '?adjust=' + Number(value))
             .success(function(response) {
                 console.log(response);
                 var index = $scope.malts.indexOf(item);
@@ -68,8 +67,7 @@ angular.module('Inventory', ['ngMaterial'])
 
     $scope.updateHop = function(ev, item) {
         adjustDialog(ev, item.name, function(value) {
-            var field = {amount: item.amount + Number(value)};
-            $http.put('/api/inventory/hops/update/' + item['id'], field)
+            $http.put('/api/inventory/hops/update/' + item['id'] + '?adjust=' + Number(value))
             .success(function(response) {
                 console.log(response);
                 var index = $scope.hops.indexOf(item);

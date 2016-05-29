@@ -1,5 +1,6 @@
 from rest_framework import generics
 from rest_framework.response import Response
+from decimal import Decimal
 
 from .serializers import *
 from .models import *
@@ -35,6 +36,9 @@ class MaltUpdate(generics.UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
+        adjust = request.query_params.get('adjust', None)
+        if adjust and int(adjust): instance.amount = instance.amount + int(adjust)
+        instance.save()
         serializer = MaltSerializer(
             instance,
             data=request.data,
@@ -51,6 +55,10 @@ class HopUpdate(generics.UpdateAPIView):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
+        adjust = request.query_params.get('adjust', None)
+        print(Decimal(adjust))
+        if adjust and Decimal(adjust): instance.amount = instance.amount + Decimal(adjust)
+        instance.save()
         serializer = HopSerializer(
             instance,
             data=request.data,
