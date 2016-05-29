@@ -15,22 +15,22 @@
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <span>
-                    <md-button class="md-icon-button md-accent" aria-label="Home" href="{% url 'index' %}">
+                    <md-button class="md-icon-button md-accent" aria-label="Home" target="_self" href="{% url 'index' %}">
                         <md-icon md-svg-icon="{% static "img/logo.svg" %}"></md-icon>
                     </md-button>
-                    <md-button href="{% url 'logs' %}">
+                    <md-button target="_self" href="{% url 'logs' %}">
                         Logs
                     </md-button>
-                    <md-button href="{% url 'inventory' %}">
+                    <md-button target="_self" href="{% url 'inventory' %}">
                         Inventory
                     </md-button>
-                    <md-button href="{% url 'ferment' %}">
+                    <md-button target="_self" href="{% url 'ferment' %}">
                         Ferment
                     </md-button>
                 </span>
 
                 <span flex></span>
-                <md-button href="/admin/logout">
+                <md-button target="_self" href="/admin/logout">
                     Log out
                 </md-button>
             </div>
