@@ -51,6 +51,14 @@ angular.module('BrewLogs', ['ngMaterial']).controller('BrewLogsController', ['$s
         return sum/validRatings;
     }
 
+    $scope.grainBill = function(recipe) {
+        var sum = 0;
+        for (var i = 0; i < recipe.malts.length; i++) {
+            sum += Number(recipe.malts[i].amount);
+        }
+        return sum;
+    }
+
 }])
 .config(function($mdThemingProvider) {
     $mdThemingProvider.theme('default')

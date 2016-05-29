@@ -56,7 +56,6 @@ class HopUpdate(generics.UpdateAPIView):
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         adjust = request.query_params.get('adjust', None)
-        print(Decimal(adjust))
         if adjust and Decimal(adjust): instance.amount = instance.amount + Decimal(adjust)
         instance.save()
         serializer = HopSerializer(

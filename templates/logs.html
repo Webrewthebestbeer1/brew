@@ -24,7 +24,7 @@
                     <td class="bl-table-data"><a href="log?id={[{ recipe.id }]}">{[{ recipe.name }]}</a></td>
                     <td class="bl-table-data">{[{ recipe.date | date:'dd-MM-yyyy' }]}</td>
                     <td class="bl-table-data">{[{ recipe.batch_size }]}</td>
-                    <td class="bl-table-data">{[{ recipe.grain_bill }]}</td>
+                    <td class="bl-table-data">{[{ grainBill(recipe) }]}</td>
                     <td class="bl-table-data">{[{ recipe.brews.length }]}</td>
                     <td class="bl-table-data">{[{ recipe.brews[recipe.brews.length - 1].date | date:'dd-MM-yyyy' }]}</td>
                     <td class="bl-table-data">{[{ averageRating(recipe) }]}</td>
