@@ -30,9 +30,18 @@
                 </span>
 
                 <span flex></span>
-                <md-button target="_self" href="/admin/logout">
+                {% if user.is_authenticated %}
+                <md-button target="_self" href="/admin">
+                    Admin
+                </md-button>
+                <md-button target="_self" href="{% url 'logout' %}">
                     Log out
                 </md-button>
+                {% else %}
+                <md-button target="_self" href="{% url 'login' %}">
+                    Log in
+                </md-button>
+                {% endif %}
             </div>
 
         </md-toolbar>

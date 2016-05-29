@@ -1,7 +1,8 @@
 from django.conf.urls import url, include
 from django.contrib import admin, auth
-from django.contrib.auth.views import login, logout
+from django.contrib.auth.views import logout
 from apps.log.views import *
+from .views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -15,12 +16,11 @@ urlpatterns = [
         r'^login/$',
         login,
         name='login',
-        kwargs={'template_name': 'accounts/login.html'}
     ),
     url(
         r'^logout/$',
         logout,
         name='logout',
-        kwargs={'next_page': '/'}
+        kwargs={'next_page': '/login'}
     ),
 ]

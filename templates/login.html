@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<body ng-controller="LoginController" ng-cloak="" ng-app="Login">
+
+    <div layout="column" flex id="content" role="main">
+        <form ng-submit="login()">
+        <md-content layout="vertical" flex id="content">
+            <div layout="row" layout-align="center center" layout-fill>
+                <md-whiteframe class="md-whiteframe-4dp" layout="column" flex="30" layout-padding>
+                    <md-input-container>
+                        <label>Username</label>
+                        <input ng-model="username">
+                        <ng-message>{[{ errors.username[0] }]}</ng-message>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Password</label>
+                        <input ng-model="password" type="password">
+                        <ng-message>{[{ errors.password[0] }]}</ng-message>
+                    </md-input-container>
+                    <md-input-container layout="column">
+                        <md-button class="md-primary" type="submit">Login</md-button>
+                        <ng-message>{[{ errors.__all__[0] }]}</ng-message>
+                    </md-input-container>
+                </md-whiteframe>
+            </div>
+        </md-content>
+        </form>
+    </div>
+
+</body>
+
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static "js/login.js" %}"></script>
+{% endblock scripts %}
