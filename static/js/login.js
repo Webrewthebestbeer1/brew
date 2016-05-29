@@ -1,4 +1,4 @@
-angular.module('Login', ['ngMaterial']).controller('LoginController', ['$scope', '$http', '$window', function($scope, $http, $window) {
+angular.module('Login', ['ngMaterial']).controller('LoginController', ['$scope', '$http', '$window', '$location', function($scope, $http, $window, $location) {
 
     /*
     Django expects to receive a QueryDict such as
@@ -10,7 +10,8 @@ angular.module('Login', ['ngMaterial']).controller('LoginController', ['$scope',
         console.log($.param(data));
         $http.post('/login/', $.param(data))
         .then(function(response) {
-            $window.location.href = response.data.redirect;
+            if ($location.search().next) $window.location.href = $location.search().next;
+            else $window.location.href = response.data.redirect;
         }, function(response) {
             console.log(response);
             $scope.errors = response.data;
@@ -31,4 +32,13 @@ angular.module('Login', ['ngMaterial']).controller('LoginController', ['$scope',
     $httpProvider.defaults.xsrfCookieName = 'csrftoken';
     $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+}])
+/*
+Need $location to get URL parameteres
+*/
+.config(['$locationProvider', function($locationProvider) {
+    $locationProvider.html5Mode({
+        enabled: true,
+        requireBase: false
+    });
 }]);

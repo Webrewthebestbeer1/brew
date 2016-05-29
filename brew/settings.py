@@ -7,6 +7,8 @@ ALLOWED_HOSTS = []
 
 SECRET_KEY = 'some_random_secret_key'
 
+LOGIN_URL = "/login/"
+
 try:
     from .local_settings import *
 except ImportError as e:
