@@ -1,4 +1,4 @@
-angular.module('BrewLogs', ['ngMaterial']).controller('BrewLogsController', ['$scope', '$http', function($scope, $http) {
+angular.module('Recipes', ['ngMaterial']).controller('RecipesController', ['$scope', '$http', function($scope, $http) {
 
     $scope.addRecipe = function() {
         var recipe = {
@@ -11,7 +11,7 @@ angular.module('BrewLogs', ['ngMaterial']).controller('BrewLogsController', ['$s
         $http.post('/api/recipe/recipes/', recipe)
         .success(function(response) {
             console.log(response)
-            window.location.replace('log?id=' + response.id);
+            window.location.replace('recipe?id=' + response.id);
         })
         .error(function(response) {
             console.log(response);

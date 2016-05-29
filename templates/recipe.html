@@ -3,7 +3,7 @@
 {% block title %}{{ title }}{% endblock title %}
 
 {% block content %}
-<body href="/recipe/" ng-controller="RecipeController" ng-cloak="" ng-app="Brew">
+<body href="/recipe/" ng-controller="RecipeController" ng-cloak="" ng-app="Recipe">
 
     <div layout="row">
         <table style="width:100%;">
@@ -542,5 +542,5 @@
 </body>
 {% endblock content %}
 {% block scripts %}
-<script src="{% static "js/brewlog.js" %}"></script>
+<script src="{% static "js/recipe.js" %}"></script>
 {% endblock scripts %}

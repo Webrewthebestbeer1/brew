@@ -5,13 +5,13 @@ from .models import Recipe
 
 
 @login_required
-def logs(request):
-    return render(request, 'logs.html')
+def recipes(request):
+    return render(request, 'recipes.html')
 
 @login_required
-def log(request):
+def recipe(request):
     recipe_id = request.GET.get('id', None)
     recipe = Recipe.objects.filter(id=recipe_id).first()
     if not recipe:
-        return render(request, 'logs.html')
-    return render(request, 'log.html', {'title': recipe.name})
+        return recipes(request)
+    return render(request, 'recipe.html', {'title': recipe.name})

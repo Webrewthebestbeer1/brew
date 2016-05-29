@@ -49,6 +49,6 @@ urlpatterns = [
     url(r'^logs/', include(log_urls)),
     url(r'^comments/', include(comment_urls)),
     url(r'^equipment/', include(equipment_urls)),
-    url(r'^log$', log, name='log'),
-    url(r'^$', logs, name='logs'),
+    url(r'^recipe$', recipe, name='recipe'),
+    url(r'^$', recipes, name='recipes'),
 ]

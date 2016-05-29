@@ -1,4 +1,4 @@
-angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
+angular.module('Recipe', ['ngMaterial', 'ngAnimate', 'ngRoute'])
 .controller(
     'RecipeController',
     ['$scope', '$http', '$location', '$mdDialog', '$q', function($scope, $http, $location, $mdDialog, $q) {
