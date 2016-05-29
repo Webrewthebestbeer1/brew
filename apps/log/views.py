@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
+from .models import Recipe
+
 
 @login_required
 def logs(request):
@@ -8,8 +10,8 @@ def logs(request):
 
 @login_required
 def log(request):
-    return render(request, 'log.html')
-
-@login_required
-def index(request):
-    return render(request, 'index.html')
+    recipe_id = request.GET.get('id', None)
+    recipe = Recipe.objects.filter(id=recipe_id).first()
+    if not recipe:
+        return render(request, 'logs.html')
+    return render(request, 'log.html', {'title': recipe.name})

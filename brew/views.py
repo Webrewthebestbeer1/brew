@@ -4,9 +4,14 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.contrib.auth import login as auth_login
+from django.contrib.auth.decorators import login_required
 import json
 from django.shortcuts import render
 
+
+@login_required
+def index(request):
+    return render(request, 'index.html')
 
 @sensitive_post_parameters()
 @csrf_protect

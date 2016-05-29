@@ -2,12 +2,15 @@
 {% load staticfiles %}
 <html lang="en" >
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
-  <!-- Angular Material style sheet -->
-  <link rel="stylesheet" href="{% static "libs/angular_material/1.1.0-rc4/angular-material.min.css" %}">
-  <link href="{% static "fonts/material_icons.css" %}" rel="stylesheet">
-  <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
-  <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <!-- Angular Material style sheet -->
+    <link rel="stylesheet" href="{% static "libs/angular_material/1.1.0-rc4/angular-material.min.css" %}">
+    <link href="{% static "fonts/material_icons.css" %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "css/font-awesome.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+    <title>
+        Brew - {% block title %}{% endblock %}
+    </title>
 </head>
 <body>
 

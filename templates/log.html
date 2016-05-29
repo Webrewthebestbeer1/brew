@@ -1,6 +1,8 @@
 {% extends "base.html" %}
-{% block content %}
 {% load staticfiles %}
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
 <body href="/recipe/" ng-controller="RecipeController" ng-cloak="" ng-app="Brew">
 
     <div layout="row">
