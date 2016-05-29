@@ -49,6 +49,7 @@ angular.module('Brew', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         } else {
             insertMalt($scope.selectedMaltItem, $scope.maltAmount);
         }
+        $scope.calculateWater();
     }
 
     var insertMalt = function(inventory, amount) {
