@@ -1,5 +1,5 @@
 from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
 from django.views.decorators.debug import sensitive_post_parameters
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponse, HttpResponseBadRequest
@@ -14,6 +14,7 @@ def index(request):
     return render(request, 'index.html')
 
 @sensitive_post_parameters()
+@ensure_csrf_cookie
 @csrf_protect
 @never_cache
 def login(request):
