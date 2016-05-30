@@ -38,7 +38,7 @@ class MaltSerializer(serializers.ModelSerializer):
         recipe = Recipe.objects.filter(id=recipe_id).first()
         inventory_id = validated_data.pop('inventory')['id']
         inventory = InventoryMalt.objects.filter(id=inventory_id).first()
-        malt = Malt.objects.create(**validated_data, recipe=recipe, inventory=inventory)
+        malt = Malt.objects.create(recipe=recipe, inventory=inventory, **validated_data)
         return malt
 
 class HopSerializer(serializers.ModelSerializer):
@@ -57,7 +57,7 @@ class HopSerializer(serializers.ModelSerializer):
         recipe = Recipe.objects.filter(id=recipe_id).first()
         inventory_id = validated_data.pop('inventory')['id']
         inventory = InventoryHop.objects.filter(id=inventory_id).first()
-        hop = Hop.objects.create(**validated_data, recipe=recipe, inventory=inventory)
+        hop = Hop.objects.create(recipe=recipe, inventory=inventory, **validated_data)
         return hop
 
 class LogSerializer(serializers.ModelSerializer):
@@ -70,7 +70,7 @@ class LogSerializer(serializers.ModelSerializer):
         # there must be a better way to set the foreign key...
         brew_id = self.context['request'].parser_context['kwargs'].get('id')
         brew = Brew.objects.filter(id=brew_id).first()
-        log = Log.objects.create(**validated_data, brew=brew)
+        log = Log.objects.create(brew=brew, **validated_data)
         return log
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -83,7 +83,7 @@ class CommentSerializer(serializers.ModelSerializer):
         # there must be a better way to set the foreign key...
         brew_id = self.context['request'].parser_context['kwargs'].get('id')
         brew = Brew.objects.filter(id=brew_id).first()
-        comment = Comment.objects.create(**validated_data, brew=brew)
+        comment = Comment.objects.create(brew=brew, **validated_data)
         return comment
 
 class EquipmentSerializer(serializers.ModelSerializer):
@@ -131,7 +131,7 @@ class BrewSerializer(serializers.ModelSerializer):
         validated_data.pop('comments')
         recipe_id = self.context['request'].parser_context['kwargs'].get('id')
         recipe = Recipe.objects.filter(id=recipe_id).first()
-        brew = Brew.objects.create(**validated_data, recipe=recipe)
+        brew = Brew.objects.create(recipe=recipe, **validated_data)
         return brew
 
     """
