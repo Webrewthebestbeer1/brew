@@ -22,3 +22,12 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+REST_PROXY = {
+    'HOST': 'mydomain.com',
+    'AUTH': {
+        'user': '',
+        'password': '',
+        'token': '',
+    },
+}

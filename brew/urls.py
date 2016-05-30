@@ -1,7 +1,6 @@
 from django.conf.urls import url, include
 from django.contrib import admin, auth
 from django.contrib.auth.views import logout
-from apps.recipe.views import *
 from .views import *
 
 urlpatterns = [
@@ -10,7 +9,8 @@ urlpatterns = [
     url(r'^recipe/', include('apps.recipe.urls')),
     url(r'^api/inventory/', include('apps.inventory.urls')),
     url(r'^inventory/', include('apps.inventory.urls')),
-    url(r'^$', index, name='ferment'),
+    url(r'^api/ferment/', include('apps.ferment.urls')),
+    url(r'^ferment/', include('apps.ferment.urls')),
     url(r'^$', index, name='index'),
     url(
         r'^login/$',

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Brew{% endblock title %}
+{% block content %}
+<body ng-controller="FermentController" ng-cloak="" ng-app="Ferment">
+
+    <canvas id="line"
+    class="chart chart-line"
+    chart-data="data"
+    chart-labels="labels"
+    chart-legend="true"
+    chart-series="series"
+    chart-click="onClick" >
+    </canvas>
+
+
+</body>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static "libs/chart/1.1.1/Chart.min.js" %}"></script>
+<link rel="stylesheet" href="{% static "libs/angular_chart/0.10.2/angular-chart.min.css" %}">
+<script src="{% static "libs/angular_chart/0.10.2/angular-chart.min.js" %}"></script>
+<script src="{% static "js/ferment.js" %}"></script>
+{% endblock scripts %}

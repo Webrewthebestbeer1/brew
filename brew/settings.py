@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'apps.recipe',
     'apps.inventory',
+    'apps.ferment',
 ]
 
 MIDDLEWARE_CLASSES = [

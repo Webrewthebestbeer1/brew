@@ -207,3 +207,32 @@ md-autocomplete.no-float > md-autocomplete-wrap > md-input-container > label {
 md-autocomplete.no-float > md-autocomplete-wrap > md-input-container.md-input-has-value > label {
   display: none !important;
 }
+
+.brew-feed img {
+    height: auto;
+    width: 50px;
+}
+
+.post-container {
+    overflow: auto
+}
+.post-thumb {
+    float: left
+}
+.post-thumb img {
+    display: block
+}
+.post-content {
+    margin-left: 55px;
+    font-size: 70% !important;
+}
+
+.post-content a {
+    color: black;
+    text-decoration: none;
+}
+
+.post-title {
+    font-weight: bold;
+    font-size: 200%
+}

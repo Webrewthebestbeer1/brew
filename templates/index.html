@@ -3,7 +3,38 @@
 {% block title %}Brew{% endblock title %}
 {% block content %}
 <body ng-controller="IndexController" ng-cloak="" ng-app="Index">
-    here be stuff
+
+    <div layout="column" flex id="content" role="main">
+        <div layout="column" layout-gt-sm="row" layout-fill>
+            <div layout="column" style="float:left;">
+                <h3>Recent news</h3>
+                <div class="brew-feed post-container" ng-repeat="entry in rss.entries">
+                    <div class="post-thumb">
+                        <img src="{[{ entry.img }]}" align="left">
+                    </div>
+                    <div class="post-content">
+                        <a href="{[{ entry.link }]}" target="_blank">{[{ entry.contentSnippet }]}</a>
+                    </div>
+                    <span layout="row" ng-if="!$last"><hr flex/></span>
+
+                </div>
+            </div>
+            <div layout="column" flex="25" layout-padding style="float:right;">
+                <h3>Recent news</h3>
+                <div class="brew-feed post-container" ng-repeat="entry in rss.entries">
+                    <div class="post-thumb">
+                        <img src="{[{ entry.img }]}" align="left">
+                    </div>
+                    <div class="post-content">
+                        <a href="{[{ entry.link }]}" target="_blank">{[{ entry.contentSnippet }]}</a>
+                    </div>
+                    <span layout="row" ng-if="!$last"><hr flex/></span>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 {% endblock content %}
 
