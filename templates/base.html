@@ -3,6 +3,7 @@
 <html lang="en" >
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <link rel="shortcut icon" type="image/png" href="{% static "fonts/favicon.ico" %}"/>
     <!-- Angular Material style sheet -->
     <link rel="stylesheet" href="{% static "libs/angular_material/1.1.0-rc4/angular-material.min.css" %}">
     <link href="{% static "fonts/material_icons.css" %}" rel="stylesheet">
@@ -22,7 +23,7 @@
                         <md-icon md-svg-icon="{% static "img/logo.svg" %}"></md-icon>
                     </md-button>
                     <md-button target="_self" href="{% url 'recipes' %}">
-                        Logs
+                        Recipes
                     </md-button>
                     <md-button target="_self" href="{% url 'inventory' %}">
                         Inventory
@@ -34,7 +35,7 @@
 
                 <span flex></span>
                 {% if user.is_authenticated %}
-                <md-button target="_self" href="/admin">
+                <md-button target="_self" href="{% url 'admin:index' %}">
                     Admin
                 </md-button>
                 <md-button target="_self" href="{% url 'logout' %}">

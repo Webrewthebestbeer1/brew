@@ -525,6 +525,9 @@
                             <h1>Rating</h1>
                         </div>
                         <div star-rating ng-model="brew.rating" rating="brew.rating" read-only="false" max-rating="10" ng-click="updateAverageRating()"></div>
+                        <md-switch ng-model="brew.completed" aria-label="Completed">
+                            Completed
+                        </md-switch>
                     </div>
                 </div>
                 <!-- end results -->

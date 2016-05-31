@@ -4,36 +4,81 @@
 {% block content %}
 <body ng-controller="IndexController" ng-cloak="" ng-app="Index">
 
-    <div layout="column" flex id="content" role="main">
-        <div layout="column" layout-gt-sm="row" layout-fill>
-            <div layout="column" style="float:left;">
-                <h3>Recent news</h3>
-                <div class="brew-feed post-container" ng-repeat="entry in rss.entries">
-                    <div class="post-thumb">
-                        <img src="{[{ entry.img }]}" align="left">
+    <div class="bl-content">
+        <div class="bl-block" layout="column">
+            <div class="bl-header" layout="row">
+                <h1>Home</h1>
+            </div>
+
+            <div layout="row" layout-xs="column">
+
+                <!-- Latest -->
+                <div flex=35 layout="column" class="bl-column">
+                    <div class="bl-section" layout="row">
+                        <img src="{% static "img/in_progress.png" %}">
+                        <h1>In progress</h1>
                     </div>
-                    <div class="post-content">
-                        <a href="{[{ entry.link }]}" target="_blank">{[{ entry.contentSnippet }]}</a>
+                    <table style="width:100%;" class="bl-table" ng-if="ongoing_brews.length > 0">
+                        <tr>
+                            <th>Recipe</th>
+                            <th>Started</th>
+                            <th>O.G.</th>
+                        </tr>
+                        <tr ng-repeat="brew in ongoing_brews" class="fade">
+                            <td class="bl-table-data"><a href="/recipe/recipe?id={[{ brew.recipe.id }]}">{[{ brew.recipe.name }]}</a></td>
+                            <td class="bl-table-data">{[{ brew.date | date:'dd-MM-yyyy'}]}</td>
+                            <td class="bl-table-data">{[{ brew.og }]}</td>
+                        </tr>
+                    </table>
+                    <p ng-if="ongoing_brews.length == 0">No current brews!</p>
+                    <div class="bl-section" layout="row">
+                        <img src="{% static "img/done.png" %}">
+                        <h1>Latest brews</h1>
                     </div>
-                    <span layout="row" ng-if="!$last"><hr flex/></span>
 
                 </div>
-            </div>
-            <div layout="column" flex="25" layout-padding style="float:right;">
-                <h3>Recent news</h3>
-                <div class="brew-feed post-container" ng-repeat="entry in rss.entries">
-                    <div class="post-thumb">
-                        <img src="{[{ entry.img }]}" align="left">
+
+                <!-- Statistics -->
+                <div flex=35 class="bl-column">
+                    <div class="bl-section" layout="row">
+                        <img src="{% static "img/fridge.png" %}">
+                        <h1>Fridge</h1>
                     </div>
-                    <div class="post-content">
-                        <a href="{[{ entry.link }]}" target="_blank">{[{ entry.contentSnippet }]}</a>
+                    avg {[{ fridge.avg }]}
+                    compressor {[{ fridge.compressor }]}
+                    target {[{ fridge.target }]}
+                    <div class="bl-section" layout="row">
+                        <img src="{% static "img/statistics.png" %}">
+                        <h1>Statistics</h1>
                     </div>
-                    <span layout="row" ng-if="!$last"><hr flex/></span>
+
 
                 </div>
+
+                <!-- News -->
+                <div flex=30 class="bl-column">
+                    <div class="bl-section" layout="row">
+                        <img src="{% static "img/news.png" %}">
+                        <h1>Latest news</h1>
+                    </div>
+                    <div class="brew-feed post-container" ng-repeat="entry in rss.entries">
+                        <div class="post-thumb">
+                            <img src="{[{ entry.img }]}" align="left">
+                        </div>
+                        <div class="post-content">
+                            <a href="{[{ entry.link }]}" target="_blank">{[{ entry.contentSnippet }]}</a>
+                        </div>
+                        <span layout="row" ng-if="!$last"><hr flex/></span>
+
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
+
+
+
 
 </body>
 {% endblock content %}

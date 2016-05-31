@@ -204,3 +204,24 @@ class RecipeUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
+
+class OngoingBrewSerializer(serializers.ModelSerializer):
+
+    recipe = RecipeUpdateSerializer(
+        many=False
+    )
+
+    class Meta:
+        model = Brew
+        fields = (
+            'id',
+            'date',
+            'fermentation_temperature',
+            'fermentation_time',
+            'og',
+            'fg',
+            'rating',
+            'logs',
+            'comments',
+            'recipe',
+        )

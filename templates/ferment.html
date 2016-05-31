@@ -39,17 +39,19 @@
                         <img src="{% static "img/batch.png" %}">
                         <h1>Current</h1>
                     </div>
-                    <table style="width:100%;" class="bl-table" ng-if="brew">
+                    <table style="width:100%;" class="bl-table" ng-if="brews.length > 0">
                         <tr>
                             <th>Recipe</th>
                             <th>Started</th>
+                            <th>O.G.</th>
                         </tr>
                         <tr ng-repeat="brew in brews" class="fade">
                             <td class="bl-table-data">{[{ brew.recipe.name }]}</td>
-                            <td class="bl-table-data">{[{ brew.date }]}</td>
+                            <td class="bl-table-data">{[{ brew.date | date:'dd-MM-yyyy'}]}</td>
+                            <td class="bl-table-data">{[{ brew.og }]}</td>
                         </tr>
                     </table>
-                    <p ng-if="!brew">No current brews!</p>
+                    <p ng-if="brews.length == 0">No current brews!</p>
 
                 </div>
             </div>
@@ -59,7 +61,11 @@
                 <div class="bl-section" layout="row">
                     <img src="{% static "img/chart.png" %}">
                     <h1>Chart</h1>
-                    <span flex></span>
+                    <span flex>
+                        <md-button class="md-icon-button md-accent" aria-label="Refresh" ng-click="refreshChart()">
+                            <md-icon md-svg-icon="{% static "img/refresh.svg" %}"></md-icon>
+                        </md-button>
+                    </span>
                     <md-input-container>
                         <input ng-model="logStart[brew]" placeholder="Start" type="time">
                     </md-input-container>

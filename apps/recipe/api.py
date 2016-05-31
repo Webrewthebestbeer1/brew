@@ -1,8 +1,8 @@
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 
-from .serializers import RecipeSerializer, RecipeUpdateSerializer, MaltSerializer, HopSerializer, BrewSerializer, BrewUpdateSerializer, LogSerializer, CommentSerializer, EquipmentSerializer
-from .models import Recipe, Malt, Hop, Brew, Log, Comment, Equipment
+from .serializers import *
+from .models import *
 
 class RecipeList(generics.ListCreateAPIView):
     model = Recipe
@@ -41,6 +41,11 @@ class RecipeBrewList(generics.ListCreateAPIView):
     def get_queryset(self):
         queryset = super(RecipeBrewList, self).get_queryset()
         return queryset.filter(recipe__id=self.kwargs.get('id'))
+
+class OngoingBrewList(generics.ListAPIView):
+    model = Brew
+    serializer_class = OngoingBrewSerializer
+    queryset = Brew.objects.filter(completed=False)
 
 class BrewLogList(generics.ListCreateAPIView):
     model = Log

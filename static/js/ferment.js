@@ -1,19 +1,11 @@
 angular.module('Ferment', ['ngMaterial', 'chart.js']).controller('FermentController', ['$scope', '$http', function($scope, $http) {
 
-    $scope.labels = [];
-    $scope.series = ['Beer', 'Bottom', 'Top', 'Target', 'Compressor'];
-    $scope.data = [
-        [],
-        [],
-        [],
-        [],
-        [],
-    ];
+
     $scope.onClick = function (points, evt) {
         console.log(points, evt);
     };
 
-    $scope.populateGraph = function() {
+    $scope.populateChart = function() {
         $http.get('/api/ferment/get_sensor_readings?limit=20')
         .then(function(response) {
             $scope.readings = response.data;
@@ -35,7 +27,7 @@ angular.module('Ferment', ['ngMaterial', 'chart.js']).controller('FermentControl
         //setTimeout($scope.updateGraph, 5000);
     }
 
-    $scope.updateGraph = function() {
+    $scope.updateChart = function() {
         $http.get('/api/ferment/get_sensor_readings?limit=1')
         .then(function(response) {
             var reading = 0;
@@ -61,7 +53,29 @@ angular.module('Ferment', ['ngMaterial', 'chart.js']).controller('FermentControl
         })
     }
 
-$scope.populateGraph();
+    $scope.refreshChart = function() {
+        $scope.labels = [];
+        $scope.series = ['Beer', 'Bottom', 'Top', 'Target', 'Compressor'];
+        $scope.data = [
+            [],
+            [],
+            [],
+            [],
+            [],
+        ];
+        $scope.populateChart();
+    }
+
+$scope.refreshChart();
+
+$http.get('/api/recipe/brews/ongoing')
+.then(function(response) {
+    console.log(response);
+    $scope.brews = response.data.results;
+}, function(response) {
+    console.log(response);
+});
+
 $http.get('/api/ferment/get_target_temp')
 .then(function(response) {
     $scope.target_temp = response.data.target_temp;

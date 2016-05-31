@@ -14,7 +14,29 @@ angular.module('Index', ['ngMaterial']).controller('IndexController', ['$scope',
         }
     })
 
+$http.get('/api/recipe/brews/ongoing')
+.then(function(response) {
+    $scope.ongoing_brews = response.data.results;
+});
 
+$http.get('/api/ferment/get_sensor_readings?limit=1')
+.then(function(response) {
+    var count = 0;
+    var sum = 0;
+    var temps = [response.data[0].sensors['top'], response.data[0].sensors['bottom'], response.data[0].sensors['beer']];
+    for (var temp in temps) {
+        if (typeof(temps[temp]) != 'undefined') {
+            count++;
+            sum += temps[temp];
+        }
+    }
+    $scope.fridge = {};
+    $scope.fridge.avg = (sum/count).toFixed(2);
+    $scope.fridge.compressor = response.data[0].compressor_state ? "On" : "Off";
+    $scope.fridge.target = response.data[0].target_temp;
+
+    console.log(response);
+})
 
 }])
 .config(function($mdThemingProvider) {
