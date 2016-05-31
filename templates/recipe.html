@@ -359,7 +359,7 @@
 
         <div ng-repeat="brew in recipe.brews" class="md-block" ng-controller="BrewController">
             <div layout="row" class="bl-brew-list-header" ng-class="{'bl-brew-list-header-collapsed': brewCollapse[$index]}">
-                <div style="width:100%;" ng-click="brewCollapse[$index] = !brewCollapse[$index]">
+                <div style="width:100%;" ng-click="brewCollapse[$index] = !brewCollapse[$index]" id="brew_{[{ brew.id }]}">
                     <table style="width:100%;">
                         <td style="width:25%;">Added {[{ brew.date | date:'dd-MM-yyyy' }]}</td>
                         <td style="width:25%;">

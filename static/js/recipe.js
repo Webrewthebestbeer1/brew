@@ -1,9 +1,10 @@
 angular.module('Recipe', ['ngMaterial', 'ngAnimate', 'ngRoute'])
 .controller(
     'RecipeController',
-    ['$scope', '$http', '$location', '$mdDialog', '$q', function($scope, $http, $location, $mdDialog, $q) {
+    ['$scope', '$http', '$location', '$mdDialog', '$q', '$anchorScroll', '$timeout', function($scope, $http, $location, $mdDialog, $q, $anchorScroll, $timeout) {
 
     var recipeId = $location.search().id;
+    $scope.activeBrewId = $location.search().brewid;
     var baseUrl = '/api/recipe/recipes/' + recipeId
     $scope.brewCollapse = [];
     $scope.logStart = [];
@@ -420,6 +421,18 @@ angular.module('Recipe', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         for (var i = 0; i < $scope.recipe.brews.length; i++) {
             console.log($scope.recipe.brews[i]);
             $scope.updateGravity($scope.recipe.brews[i], true);
+            if (typeof($scope.activeBrewId) != 'undefined') {
+                if ($scope.recipe.brews[i].id == $scope.activeBrewId) {
+                    $scope.brewCollapse[i] = !$scope.brewCollapse[i];
+                    var hash = 'brew_' + $scope.recipe.brews[i].id;
+                    console.log(hash);
+                    $timeout(function() {
+                        $location.hash(hash);
+                        $anchorScroll();
+                    });
+
+                }
+            }
         }
         $scope.$watch('equip', $scope.updateWater);
         $scope.$watch('equip', function(newValue, oldValue) {

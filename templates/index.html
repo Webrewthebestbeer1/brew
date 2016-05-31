@@ -26,7 +26,7 @@
                                 <th>O.G.</th>
                             </tr>
                             <tr ng-repeat="brew in ongoing_brews" class="fade">
-                                <td class="bl-table-data"><a href="/recipe/recipe?id={[{ brew.recipe.id }]}">{[{ brew.recipe.name }]}</a></td>
+                                <td class="bl-table-data"><a href="/recipe/recipe?id={[{ brew.recipe.id }]}&brewid={[{ brew.id }]}">{[{ brew.recipe.name }]}</a></td>
                                 <td class="bl-table-data">{[{ brew.date | date:'dd-MM-yyyy'}]}</td>
                                 <td class="bl-table-data">{[{ brew.og }]}</td>
                             </tr>
@@ -45,7 +45,7 @@
                                 <th>Rating</th>
                             </tr>
                             <tr ng-repeat="brew in latest_brews" class="fade">
-                                <td class="bl-table-data"><a href="/recipe/recipe?id={[{ brew.recipe.id }]}">{[{ brew.recipe.name }]}</a></td>
+                                <td class="bl-table-data"><a href="/recipe/recipe?id={[{ brew.recipe.id }]}&brewid={[{ brew.id }]}">{[{ brew.recipe.name }]}</a></td>
                                 <td class="bl-table-data">{[{ brew.date | date:'dd-MM-yyyy'}]}</td>
                                 <td class="bl-table-data">{[{ brew.rating }]}</td>
                             </tr>
