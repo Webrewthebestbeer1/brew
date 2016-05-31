@@ -121,6 +121,7 @@ class BrewSerializer(serializers.ModelSerializer):
             'og',
             'fg',
             'rating',
+            'completed',
             'logs',
             'comments',
         )
@@ -205,7 +206,7 @@ class RecipeUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
 
-class OngoingBrewSerializer(serializers.ModelSerializer):
+class BrewGenericSerializer(serializers.ModelSerializer):
 
     recipe = RecipeUpdateSerializer(
         many=False
@@ -221,6 +222,7 @@ class OngoingBrewSerializer(serializers.ModelSerializer):
             'og',
             'fg',
             'rating',
+            'completed',
             'logs',
             'comments',
             'recipe',

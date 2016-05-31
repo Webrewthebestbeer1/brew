@@ -44,8 +44,13 @@ class RecipeBrewList(generics.ListCreateAPIView):
 
 class OngoingBrewList(generics.ListAPIView):
     model = Brew
-    serializer_class = OngoingBrewSerializer
+    serializer_class = BrewGenericSerializer
     queryset = Brew.objects.filter(completed=False)
+
+class LatestBrewList(generics.ListAPIView):
+    model = Brew
+    serializer_class = BrewGenericSerializer
+    queryset = Brew.objects.filter(completed=True).order_by('-date')[:5]
 
 class BrewLogList(generics.ListCreateAPIView):
     model = Log

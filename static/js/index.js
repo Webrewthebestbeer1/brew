@@ -19,6 +19,11 @@ $http.get('/api/recipe/brews/ongoing')
     $scope.ongoing_brews = response.data.results;
 });
 
+$http.get('/api/recipe/brews/latest')
+.then(function(response) {
+    $scope.latest_brews = response.data.results;
+});
+
 $http.get('/api/ferment/get_sensor_readings?limit=1')
 .then(function(response) {
     var count = 0;
@@ -34,8 +39,6 @@ $http.get('/api/ferment/get_sensor_readings?limit=1')
     $scope.fridge.avg = (sum/count).toFixed(2);
     $scope.fridge.compressor = response.data[0].compressor_state ? "On" : "Off";
     $scope.fridge.target = response.data[0].target_temp;
-
-    console.log(response);
 })
 
 }])

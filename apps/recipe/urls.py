@@ -26,6 +26,7 @@ brew_urls = [
     url(r'^(?P<id>[0-9]+)/logs$', BrewLogList.as_view(), name='brewlog-list'),
     url(r'^(?P<id>[0-9]+)/comments$', BrewCommentList.as_view(), name='brewcomment-list'),
     url(r'^ongoing', OngoingBrewList.as_view(), name='brew-ongoing'),
+    url(r'^latest', LatestBrewList.as_view(), name='brew-latest'),
 ]
 
 log_urls = [
