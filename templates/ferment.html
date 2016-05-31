@@ -4,14 +4,86 @@
 {% block content %}
 <body ng-controller="FermentController" ng-cloak="" ng-app="Ferment">
 
-    <canvas id="line"
-    class="chart chart-line"
-    chart-data="data"
-    chart-labels="labels"
-    chart-legend="true"
-    chart-series="series"
-    chart-click="onClick" >
-    </canvas>
+    <!-- Graph -->
+    <div layout="row" layout-xs="column" class="bl-content">
+        <div flex class="bl-block" layout="column">
+            <div class="bl-header" layout="row">
+                <h1>Ferment</h1>
+            </div>
+
+            <div layout="row" layout-xs="column">
+
+                <div flex layout="column" class="bl-column">
+                    <div class="bl-section" layout="row">
+                        <img src="{% static "img/settings.png" %}">
+                        <h1>Settings</h1>
+                    </div>
+                    Current target: {[{ target_temp }]}
+                    <md-slider-container>
+                        <md-icon md-svg-icon="{% static "img/temperature.svg" %}"></md-icon>
+                        <md-slider flex min="0" max="25" ng-model="adjust_target_temp" aria-label="Target temperature" id="target-slider">
+                        </md-slider>
+                        <md-input-container>
+                            <input flex type="number" ng-model="adjust_target_temp" aria-label="Target temperature" aria-controls="target-slider">
+                        </md-input-container>
+
+                    </md-slider-container>
+                    <md-button ng-click="updateTarget()">
+                        Submit
+                    </md-button>
+
+                </div>
+                <div flex layout="column" class="bl-column">
+                    <div class="bl-section" layout="row">
+                        <img src="{% static "img/batch.png" %}">
+                        <h1>Current</h1>
+                    </div>
+                    <table style="width:100%;" class="bl-table" ng-if="brew">
+                        <tr>
+                            <th>Recipe</th>
+                            <th>Started</th>
+                        </tr>
+                        <tr ng-repeat="brew in brews" class="fade">
+                            <td class="bl-table-data">{[{ brew.recipe.name }]}</td>
+                            <td class="bl-table-data">{[{ brew.date }]}</td>
+                        </tr>
+                    </table>
+                    <p ng-if="!brew">No current brews!</p>
+
+                </div>
+            </div>
+
+
+            <div layout="column" class="bl-column">
+                <div class="bl-section" layout="row">
+                    <img src="{% static "img/chart.png" %}">
+                    <h1>Chart</h1>
+                    <span flex></span>
+                    <md-input-container>
+                        <input ng-model="logStart[brew]" placeholder="Start" type="time">
+                    </md-input-container>
+                    <md-input-container>
+                        <input ng-model="logEnd[brew]" placeholder="End" type="time">
+                    </md-input-container>
+                    <md-button class="md-primary">
+                        Update
+                    </md-button>
+                </div>
+                <canvas id="line"
+                class="chart chart-line"
+                chart-data="data"
+                chart-labels="labels"
+                chart-legend="true"
+                chart-series="series"
+                chart-click="onClick" >
+                </canvas>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- end graph -->
+
+
 
 
 </body>

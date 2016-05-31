@@ -13,11 +13,32 @@ angular.module('Ferment', ['ngMaterial', 'chart.js']).controller('FermentControl
         console.log(points, evt);
     };
 
-    $http.get('/api/ferment/get_sensor_readings?limit=20')
-    .then(function(response) {
-        $scope.readings = response.data;
-        console.log($scope.readings);
-        for (var reading in $scope.readings) {
+    $scope.populateGraph = function() {
+        $http.get('/api/ferment/get_sensor_readings?limit=20')
+        .then(function(response) {
+            $scope.readings = response.data;
+            console.log($scope.readings);
+            for (var reading in $scope.readings) {
+                var date = new Date($scope.readings[reading].date);
+                var ddate = date.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false});
+                $scope.labels.push(ddate);
+                $scope.data[0].push($scope.readings[reading].sensors['beer']);
+                $scope.data[1].push($scope.readings[reading].sensors['bottom']);
+                $scope.data[2].push($scope.readings[reading].sensors['top']);
+                $scope.data[3].push($scope.readings[reading].target_temp);
+                var compressor = $scope.readings[reading].compressor_state ? 1 : 0;
+                $scope.data[4].push(compressor);
+            }
+        }, function(response) {
+            console.log(response);
+        });
+        //setTimeout($scope.updateGraph, 5000);
+    }
+
+    $scope.updateGraph = function() {
+        $http.get('/api/ferment/get_sensor_readings?limit=1')
+        .then(function(response) {
+            var reading = 0;
             var date = new Date($scope.readings[reading].date);
             var ddate = date.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false});
             $scope.labels.push(ddate);
@@ -25,12 +46,31 @@ angular.module('Ferment', ['ngMaterial', 'chart.js']).controller('FermentControl
             $scope.data[1].push($scope.readings[reading].sensors['bottom']);
             $scope.data[2].push($scope.readings[reading].sensors['top']);
             $scope.data[3].push($scope.readings[reading].target_temp);
-            var compressor = $scope.readings[reading].compressor_state ? 0 : 1;
+            var compressor = $scope.readings[reading].compressor_state ? 1 : 0;
             $scope.data[4].push(compressor);
-        }
-    }, function(response) {
-        console.log(response);
-    });
+        });
+        setTimeout($scope.updateGraph, 5000);
+    }
+
+    $scope.updateTarget = function() {
+        $http.post('/api/ferment/set_target_temp?target_temp=' + $scope.adjust_target_temp)
+        .then(function(response) {
+            console.log(response);
+            $scope.target_temp = response.data.target_temp;
+        }, function(response) {
+            console.log(response);
+        })
+    }
+
+$scope.populateGraph();
+$http.get('/api/ferment/get_target_temp')
+.then(function(response) {
+    $scope.target_temp = response.data.target_temp;
+    $scope.adjust_target_temp = response.data.target_temp;
+}, function(response) {
+    console.log(response);
+})
+
 
 }])
 .config(function($mdThemingProvider) {
