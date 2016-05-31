@@ -6,49 +6,51 @@
 <body ng-controller="RecipesController" ng-cloak="" ng-app="Recipes">
 
     <!-- Log entries -->
-    <div flex class="bl-block" layout="column">
-        <div class="bl-header" layout="row">
-            <h1>Logs</h1>
-        </div>
-        <div layout="column" class="bl-logs">
-            <table style="width:100%;" class="bl-table">
-                <tr>
-                    <th><a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">Name</a></th>
-                    <th><a href="#" ng-click="sortType = 'date'; sortReverse = !sortReverse">Created</th>
-                    <th><a href="#" ng-click="sortType = 'bath_size'; sortReverse = !sortReverse">Volume</th>
-                    <th><a href="#" ng-click="sortType = 'grain_bill'; sortReverse = !sortReverse">Grain bill</th>
-                    <th><a href="#" ng-click="sortType = 'brews.length'; sortReverse = !sortReverse"># brewed</th>
-                    <th><a href="#" ng-click="sortType = 'brews[brews.length - 1].date'; sortReverse = !sortReverse">Last brewed</th>
-                    <th><a href="#" ng-click="sortType = 'averageRating(recipe)'; sortReverse = !sortReverse">Rating</th>
-                    <th></th>
-                </tr>
-                <tr ng-repeat="recipe in recipes | orderBy:sortType:sortReverse">
-                    <td class="bl-table-data"><a href="recipe?id={[{ recipe.id }]}">{[{ recipe.name }]}</a></td>
-                    <td class="bl-table-data">{[{ recipe.date | date:'dd-MM-yyyy' }]}</td>
-                    <td class="bl-table-data">{[{ recipe.batch_size }]}</td>
-                    <td class="bl-table-data">{[{ grainBill(recipe) }]}</td>
-                    <td class="bl-table-data">{[{ recipe.brews.length }]}</td>
-                    <td class="bl-table-data">{[{ recipe.brews[recipe.brews.length - 1].date | date:'dd-MM-yyyy' }]}</td>
-                    <td class="bl-table-data">{[{ averageRating(recipe) }]}</td>
-                    <td class="bl-table-action">
-                        <md-button class="md-icon-button md-accent" aria-label="-" ng-click="removeRecipe(recipe)">
-                            <md-icon md-svg-icon="{% static "img/remove.svg" %}"></md-icon>
-                        </md-button>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="7">
-                        <md-input-container md-no-float  class="md-block">
-                          <input ng-model="recipeName" placeholder="Name" type="text">
-                        </md-input-container>
-                    </td>
-                    <td class="bl-table-action">
-                        <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addRecipe()">
-                            <md-icon md-svg-icon="{% static "img/add.svg" %}"></md-icon>
-                        </md-button>
-                    </td>
-                </tr>
-            </table>
+    <div layout="row" layout-xs="column" class="bl-content">
+        <div flex class="bl-block" layout="column">
+            <div class="bl-header" layout="row">
+                <h1>Logs</h1>
+            </div>
+            <div layout="column" class="bl-logs">
+                <table style="width:100%;" class="bl-table">
+                    <tr>
+                        <th><a href="#" ng-click="sortType = 'name'; sortReverse = !sortReverse">Name</a></th>
+                        <th><a href="#" ng-click="sortType = 'date'; sortReverse = !sortReverse">Created</th>
+                        <th><a href="#" ng-click="sortType = 'bath_size'; sortReverse = !sortReverse">Volume</th>
+                        <th><a href="#" ng-click="sortType = 'grain_bill'; sortReverse = !sortReverse">Grain bill</th>
+                        <th><a href="#" ng-click="sortType = 'brews.length'; sortReverse = !sortReverse"># brewed</th>
+                        <th><a href="#" ng-click="sortType = 'brews[brews.length - 1].date'; sortReverse = !sortReverse">Last brewed</th>
+                        <th><a href="#" ng-click="sortType = 'averageRating(recipe)'; sortReverse = !sortReverse">Rating</th>
+                        <th></th>
+                    </tr>
+                    <tr ng-repeat="recipe in recipes | orderBy:sortType:sortReverse">
+                        <td class="bl-table-data"><a href="recipe?id={[{ recipe.id }]}">{[{ recipe.name }]}</a></td>
+                        <td class="bl-table-data">{[{ recipe.date | date:'dd-MM-yyyy' }]}</td>
+                        <td class="bl-table-data">{[{ recipe.batch_size }]}</td>
+                        <td class="bl-table-data">{[{ grainBill(recipe) }]}</td>
+                        <td class="bl-table-data">{[{ recipe.brews.length }]}</td>
+                        <td class="bl-table-data">{[{ recipe.brews[recipe.brews.length - 1].date | date:'dd-MM-yyyy' }]}</td>
+                        <td class="bl-table-data">{[{ averageRating(recipe) }]}</td>
+                        <td class="bl-table-action">
+                            <md-button class="md-icon-button md-accent" aria-label="-" ng-click="removeRecipe(recipe)">
+                                <md-icon md-svg-icon="{% static "img/remove.svg" %}"></md-icon>
+                            </md-button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="7">
+                            <md-input-container md-no-float  class="md-block">
+                                <input ng-model="recipeName" placeholder="Name" type="text">
+                            </md-input-container>
+                        </td>
+                        <td class="bl-table-action">
+                            <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addRecipe()">
+                                <md-icon md-svg-icon="{% static "img/add.svg" %}"></md-icon>
+                            </md-button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
     <!-- end ingredients -->

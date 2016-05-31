@@ -18,7 +18,8 @@
                         <img src="{% static "img/settings.png" %}">
                         <h1>Settings</h1>
                     </div>
-                    Current target: {[{ target_temp }]}
+                    <p>Current target: {[{ target_temp }]}&deg;C</p>
+                    <p style="font-size:80%;">Adjust target</p>
                     <md-slider-container>
                         <md-icon md-svg-icon="{% static "img/temperature.svg" %}"></md-icon>
                         <md-slider flex min="0" max="25" ng-model="adjust_target_temp" aria-label="Target temperature" id="target-slider">

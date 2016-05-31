@@ -55,7 +55,6 @@ angular.module('Ferment', ['ngMaterial', 'chart.js']).controller('FermentControl
     $scope.updateTarget = function() {
         $http.post('/api/ferment/set_target_temp?target_temp=' + $scope.adjust_target_temp)
         .then(function(response) {
-            console.log(response);
             $scope.target_temp = response.data.target_temp;
         }, function(response) {
             console.log(response);
