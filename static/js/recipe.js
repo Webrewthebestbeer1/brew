@@ -12,6 +12,7 @@ angular.module('Recipe', ['ngMaterial', 'ngAnimate', 'ngRoute'])
     $scope.logDescription = [];
     $scope.comments = [];
     $scope.equip = {};
+    $scope.editLog = {};
 
     var showWarning = function(ev, text, callback) {
         var confirm = $mdDialog.confirm()
@@ -313,9 +314,34 @@ angular.module('Recipe', ['ngMaterial', 'ngAnimate', 'ngRoute'])
         });
     }
 
+    $scope.editedLogs = {};
+    $scope.editLog = function(log) {
+        console.log(log);
+        // Angular input field of type time needs Date objects
+        if (!$scope.editedLogs[log]) {
+            $scope.editLog[log.id] = {};
+            $scope.editLog[log.id].start = new Date(log.start);
+            $scope.editLog[log.id].end = new Date(log.end);
+        }
+        $scope.editedLogs[log.id] = !$scope.editedLogs[log.id];
+    }
+
+    $scope.updateLog = function(brew, log) {
+        var field = {start: $scope.editLog[log.id].start, end: $scope.editLog[log.id].end, description: log.description};
+        $http.put('/api/recipe/logs/update/' + log['id'], field)
+        .then(function(response) {
+            console.log(response);
+            var index = brew.logs.indexOf(log);
+            brew.logs[index] = response.data;
+            $scope.editLog(log);
+        }, function(response) {
+            console.log(response);
+        });
+    }
+
     $scope.addLog = function(brew) {
-        var start = $scope.logStart[brew].toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: false});
-        var end = $scope.logEnd[brew].toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", hour12: false});
+        var start = $scope.logStart[brew];
+        var end = $scope.logEnd[brew];
         var entry = {start: start, end: end, description: $scope.logDescription[brew]};
         $http.post('/api/recipe/brews/' + brew.id + '/logs', entry)
         .success(function(response) {

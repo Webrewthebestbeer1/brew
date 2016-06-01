@@ -31,6 +31,7 @@ brew_urls = [
 
 log_urls = [
     url(r'^delete/(?P<pk>[0-9]+)$', LogDestroy.as_view(), name='log-destroy'),
+    url(r'^update/(?P<pk>[0-9]+)$', LogUpdate.as_view(), name='log-update'),
 ]
 
 comment_urls = [

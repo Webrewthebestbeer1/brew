@@ -61,8 +61,8 @@ class Brew(models.Model):
         return str(self.recipe)
 
 class Log(models.Model):
-    start = models.TimeField()
-    end = models.TimeField()
+    start = models.DateTimeField()
+    end = models.DateTimeField()
     description = models.CharField(max_length=200)
     brew = models.ForeignKey(Brew, related_name='logs')
 

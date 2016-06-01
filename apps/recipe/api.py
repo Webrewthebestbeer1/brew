@@ -102,6 +102,22 @@ class BrewUpdate(generics.UpdateAPIView):
         self.perform_update(serializer)
         return Response(serializer.data)
 
+class LogUpdate(generics.UpdateAPIView):
+    model = Log
+    serializer_class = LogSerializer
+    queryset = Log.objects.all()
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = LogSerializer(
+            instance,
+            data=request.data,
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+
 class CommentUpdate(generics.UpdateAPIView):
     model = Comment
     serializer_class = CommentSerializer

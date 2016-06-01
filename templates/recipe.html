@@ -72,7 +72,7 @@
                                         <table style="width:100%;" class="bl-table">
                                         <td ng-if="equipOpen">
                                         <md-button class="md-icon-button md-accent" aria-label="-" ng-click="removeMalt($event, malt)">
-                                            <md-icon md-svg-icon="{% static "img/remove.svg" %}"></md-icon>
+                                            <md-icon>remove_circle_outline</md-icon>
                                         </md-button>
                                         </td>
                                         <td>{[{ equip.name }]}</td>
@@ -90,7 +90,7 @@
                         </td>
                         <td class="bl-table-action">
                             <md-button style="padding:0;margin:0;text-align:right;" class="md-icon-button md-accent" aria-label="+" ng-click="addEquipment()">
-                                <md-icon md-svg-icon="{% static "img/add.svg" %}"></md-icon>
+                                <md-icon>add_circle_outline</md-icon>
                             </md-button>
                         </td>
                     </table>
@@ -220,7 +220,7 @@
                         <td class="bl-table-data">{[{ malt.amount }]}</td>
                         <td class="bl-table-action">
                             <md-button class="md-icon-button md-accent" aria-label="-" ng-click="removeMalt($event, malt)">
-                                <md-icon md-svg-icon="{% static "img/remove.svg" %}"></md-icon>
+                                <md-icon>remove_circle_outline</md-icon>
                             </md-button>
                         </td>
                     </tr>
@@ -248,7 +248,7 @@
                         </td>
                         <td class="bl-table-action">
                             <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addMalt($event)">
-                                <md-icon md-svg-icon="{% static "img/add.svg" %}"></md-icon>
+                                <md-icon>add_circle_outline</md-icon>
                             </md-button>
                         </td>
                     </tr>
@@ -266,13 +266,13 @@
                         <th>Add (minutes)</th>
                         <th></th>
                     </tr>
-                    <tr ng-repeat="hop in recipe.hops" class="fade">
+                    <tr ng-repeat="hop in recipe.hops | orderBy:'-add'" class="fade">
                         <td class="bl-table-data">{[{ hop.inventory.name }]}</td>
                         <td class="bl-table-data">{[{ hop.amount }]}</td>
                         <td class="bl-table-data">{[{ hop.add }]}</td>
                         <td class="bl-table-action">
                             <md-button class="md-icon-button md-accent" aria-label="-" ng-click="removeHop($event, hop)">
-                                <md-icon md-svg-icon="{% static "img/remove.svg" %}"></md-icon>
+                                <md-icon>remove_circle_outline</md-icon>
                             </md-button>
                         </td>
                     </tr>
@@ -305,7 +305,7 @@
                         </td>
                         <td class="bl-table-action">
                             <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addHop($event)">
-                                <md-icon md-svg-icon="{% static "img/add.svg" %}"></md-icon>
+                                <md-icon>add_circle_outline</md-icon>
                             </md-button>
                         </td>
                     </tr>
@@ -390,13 +390,34 @@
                                 <th>Description</th>
                                 <th></th>
                             </tr>
-                            <tr ng-repeat="log in brew.logs" class="fade">
-                                <td class="bl-table-data">{[{ log.start }]}</td>
-                                <td class="bl-table-data">{[{ log.end }]}</td>
-                                <td class="bl-table-data">{[{ log.description }]}</td>
+                            <tr ng-repeat="log in brew.logs | orderBy:'start'">
+                                <td class="bl-table-data" ng-if="!editedLogs[log.id]">{[{ log.start | date:'HH:mm' }]}</td>
+                                <td class="bl-table-data" ng-if="!editedLogs[log.id]">{[{ log.end | date:'HH:mm' }]}</td>
+                                <td class="bl-table-data" ng-if="!editedLogs[log.id]">{[{ log.description }]}</td>
+                                <td ng-if="editedLogs[log.id]">
+                                    <md-input-container md-no-float flex-gt-sm="" class="md-block">
+                                      <input ng-model="editLog[log.id].start" placeholder="Start" type="time">
+                                    </md-input-container>
+                                </td>
+                                <td ng-if="editedLogs[log.id]">
+                                    <md-input-container md-no-float flex-gt-sm="" class="md-block">
+                                      <input ng-model="editLog[log.id].end" placeholder="End" type="time">
+                                    </md-input-container>
+                                </td>
+                                <td ng-if="editedLogs[log.id]">
+                                    <md-input-container md-no-float flex-gt-sm="" class="md-block">
+                                      <input ng-model="log.description" placeholder="Description" type="text">
+                                    </md-input-container>
+                                </td>
                                 <td class="bl-table-action">
-                                    <md-button class="md-icon-button md-accent" aria-label="-" ng-click="deleteLog($event, brew, log)">
-                                        <md-icon md-svg-icon="{% static "img/remove.svg" %}"></md-icon>
+                                    <md-button ng-if="!editedLogs[log.id]" class="md-icon-button md-accent" style="margin-right:0; padding-right:0;" aria-label="Edit" ng-click="editLog(log)">
+                                        <md-icon>mode_edit</md-icon>
+                                    </md-button>
+                                    <md-button ng-if="editedLogs[log.id]" class="md-icon-button md-accent" style="margin-right:0; padding-right:0;" aria-label="Edit" ng-click="updateLog(brew, log)">
+                                        <md-icon>done</md-icon>
+                                    </md-button>
+                                    <md-button class="md-icon-button md-accent" style="margin-left:0; padding-left:0; margin-right:2px;" aria-label="-" ng-click="deleteLog($event, brew, log)">
+                                        <md-icon>remove_circle_outline</md-icon>
                                     </md-button>
                                 </td>
                             </tr>
@@ -418,7 +439,7 @@
                                 </td>
                                 <td class="bl-table-action">
                                     <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addLog(brew)">
-                                        <md-icon md-svg-icon="{% static "img/add.svg" %}"></md-icon>
+                                        <md-icon>add_circle_outline</md-icon>
                                     </md-button>
                                 </td>
                             </tr>
