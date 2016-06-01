@@ -14,12 +14,26 @@ angular.module('Ferment', ['ngMaterial', 'chart.js']).controller('FermentControl
                 var date = new Date($scope.readings[reading].date);
                 var ddate = date.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false});
                 $scope.labels.push(ddate);
-                $scope.data[0].push($scope.readings[reading].sensors['beer']);
-                $scope.data[1].push($scope.readings[reading].sensors['bottom']);
-                $scope.data[2].push($scope.readings[reading].sensors['top']);
-                $scope.data[3].push($scope.readings[reading].target_temp);
+                var sensors = [
+                    $scope.readings[reading].sensors['beer'],
+                    $scope.readings[reading].sensors['bottom'],
+                    $scope.readings[reading].sensors['top'],
+                ]
+                $scope.data[0].push(sensors[0]);
+                $scope.data[1].push(sensors[1]);
+                $scope.data[2].push(sensors[2]);
+                var count = 0;
+                var sum = 0;
+                for (var i  = 0; i < sensors.length; i++) {
+                    if (typeof(sensors[i]) != 'undefined') {
+                        count++;
+                        sum += sensors[i];
+                    }
+                }
+                $scope.data[3].push(sum/count);
+                $scope.data[4].push($scope.readings[reading].target_temp);
                 var compressor = $scope.readings[reading].compressor_state ? 1 : 0;
-                $scope.data[4].push(compressor);
+                $scope.data[5].push(compressor);
             }
         }, function(response) {
             console.log(response);
@@ -34,12 +48,26 @@ angular.module('Ferment', ['ngMaterial', 'chart.js']).controller('FermentControl
             var date = new Date($scope.readings[reading].date);
             var ddate = date.toLocaleTimeString([], {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false});
             $scope.labels.push(ddate);
-            $scope.data[0].push($scope.readings[reading].sensors['beer']);
-            $scope.data[1].push($scope.readings[reading].sensors['bottom']);
-            $scope.data[2].push($scope.readings[reading].sensors['top']);
-            $scope.data[3].push($scope.readings[reading].target_temp);
+            var sensors = [
+                $scope.readings[reading].sensors['beer'],
+                $scope.readings[reading].sensors['bottom'],
+                $scope.readings[reading].sensors['top'],
+            ]
+            $scope.data[0].push(sensors[0]);
+            $scope.data[1].push(sensors[1]);
+            $scope.data[2].push(sensors[2]);
+            var count = 0;
+            var sum = 0;
+            for (var i  = 0; i < sensors.length; i++) {
+                if (typeof(sensors[i]) != 'undefined') {
+                    count++;
+                    sum += sensors[i];
+                }
+            }
+            $scope.data[3].push(sum/count);
+            $scope.data[4].push($scope.readings[reading].target_temp);
             var compressor = $scope.readings[reading].compressor_state ? 1 : 0;
-            $scope.data[4].push(compressor);
+            $scope.data[5].push(compressor);
         });
         setTimeout($scope.updateGraph, 5000);
     }
@@ -55,8 +83,9 @@ angular.module('Ferment', ['ngMaterial', 'chart.js']).controller('FermentControl
 
     $scope.refreshChart = function() {
         $scope.labels = [];
-        $scope.series = ['Beer', 'Bottom', 'Top', 'Target', 'Compressor'];
+        $scope.series = ['Beer', 'Bottom', 'Top', 'Average', 'Target', 'Compressor'];
         $scope.data = [
+            [],
             [],
             [],
             [],
