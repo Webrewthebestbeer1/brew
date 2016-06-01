@@ -127,6 +127,12 @@ md-content {
     margin-top: 0px !important;
 }
 
+.bl-error {
+    font-size: 12px;
+    color: rgb(221,44,0);
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+}
+
 .comment-textarea {
     width: 100%;
     -webkit-box-sizing: border-box;

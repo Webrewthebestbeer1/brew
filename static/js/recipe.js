@@ -13,6 +13,7 @@ angular.module('Recipe', ['ngMaterial', 'ngAnimate', 'ngRoute'])
     $scope.comments = [];
     $scope.equip = {};
     $scope.editLog = {};
+    $scope.errors = {};
 
     var showWarning = function(ev, text, callback) {
         var confirm = $mdDialog.confirm()
@@ -38,13 +39,13 @@ angular.module('Recipe', ['ngMaterial', 'ngAnimate', 'ngRoute'])
                         amount: 0,
                     };
                     $http.post('/api/inventory/malts/', malt)
-                    .success(function(response) {
-                        inventory = response;
-                        console.log("new inventory created");
+                    .then(function(response) {
+                        console.log(response)
+                        inventory = response.data;
                         insertMalt(inventory, $scope.maltAmount);
-                    })
-                    .error(function(response) {
+                    }, function(response) {
                         console.log(response);
+                        $scope.errors.malt = response.data;
                     })
                 }
             )
@@ -56,15 +57,16 @@ angular.module('Recipe', ['ngMaterial', 'ngAnimate', 'ngRoute'])
 
     var insertMalt = function(inventory, amount) {
         var malt = {inventory: inventory, amount: amount};
+        console.log("inserting malt", malt);
         $http.post(baseUrl + '/malts', malt)
-        .success(function(response) {
+        .then(function(response) {
             console.log(response)
-            $scope.recipe.malts.push(response);
+            $scope.recipe.malts.push(response.data);
             $scope.maltAmount = "";
             $scope.searchMaltText = "";
-        })
-        .error(function(response) {
+        }, function(response) {
             console.log(response);
+            $scope.errors.malt = response.data;
         });
     }
 
@@ -78,6 +80,7 @@ angular.module('Recipe', ['ngMaterial', 'ngAnimate', 'ngRoute'])
     }
 
     $scope.queryMaltSearch = function(query) {
+        console.log("querying...");
         var deferred = $q.defer();
         $http.get('/api/inventory/malts?name=' + query)
         .then(function(result) {

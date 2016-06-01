@@ -9,6 +9,7 @@ from pprint import pprint
 class InventoryMaltSerializer(serializers.ModelSerializer):
 
     id = serializers.ModelField(model_field=InventoryMalt()._meta.get_field('id'))
+    name = serializers.CharField(read_only=False)
 
     class Meta:
         model = InventoryMalt
@@ -17,6 +18,7 @@ class InventoryMaltSerializer(serializers.ModelSerializer):
 class InventoryHopSerializer(serializers.ModelSerializer):
 
     id = serializers.ModelField(model_field=InventoryHop()._meta.get_field('id'))
+    name = serializers.CharField(read_only=False)
 
     class Meta:
         model = InventoryHop
@@ -32,12 +34,18 @@ class MaltSerializer(serializers.ModelSerializer):
         model = Malt
         fields = ('id', 'inventory', 'amount')
 
+    # why do we need this, you might wonder....
+    def to_internal_value(self, data):
+        return super(MaltSerializer, self).to_internal_value(data)
+
     def create(self, validated_data):
+        print(validated_data)
         # there must be a better way to set the foreign key...
         recipe_id = self.context['request'].parser_context['kwargs'].get('id')
         recipe = Recipe.objects.filter(id=recipe_id).first()
         inventory_id = validated_data.pop('inventory')['id']
         inventory = InventoryMalt.objects.filter(id=inventory_id).first()
+        print("creating malt")
         malt = Malt.objects.create(recipe=recipe, inventory=inventory, **validated_data)
         return malt
 
@@ -50,6 +58,10 @@ class HopSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hop
         fields = ('id', 'inventory', 'amount', 'add')
+
+    # why do we need this, you might wonder....
+    def to_internal_value(self, data):
+        return super(HopSerializer, self).to_internal_value(data)
 
     def create(self, validated_data):
         # there must be a better way to set the foreign key...

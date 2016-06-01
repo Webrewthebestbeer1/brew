@@ -235,6 +235,7 @@
                             md-items="malt in queryMaltSearch(searchMaltText)"
                             md-item-text="malt.name"
                             md-floating-label="Name"
+                            md-no-cache="ture"
                             class="no-float">
                             <md-item-template>
                                 <span md-highlight-text="searchMaltText">{[{malt.name}]}</span>
@@ -250,6 +251,11 @@
                             <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addMalt($event)">
                                 <md-icon>add_circle_outline</md-icon>
                             </md-button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan=2>
+                            <ng-message class="bl-error">{[{ errors.malt.name[0] }]}</ng-message>
                         </td>
                     </tr>
                 </table>
@@ -287,6 +293,7 @@
                             md-items="hop in queryHopSearch(searchHopText)"
                             md-item-text="hop.name"
                             md-floating-label="Name"
+                            md-no-cache="true"
                             class="no-float">
                             <md-item-template>
                                 <span md-highlight-text="searchHopText">{[{hop.name}]}</span>
@@ -307,6 +314,11 @@
                             <md-button class="md-icon-button md-accent" aria-label="+" ng-click="addHop($event)">
                                 <md-icon>add_circle_outline</md-icon>
                             </md-button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan=2>
+                            <ng-message class="bl-error">{[{ errors.hops.name[0] }]}</ng-message>
                         </td>
                     </tr>
                 </table>
