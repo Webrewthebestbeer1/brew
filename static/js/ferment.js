@@ -8,6 +8,15 @@ $scope.startTime.setHours($scope.endTime.getHours() - 2);
 $scope.startTime.setSeconds(0,0);
 $scope.endTime.setSeconds(0,0);
 
+    $scope.dateToday = function() {
+        $scope.date = new Date();
+    }
+
+    $scope.timeNow = function() {
+        $scope.endTime = new Date();
+        $scope.endTime.setSeconds(0,0);
+    }
+
     $scope.onClick = function (points, evt) {
         console.log(points, evt);
     };
@@ -94,7 +103,7 @@ $scope.endTime.setSeconds(0,0);
         });
     }
 
-$scope.refreshChart();
+$scope.updateFromTo();
 
 $http.get('/api/recipe/brews/ongoing')
 .then(function(response) {
