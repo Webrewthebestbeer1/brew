@@ -58,34 +58,38 @@
 
 
             <div layout="column" class="bl-column">
-                <div class="bl-section" layout="row">
-                    <img src="{% static "img/chart.png" %}">
-                    <h1>Chart</h1>
-                    <span flex>
-                        <!--
-                        <md-button class="md-icon-button md-accent" aria-label="Refresh" ng-click="refreshChart()">
-                            <md-icon md-svg-icon="{% static "img/refresh.svg" %}"></md-icon>
-                        </md-button>
-                        -->
-                    </span>
-                    <md-input-container>
-                        <input ng-model="date" placeholder="Date" type="date">
-                    </md-input-container>
-                    <span class="datetimeshortcuts" style="padding-right:10px;">
-                        <a href="" ng-click="dateToday()">Today</a>
-                    </span>
-                    <md-input-container>
-                        <input ng-model="startTime" placeholder="Start" type="time">
-                    </md-input-container>
-                    <md-input-container>
-                        <input ng-model="endTime" placeholder="End" type="time">
-                    </md-input-container>
-                    <span class="datetimeshortcuts">
-                        <a href="" ng-click="timeNow()">Now</a>
-                    </span>
-                    <md-button class="md-primary" ng-click="updateFromTo()">
-                        Update
-                    </md-button>
+                <div class="bl-section" layout-gt-sm="row" layout="column">
+                    <div layout="row">
+                        <img src="{% static "img/chart.png" %}">
+                        <h1>Chart</h1>
+                    </div>
+                    <span flex></span>
+                    <div layout="row" layout-xs="column">
+                        <div>
+                            <md-input-container>
+                                <input ng-model="date" placeholder="Date" type="date">
+                            </md-input-container>
+                            <span class="datetimeshortcuts" style="padding-right:10px;">
+                                <a href="" ng-click="dateToday()">Today</a>
+                            </span>
+                        </div>
+                        <div>
+                            <md-input-container>
+                                <input ng-model="startTime" placeholder="Start" type="time">
+                            </md-input-container>
+                            <md-input-container>
+                                <input ng-model="endTime" placeholder="End" type="time">
+                            </md-input-container>
+                            <span class="datetimeshortcuts">
+                                <a href="" ng-click="timeNow()">Now</a>
+                            </span>
+                        </div>
+                        <div>
+                            <md-button class="md-primary" ng-click="updateFromTo()">
+                                Update
+                            </md-button>
+                        </div>
+                    </div>
                 </div>
                 <canvas id="line"
                 class="chart chart-line"
