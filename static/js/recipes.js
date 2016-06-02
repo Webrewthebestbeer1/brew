@@ -56,7 +56,7 @@ angular.module('Recipes', ['ngMaterial']).controller('RecipesController', ['$sco
         for (var i = 0; i < recipe.malts.length; i++) {
             sum += Number(recipe.malts[i].amount);
         }
-        return sum;
+        return sum.toFixed(2);
     }
 
 }])
